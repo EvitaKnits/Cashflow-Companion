@@ -312,7 +312,10 @@ Planned enhancements/features for future implementation go here.
 - Styling the front end part in Heroku, around the terminal window as an added bonus to make it more attractive.
 
 ## Testing
-Write final manual testing outcome in report in detail here.
+- Test each user journey from start to finish
+- Test going home from every input possible
+- Test every input with invalid inputs, empty inputs and extreme values (where applicable)
+- Test both reports with no values in the spreadsheet, as well as lots of values in the spreadsheet
 
 ## Code Validation
 PEP8 validation using the Python Linter
