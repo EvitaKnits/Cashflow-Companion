@@ -152,10 +152,11 @@ Link a second readme type file here with the user manual, using the how to do th
 ## Credits
 
 ### APIs and Third Party Libraries
-
-gspread
+Google Sheets API: This was installed to give us access to the associated spreadsheet which will hold all the data for Cashflow Companion.
 
 ### Sources of Learning
+I referred back to the Love Sandwiches Walkthrough Project set up videos to remind me how to set up the APIs, credentials and files before starting coding.
+
 To build my flowchart using Mermaid in my readme: https://mermaid.js.org/syntax/flowchart.html
 
 ### General Credit
