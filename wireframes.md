@@ -21,6 +21,8 @@ What would you like to do?
 4 -> Add, edit or delete an expense<br>
 5 -> Generate a spending report
 
+(If you would like to return home at any point, type 'home' into any input field instead of the requested value)
+
 Please type the corresponding number and hit enter: [______]
 
 ## 1. Create a new budget
@@ -262,3 +264,14 @@ Miscellaneous - £102 / £200<br>
 When you're ready to return home, type 'Y' and hit enter: [___]
 
 Returning home....
+
+## Error Messaging
+
+### Incorrect input: numerical
+Only numbers are accepted - this is not a number.
+
+### Incorrect input: alphanumerical
+Only alphanumerical characters are accepted - this included punctuation or special characters.
+
+### Incorrect input: not an option
+This is not an available option. Please check again.

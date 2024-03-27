@@ -41,8 +41,6 @@ There were quite a few user stories for this app so to make them more readable a
 | ...have the option of going back one step wherever I am. | ...I have freedom to navigate back if I've accidentally chosen the wrong option or changed my mind. |
 | ...have a clear and intuitive method of navigating through the app via the command line. | ...I can easily navigate and use the app. |
 
-
-
 ### Process Flowchart 
 
 I created this flowchart to think about the various paths through the app from the command line and what the user journeys would look like. Please open the chart full width or use the zoom function in Git Hub to see the information.
@@ -120,14 +118,198 @@ In the app the following structures will be used:
 I wrote text-based 'wireframes' to plan what will be in the console for each scenario. These are included in a separate file [here](wireframes)
 
 ## Features
-For each feature: zoomed in flowchart, explanation of what it is, how to use it. Include commands that need to be run in the terminal and explanations for each step. 
+The features of the app can be grouped into three main areas: 
+1. Budgets
+2. Expenses
+3. Reports
+
+The branches coming off the root of my flowchart above, make up these three main areas. Whereas my process flowchart above is from the perspective of user journeys, the flowcharts below lay out the logic path through the program for each feature, from home to achieving the desired outcome.
+
+The 'read' element of the CRUD framework is presented automatically to the user at each appropriate moment:
+- Budgets are shown as soon as the program is run, then when updating a budget's name or amount allocated, or deleting a budget.
+- Budgets, then a specific budget with its expenses are shown when a budget is chosen in the expenses part of the program
+- Budgets and expenses are shown in two different ways when the two different reports are run.
+- Report descriptions are shown before the user selects which report they'd like to run.
+
+### Budgets
+All budget actions can be accessed directly from the first part of the program, selecting options 1, 2 or 3.
+
+#### Create a budget 
+This is option one when the program is run. 
+
+``` mermaid
+flowchart TD
+    A(Start: user selects option 1) --> B[Request name of new budget from the user]
+    B --> C{Is the input \n provided valid?}
+    C -->|Yes| E[Update spreadsheet with \n new worksheet labelled \n with this name]
+    C -->|No| D[Print error message \n to terminal stating what \n is wrong with input]
+    D -->B
+    E -->F[Request amount to allocate \n to new budget from user]
+    F --> G{Is the input \n provided valid?}
+    G -->|Yes| I[Update worksheet \n with this amount]
+    G -->|No| H[Print error message \n to terminal stating what \n is wrong with input]
+    H -->F
+    I --> J[Print confirmation of \n adding the right \n name and amount]
+    J --> K(Return home)
+```
+
+#### Update a budget
+This is option two when the program is run. 
+
+```mermaid
+flowchart TD
+    A(Start: user selects \n option 2) --> A1[Print list of existing budgets]
+    A1 --> B[Request user to select which budget to update]
+    B --> C{Is the input \n provided valid?}
+    C -->|Yes| E[Print name of budget \n being updated]
+    C -->|No| D[Print error message to terminal \n stating what is wrong with input]
+    D -->B
+    E -->F[Request user to select \n whether the name or \n amount is being updated]
+    F --> G{Is the input \n provided valid?}
+    G -->|Yes| I{Is the answer \n name or amount?} 
+    G -->|No| J[Print error message to terminal \n stating what is wrong with input]
+    J --> F
+    I -->|Name| K[Request new name \n from user]
+    I -->|Amount| L[Request new amount \n from user]
+    K --> M{Is the input \n provided valid?}
+    L --> N{is the input \n provided valid?}
+    M -->|Yes| Q[Change name of \n correct budget in spreadsheet]
+    M -->|No| O[Print error message to terminal \n stating what is wrong with input]
+    O --> K
+    N -->|Yes| R[Change amount of \n correct budget in spreadsheet]
+    N -->|No| P[Print error message to terminal \n stating what is wrong with input]    
+    P --> L
+    Q --> S[Print confirmation of \n budget name change]
+    R --> T[Print confirmation of \n budget amount change]
+    S --> U(Return home)
+    T --> U
+```
+
+#### Delete a budget
+This is option three when the program is run. 
+
+```mermaid
+flowchart TD
+    A(Start: user selects \n option 3) --> A1[Print list of existing budgets]
+    A1 --> B[Request user to select which budget to delete]
+    B --> C{Is the input \n provided valid?}
+    C -->|Yes| E[Print name of budget \n being deleted]
+    C -->|No| D[Print error message to terminal \n stating what is wrong with input]
+    D -->B
+    E -->F[Request user to confirm \n deletion of this budget]
+    F --> G{Is the input \n provided valid?}
+    G -->|Yes| I{Is the answer \n yes or no?}
+    G -->|No| H[Print error message to terminal \n stating what is wrong with input]
+    H --> F
+    I -->|Yes| J[Remove worksheet/budget \n from the spreadsheet]
+    I --> |No| K[Print message confirming no \n budget has been deleted]
+    K -->M
+    J --> L[Print message confirming this \n budget has been deleted]
+    L --> M(Return home)
+```
+
+### Expenses
+All expense actions are accessed from option 4 when the program is run. The user is first asked which budget they want to access for expense purposes, then are given the options A - to add an expense, B - to edit an expense and C - to delete an expense.
+
+#### Add an expense
+This is option A after a budget has been chosen in the expenses menu.
+
+```mermaid
+flowchart TD
+     A(Start: user selects option A) --> B[Request name of new expense from the user]
+    B --> C{Is the input \n provided valid?}
+    C -->|Yes| E[Update correct worksheet \n with new expense]
+    C -->|No| D[Print error message \n to terminal stating what \n is wrong with input]
+    D -->B
+    E -->F[Request amount to allocate \n to new expense from user]
+    F --> G{Is the input \n provided valid?}
+    G -->|Yes| I[Update expense \n with this amount]
+    G -->|No| H[Print error message \n to terminal stating what \n is wrong with input]
+    H -->F
+    I --> J[Print confirmation of \n adding the right \n name and amount]
+    J --> K(Return to chosen budget)
+```
+
+#### Edit an expense
+This is option B after a budget has been chosen in the expenses menu.
+
+```mermaid
+flowchart TD
+    A(Start: user selects \n option B) --> B[Request user to select which expense to edit]
+    B --> C{Is the input \n provided valid?}
+    C -->|Yes| E[Print name of expense \n being edited]
+    C -->|No| D[Print error message to terminal \n stating what is wrong with input]
+    D -->B
+    E -->F[Request user to select \n whether the name or \n amount is being updated]
+    F --> G{Is the input \n provided valid?}
+    G -->|Yes| I{Is the answer \n name or amount?} 
+    G -->|No| J[Print error message to terminal \n stating what is wrong with input]
+    J --> F
+    I -->|Name| K[Request new name \n from user]
+    I -->|Amount| L[Request new amount \n from user]
+    K --> M{Is the input \n provided valid?}
+    L --> N{is the input \n provided valid?}
+    M -->|Yes| Q[Change name of \n correct expense in spreadsheet]
+    M -->|No| O[Print error message to terminal \n stating what is wrong with input]
+    O --> K
+    N -->|Yes| R[Change amount of \n correct expense in spreadsheet]
+    N -->|No| P[Print error message to terminal \n stating what is wrong with input]    
+    P --> L
+    Q --> S[Print confirmation of \n expense name change]
+    R --> T[Print confirmation of \n expense amount change]
+    S --> U(Return home)
+    T --> U
+```
+
+#### Delete an expense
+This is option C after a budget has been chosen in the expenses menu.
+
+```mermaid
+flowchart TD
+    A(Start: user selects \n option C) --> B[Request user to select which expense to delete]
+    B --> C{Is the input \n provided valid?}
+    C -->|Yes| E[Print name of expense \n being deleted]
+    C -->|No| D[Print error message to terminal \n stating what is wrong with input]
+    D -->B
+    E -->F[Request user to confirm \n deletion of this expense]
+    F --> G{Is the input \n provided valid?}
+    G -->|Yes| I{Is the answer \n yes or no?}
+    G -->|No| H[Print error message to terminal \n stating what is wrong with input]
+    H --> F
+    I -->|Yes| J[Remove expense \n from the worksheet]
+    I --> |No| K[Print message confirming no \n expense has been deleted]
+    K --> M
+    J --> L[Print message confirming this \n expense has been deleted]
+    L --> M(Return to chosen budget)
+```
+
+### Reports
+Both reports are accessed from option 5 when the program is run. 
+
+```mermaid
+flowchart TD
+    A(Start: user selects \n option 5) --> B[Print description \n of both reports]
+    B-->C[Request user to select \n which report to show]
+    C --> D{Is the input \n provided valid?}
+    D -->|Yes| E{Which report?}
+    D -->|No| F[Print error message to terminal \n stating what is wrong with input]
+    F -->C
+    E --> |Under/over report|G[Calculate the percentage \n through the month today is, \n and the percentage through \n each budget the expenses \n add up to]
+    G --> H[Compare the percentage \n through the month to \n percentage through \n each budget and \n assign under or over value]
+    H --> I[Print the report to the terminal]
+    I --> J[Request user to confirm when \n they'd like to go home]
+    J --> |Confirmed| K(Return home)
+    E --> |Last 3 expenses report| L[Retrieve the budget names, amounts, \n running totals and last 3 expenses \n from each budget or if < 3 retrieve \n all expenses from that budget]
+    L --> M[Print the report to the terminal]
+    M -->J
+```
 
 ### Future Features
 Planned enhancements/features for future implementation go here. 
 
 - Reporting that shows the user trends in their spending over time, rather than just a monthly view.
-- Adding graphs for the reports
-- Styling the front end part in Heroku, around the terminal window as an added bonus to make it more attractive?
+- Adding graphs for all the reports.
+- Styling the front end part in Heroku, around the terminal window as an added bonus to make it more attractive.
 
 ## Testing
 Write final manual testing outcome in report in detail here.
@@ -145,9 +327,6 @@ I don't believe I have left any of my bugs unresolved.
 
 ## Deployment
 Explain how this app was deployed so that a non-technical user could do it. How to deploy the app to heroku including any necessary config files or environment variables.
-
-## User Manual 
-Link a second readme type file here with the user manual, using the how to do things from the features section plus whatever other info is needed. 
 
 ## Credits
 
