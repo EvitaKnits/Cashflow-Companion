@@ -119,7 +119,10 @@ def new_budget():
     else:
         print("\nOnly alphanumerical characters are accepted - this included punctuation or special characters.\n")
         new_budget()
-    print(f"Adding your new {budget_name} budget and allocating {budget_amount}")
+    print(f"Adding your new '{budget_name}' budget and allocating £{budget_amount}")
+    print("\nSuccessfully added.\n")
+    print("Returning home...\n")
+    go_home()
 
 # def delete_budget():
 
