@@ -310,6 +310,7 @@ Planned enhancements/features for future implementation go here.
 - Reporting that shows the user trends in their spending over time, rather than just a monthly view.
 - Adding graphs for all the reports.
 - Styling the front end part in Heroku, around the terminal window as an added bonus to make it more attractive.
+- Letting the user select the currency type rather than defaulting to GBP
 
 ## Testing
 - Test each user journey from start to finish
@@ -340,6 +341,8 @@ Google Sheets API: This was installed to give us access to the associated spread
 I referred back to the Love Sandwiches Walkthrough Project set up videos to remind me how to set up the APIs, credentials and files before starting coding.
 
 To build my flowchart using Mermaid in my readme: https://mermaid.js.org/syntax/flowchart.html
+I learnt how to increment letters here: https://www.geeksforgeeks.org/ways-increment-character-python/
+
 
 ### General Credit
 As ever, I want to thank the open source community for the great resources that teach me so much and also remind me of what I learnt in my Code Institute lessons, especially 
