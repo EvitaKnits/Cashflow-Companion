@@ -33,19 +33,12 @@ Please type the name (alphanumeric characters only) and hit enter. Name: [_____]
 Great, and how much do you want to allocate to this new budget? <br>
 Please type the amount (numbers only) and hit enter. Amount: [_____]
 
-Adding your new ['Fun'] budget and allocating [£200]...
-
-Successfully added.
+Successfully added your new ['Fun'] budget and allocated [£200]...
 
 Returning home...
 
 ## 2. Update an existing budget's name or amount
 Which budget would you like to update?
-
-A -> Food: £37.50 / £400<br>
-B -> Utilities: £200 / £450<br>
-C -> Transport: £7.50 / £50<br>
-D -> Miscellaneous: £102 / £200
 
 Please type the corresponding letter and hit enter: [____]
 
@@ -72,7 +65,7 @@ Returning home...
 ---
 
 OK, how much would you like to allocate to ['Utilities'] now?<br>
-Please type the amount (numbers only) and hit enter: [_____]
+Please type the amount (numbers only) and hit enter. Amount:[_____]
 
 Allocating [£500] to your ['Utilities'] budget...
 
