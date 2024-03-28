@@ -19,6 +19,10 @@ SHEET = GSPREAD_CLIENT.open('cashflow_companion')
 
 # Common actions across multiple journeys
 def get_budgets():
+    """
+    Collects the names, running totals and allocated amounts of each budget available 
+    in the spreadsheet
+    """
     budgets_list = SHEET.worksheets()
     letter = 'A'
     for budget in budgets_list:
@@ -29,6 +33,7 @@ def get_budgets():
         letters = string.ascii_uppercase
         index = letters.index(letter)
         letter = letters[index + 1]
+
 
 # def enter_name():
 
@@ -45,6 +50,10 @@ def get_budgets():
 # def input_validation():
 
 def go_home():
+    """
+    Prints the text at the start of the program and presents user
+    with the menu of actions they can do in the app
+    """
     print("Welcome to Cashflow Companion!\n")
     print("Here are your current budgets:\n")
     get_budgets()
@@ -58,20 +67,73 @@ def go_home():
     print("(If you would like to return home at any point, type 'home' into any input field instead of the requested value)\n")
     
     menu_choice = input("Please type the corresponding number and hit enter: ")
+    return menu_choice
 
 # User journeys
 
-# def new_budget():
+def home_menu_choice(menu_choice):
+    """
+    Takes the menu choice from go_home function and calls the appropriate 
+    function to take the action the user chose. Validates that the user
+    chose an available action. 
+    """
+    if menu_choice == '1':
+        new_budget()
+    elif menu_choice == '2':
+        edit_budget()
+    elif menu_choice == '3':
+        delete_budget()
+    elif menu_choice == '4':
+        expense_menu()
+    elif menu_choice == '5':
+        report_menu()
+    else:
+        print("\nThis is not an available option. Please check again.\n")
+        new_menu_choice = input("Please type the corresponding number and hit enter: ")
+        home_menu_choice(new_menu_choice)
+
+def new_budget():
+    """
+    Allows the user to create a new budget and amount allocated to it and updates the 
+    Google sheet with it. Validates that the inputs are provided in the desired format.
+    """
+    print("\nOK, what is the name of your new budget?")
+    print("Please type the name (alphanumeric characters only) and hit enter.")
+    budget_name = input("Name: ")
+    if budget_name.isalnum():
+        worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
+        current_budget_worksheet = SHEET.get_worksheet(-1)
+        current_budget_worksheet.update_cell(1, 1, f'{budget_name}')
+        current_budget_worksheet.update_cell(2, 1, 'Running total')
+        current_budget_worksheet.update_cell(3, 1, 'Amount budgeted')
+        print("\nGreat, and how much do you want to allocate to this budget?")
+        print("Please type the amount (numbers only) and hit enter.")
+        budget_amount = input("Amount: ")
+        while budget_amount.isnumeric() != True:
+            print("\nOnly numbers are accepted - this is not a number.\n")
+            print("Please type the amount (numbers only) and hit enter.")
+            budget_amount = input("Amount: ")
+        else: 
+            worksheet.update_cell(3, 2, f'{budget_amount}')
+            worksheet.update_cell(2, 2, 0)
+    else:
+        print("\nOnly alphanumerical characters are accepted - this included punctuation or special characters.\n")
+        new_budget()
+    print(f"Adding your new {budget_name} budget and allocating {budget_amount}")
 
 # def delete_budget():
 
 # def edit_budget():
+
+# def expense_menu():
 
 # def new_expense():
 
 # def delete_expense():
 
 # def edit_expense():
+
+# def report_menu():
 
 # def under_over_report():
 
@@ -81,8 +143,10 @@ def go_home():
 
 def main():
     """
-    Run all the functions in the program
+    Runs all the functions in the program
     """
-    go_home()
+    menu_choice = go_home()
+    home_menu_choice(menu_choice)
+
 
 main()

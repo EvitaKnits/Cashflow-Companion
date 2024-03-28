@@ -342,6 +342,8 @@ I referred back to the Love Sandwiches Walkthrough Project set up videos to remi
 
 To build my flowchart using Mermaid in my readme: https://mermaid.js.org/syntax/flowchart.html
 I learnt how to increment letters here: https://www.geeksforgeeks.org/ways-increment-character-python/
+I learnt how to check if the user's input is alphanumeric here: https://www.w3schools.com/python/ref_string_isalnum.asp
+I learnt how to check if the user's input is numeric here: https://www.w3schools.com/python/ref_string_isnumeric.asp#:~:text=The%20isnumeric()%20method%20returns,considered%20to%20be%20numeric%20values.
 
 
 ### General Credit
