@@ -115,7 +115,7 @@ In the app the following structures will be used:
 ## Design
 
 ### Wireframes
-I wrote text-based 'wireframes' to plan what will be in the console for each scenario. These are included in a separate file [here](wireframes)
+I wrote text-based 'wireframes' to plan what will be in the console for each scenario. These are included in a separate file [here](wireframes.md)
 
 ## Features
 The features of the app can be grouped into three main areas: 
