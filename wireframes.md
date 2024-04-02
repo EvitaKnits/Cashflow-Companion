@@ -76,11 +76,6 @@ Returning home...
 ## 3. Delete a budget
 OK, which budget would you like to delete?
 
-A -> Food: £37.50 / £400<br>
-B -> Utilities: £200 / £450<br>
-C -> Transport: £7.50 / £50<br>
-D -> Miscellaneous: £102 / £200
-
 Please type the corresponding letter and hit enter: [____]
 
 Are you sure you would like to delete your ['Transport'] budget?<br>

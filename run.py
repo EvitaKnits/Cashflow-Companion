@@ -184,7 +184,46 @@ def edit_budget():
                     print("\nReturning home...")
                     main()
 
-# def delete_budget():
+def delete_budget():
+    """				
+    Asks user which budget they want to delete, then asks them if they're sure. If yes, the				
+    budget is deleted, if not, a message confirms that nothing has been deleted. Then it returns				
+    the user home.				
+    """				
+	
+    print("OK, which budget would you like to delete?")
+    budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+    letters = string.ascii_uppercase
+    if budget_choice.upper() not in letters:
+        print("\nThis is not a letter. Please check again.")
+        budget_choice = input("Please type the corresponding letter and hit enter: ")
+    else: 
+        index_of_choice = letters.index(budget_choice.upper())
+        all_worksheets = SHEET.worksheets()
+        while index_of_choice > len(all_worksheets):
+            print("\nThis is not an available option. Please check again.")
+            budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+            index_of_choice = letters.index(budget_choice.upper())   
+    
+    worksheet = SHEET.get_worksheet(index_of_choice) 
+    budget_name = worksheet.acell('A1').value
+    print(f"\nAre you sure you want to delete your '{budget_name}' budget.")
+    confirm_choice = input("\nType 'Y' for yes or 'N' for no and hit enter.")
+    while confirm_choice.upper() != 'Y' and confirm_choice.upper() != 'N':
+        print("\nThis is not an available option. Please check again.")
+        print(f"\nAre you sure you want to delete your '{budget_name}' budget.")
+        confirm_choice = input("\nType 'Y' for yes or 'N' for no and hit enter.")
+    else: 
+        if confirm_choice.upper() == 'Y':
+            SHEET.del_worksheet(worksheet)
+            print(f"\nYour '{budget_name}' budget has been deleted.")
+            print("\nReturning home...")
+            main()
+        else:
+            print("No budget has been deleted.")
+            print("\nReturning home...")
+            main()
+            
 
 # def expense_menu():
 
