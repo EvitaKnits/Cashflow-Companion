@@ -156,6 +156,7 @@ def edit_budget():
             else: 
                 print(f"Changing the name of your '{budget_name}' budget to '{new_name}'")
                 worksheet.update_cell(1, 1, new_name)
+                worksheet.update_title(new_name)
                 print("Successfully changed.")
                 print("\nReturning home...")
                 main()
