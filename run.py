@@ -133,47 +133,56 @@ def edit_budget():
     print("\nWhich budget would you like to update?\n")
     budget_choice = input("Please type the corresponding letter and hit enter: ")
     letters = string.ascii_uppercase
-    index_of_choice = letters.index(budget_choice.upper())
-    worksheet = SHEET.get_worksheet(index_of_choice)
-    #need to add something here for invalid input - if not a letter, then if a letter but not one from the list
-    budget_name = worksheet.acell('A1').value
-    print(f"\nWe're updating the '{budget_name}' budget.")
-    print("\nWould you like to change the name or the amount?")
-    name_or_amount = input("Please type 'N' for name or 'A' for amount: ")
-    while name_or_amount.upper() != 'N' and name_or_amount.upper() != 'A':
-        print("\nThis is not an available option. Please check again.")
+    if budget_choice.upper() not in letters:
+        print("\nThis is not a letter. Please check again.")
+        budget_choice = input("Please type the corresponding letter and hit enter: ")
+    else: 
+        index_of_choice = letters.index(budget_choice.upper())
+        all_worksheets = SHEET.worksheets()
+        while index_of_choice > len(all_worksheets):
+            print("\nThis is not an available option. Please check again.")
+            budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+            index_of_choice = letters.index(budget_choice.upper())     
+        
+        worksheet = SHEET.get_worksheet(index_of_choice) 
+        budget_name = worksheet.acell('A1').value
+        print(f"\nWe're updating the '{budget_name}' budget.")
         print("\nWould you like to change the name or the amount?")
         name_or_amount = input("Please type 'N' for name or 'A' for amount: ")
-    else: 
-        if name_or_amount.upper() == 'N':
-            print(f"OK, what would you like the new name for the '{budget_name}' to be?\n")
-            print("Please type the name (alphanumeric characters only) and hit enter.\n")
-            new_name = input("Name: ")
-            while new_name.isalnum() != True:
-                print("\nOnly alphanumerical characters are accepted - this included punctuation or special characters.\n")
+        while name_or_amount.upper() != 'N' and name_or_amount.upper() != 'A':
+            print("\nThis is not an available option. Please check again.")
+            print("\nWould you like to change the name or the amount?")
+            name_or_amount = input("Please type 'N' for name or 'A' for amount: ")
+        else: 
+            if name_or_amount.upper() == 'N':
+                print(f"OK, what would you like the new name for the '{budget_name}' to be?\n")
                 print("Please type the name (alphanumeric characters only) and hit enter.\n")
                 new_name = input("Name: ")
+                while new_name.isalnum() != True:
+                    print("\nOnly alphanumerical characters are accepted - this included punctuation or special characters.\n")
+                    print("Please type the name (alphanumeric characters only) and hit enter.\n")
+                    new_name = input("Name: ")
+                else: 
+                    print(f"Changing the name of your '{budget_name}' budget to '{new_name}'")
+                    worksheet.update_cell(1, 1, new_name)
+                    worksheet.update_title(new_name)
+                    print("Successfully changed.")
+                    print("\nReturning home...")
+                    main()
             else: 
-                print(f"Changing the name of your '{budget_name}' budget to '{new_name}'")
-                worksheet.update_cell(1, 1, new_name)
-                worksheet.update_title(new_name)
-                print("Successfully changed.")
-                print("\nReturning home...")
-                main()
-        else: 
-            print(f"OK, how much would you like to allocate to '{budget_name}' now?")
-            print("Please type the amount (numbers only) and hit enter.\n")
-            new_amount = input("Amount: ")
-            while new_amount.isnumeric() != True:
-                print("\nOnly numbers are accepted - this is not a number.\n")
-                print("Please type the amount (numbers only) and hit enter.")
+                print(f"OK, how much would you like to allocate to '{budget_name}' now?")
+                print("Please type the amount (numbers only) and hit enter.\n")
                 new_amount = input("Amount: ")
-            else: 
-                print(f"Allocating £{new_amount} to your '{budget_name}' budget...")
-                worksheet.update_cell(3, 2, new_amount)
-                print("Successfully changed.")
-                print("\nReturning home...")
-                main()
+                while new_amount.isnumeric() != True:
+                    print("\nOnly numbers are accepted - this is not a number.\n")
+                    print("Please type the amount (numbers only) and hit enter.")
+                    new_amount = input("Amount: ")
+                else: 
+                    print(f"Allocating £{new_amount} to your '{budget_name}' budget...")
+                    worksheet.update_cell(3, 2, new_amount)
+                    print("Successfully changed.")
+                    print("\nReturning home...")
+                    main()
 
 # def delete_budget():
 
