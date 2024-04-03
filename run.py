@@ -225,7 +225,81 @@ def delete_budget():
             main()
             
 
-# def expense_menu():
+def expense_menu():
+    """
+    Prints the text for the menu of actions they can do in relation to expenses.
+    Allows the user to pick from the menu and moves onto the correct function in the program 
+    to carry out that action.
+    """
+    print("\nOK, in which budget would you like to add, edit or delete an expense?\n")
+    budget_choice = input("Please type the corresponding letter and hit enter: ")
+    letters = string.ascii_uppercase
+    while budget_choice.upper() not in letters:
+        print("\nThis is not a letter. Please check again.")
+        budget_choice = input("Please type the corresponding letter and hit enter: ")
+    else: 
+        index_of_choice = letters.index(budget_choice.upper())
+        all_worksheets = SHEET.worksheets()
+        while index_of_choice > len(all_worksheets):
+            print("\nThis is not an available option. Please check again.")
+            budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+            index_of_choice = letters.index(budget_choice.upper())     
+        
+        worksheet = SHEET.get_worksheet(index_of_choice) 
+        budget_name = worksheet.acell('A1').value
+        running_total = worksheet.acell('B2').value
+        amount_budgeted = worksheet.acell('B3').value
+        print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount Budgeted: £{amount_budgeted}")
+
+        # use the fact that None is falsy to break the while loop when the worksheet has no more expenses in it
+        num = 4
+        expenses = []
+        while True:
+            values_list = worksheet.row_values(num)
+            if not values_list:
+                break
+            current_expense = []
+            for row in values_list:
+                current_expense.append(row)
+            num += 1
+            expenses.append(current_expense)
+
+        if not expenses: 
+            print("\nNo expenses logged yet.")
+        else: 
+            print("\nMost Recent Expenses:\n")
+            number = 1
+            loop_counter = 0
+            while True: 
+                if loop_counter == 5:
+                    break
+                if not expenses:
+                    break
+                for expense in expenses:
+                    if loop_counter == 5:
+                        break
+                    print(f"{number}. {expenses[-1][0]}: £{expenses[-1][1]}")
+                    expenses.pop(-1)
+                    number += 1
+                    loop_counter += 1
+            
+        print(f"\nWould you like to add, edit or delete an expense in the {budget_name} budget?")
+        print("\nA -> Add an expense")
+        print("B -> Edit an expense")
+        print("C -> Delete an expense")
+        menu_choice = input("\nPlease type the corresponding letter and hit enter: ")
+        while menu_choice.upper() != 'A' and menu_choice.upper() != 'B' and menu_choice.upper() != 'C':
+            print("\nThis is not an available option. Please check again.\n")
+            menu_choice = input("Please type the corresponding letter and hit enter: ")
+        else:
+            if menu_choice.upper() == 'A':
+                new_expense()
+            elif menu_choice.upper() == 'B':
+                edit_expense()
+            elif menu_choice.upper() == 'C':
+                delete_expense()
+  
+    
 
 # def new_expense():
 

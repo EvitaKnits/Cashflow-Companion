@@ -100,15 +100,13 @@ Returning home...
 ## 4. Add, edit or delete an expense
 OK, in which budget would you like to add, edit or delete an expense?
 
-A -> Food: £37.50 / £400<br>
-B -> Utilities: £200 / £450<br>
-C -> Transport: £7.50 / £50<br>
-D -> Miscellaneous: £102 / £200
-
 Please type the corresponding letter and hit enter: [____]
 
-Budget:['Miscellaneous: £102 / £200']<br>
-Expenses: <br>
+Budget:['Miscellaneous']
+Total Spent: £[102]
+Amount Budgeted: £[200]<br>
+
+Most Recent Expenses: <br>
 1. Cat food: £10
 2. Hot chocolate: £2
 3. Gift for Anna: £80
