@@ -82,16 +82,17 @@ def new_budget():
     print("\nOK, what is the name of your new budget?")
     print("Please type the name and hit enter.")
     budget_name = input("Name: ")
-    
+    new_budget = ['Amount budgeted']
+
     worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
     current_budget_worksheet = SHEET.get_worksheet(-1)
     current_budget_worksheet.update_cell(1, 1, budget_name)
     current_budget_worksheet.update_cell(2, 1, 'Running total')
-    current_budget_worksheet.update_cell(3, 1, 'Amount budgeted')
-    print("\nGreat, and how much do you want to allocate to this budget?")
+    current_budget_worksheet.update_cell(2, 2, 0)
+    print("\nGreat, and how much do you want to allocate to this budget?\n")
     print("Please type the amount (numbers only) and hit enter.")
     budget_amount = input("Amount: ")
-    while True:
+    while True: 
         try: 
             float_amount = float(budget_amount)
         except:
@@ -99,13 +100,13 @@ def new_budget():
             print("Please type the amount (numbers only) and hit enter.")
             budget_amount = input("Amount: ")
         else: 
-            worksheet.update_cell(3, 2, float_amount)
-            worksheet.update_cell(2, 2, 0)
-            break
+            new_budget.append(format(float_amount, '.2f'))
+            current_budget_worksheet.append_row(new_budget)
+            print(f"Successfully added your new '{budget_name}' budget and allocated £{budget_amount}")
+            print("Returning home...\n")
+            main()
     
-    print(f"Successfully added your new '{budget_name}' budget and allocated £{budget_amount}")
-    print("Returning home...\n")
-    main()
+    
 
 def edit_budget():
     """
@@ -160,7 +161,8 @@ def edit_budget():
                         new_amount = input("Amount: ")
                     else: 
                         print(f"\nAllocating £{new_amount} to your '{budget_name}' budget...\n")
-                        worksheet.update_cell(3, 2, new_amount)
+                        formatted_number = "{:.2f}".format(float_amount)
+                        worksheet.update_cell(3, 2, formatted_number)
                         print("Successfully changed.")
                         print("\nReturning home...\n")
                         main()
@@ -295,7 +297,7 @@ def new_expense(budget_name, worksheet):
             print("\nOnly numbers are accepted - this is not a number.\n")
             cost = input("Please type the amount (numbers only) and hit enter. Cost: ")
         else: 
-            new_row.append(cost)
+            new_row.append(format(float_amount, '.2f'))
             print(f"Adding your new expense: '{name}: £{cost}'")
             worksheet.append_row(new_row)
             print("\nSuccessfully added.")
