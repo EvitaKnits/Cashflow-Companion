@@ -117,6 +117,8 @@ In the app the following structures will be used:
 ### Wireframes
 I wrote text-based 'wireframes' to plan what will be in the console for each scenario. These are included in a separate file [here](wireframes.md)
 
+It's also important that enough of the lines I print for each action in the program, fit onto a terminal of 80 characters wide and 24 rows high. Otherwise this could cause user confusion. 
+
 ## Features
 The features of the app can be grouped into three main areas: 
 1. Budgets
@@ -324,10 +326,23 @@ PEP8 validation using the Python Linter
 ## Resolved Bugs
 
 ### Bug One:
-About halfway through the project, I realised that the validation I had used for alphanumeric values and numeric values wouldn't work because I needed go allow spaces on the former and dots on the latter, e.g. 'Sausage Roll' could be an expense but would not be allowed with alphanumeric validation and it could cost '1.50' but this would not be allowes with numeric validation. 
+
+#### Issue:
+About halfway through the project, I realised that the validation I had used for alphanumeric values and numeric values wouldn't work because I needed to allow spaces on the former and dots on the latter, e.g. 'Sausage Roll' could be an expense but would not be allowed with alphanumeric validation and it could cost '1.50' but this would not be allowed with numeric validation. 
+
+#### Solution: 
+
+1. Alphanumeric validation: in considering this issue, I realised that my program should not care what a user wants to call their expenses or budgets. Perhaps they have a categorising system that includes punctuation. I simply removed this validation and allowed users to call their expenses and budgets anything they like. 
+2. Numeric validation: I changed this from using `isnumeric` to trying to convert the string input to a float and stating an input is invalid if it fails to convert.
+
 
 ### Bug Two: 
-Adding expenses to my Google sheet as a pure number rather than in the financial format, meant that I would be printing costs as '£1.5' rather than '£1.50' when reading them back for whatever function in the program. 
+
+#### Issue: 
+I realised that I was adding expenses to my Google sheet as a string rather than as a float. This meant that I would be printing costs as '£1.5' rather than '£1.50' when reading them back for whatever function in the program. 
+
+#### Solution: 
+The solution from bug one actually resolves this one too because I am converting the string input to a float as part of that. This float is what will return my numbers in the correct format.
 
 ### Unresolved Bugs
 
@@ -339,7 +354,7 @@ Explain how this app was deployed so that a non-technical user could do it. How 
 ## Credits
 
 ### APIs and Third Party Libraries
-Google Sheets API: This was installed to give us access to the associated spreadsheet which will hold all the data for Cashflow Companion.
+Google Sheets API: 'gspread' - This was installed to provide access to the associated spreadsheet which will hold all the data for Cashflow Companion.
 
 ### Sources of Learning
 I referred back to the Love Sandwiches Walkthrough Project set up videos to remind me how to set up the APIs, credentials and files before starting coding.

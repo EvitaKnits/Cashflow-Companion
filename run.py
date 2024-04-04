@@ -1,7 +1,3 @@
-# Your code goes here.
-# You can delete these comments, but do not change the name of this file
-# Write your code to expect a terminal of 80 characters wide and 24 rows high
-
 import gspread
 from google.oauth2.service_account import Credentials
 import string
@@ -17,7 +13,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('cashflow_companion')
 
-# Common actions across multiple journeys
+# Home menu functions
 def get_budgets():
     """
     Collects the names, running totals and allocated amounts of each budget available 
@@ -33,21 +29,6 @@ def get_budgets():
         letters = string.ascii_uppercase
         index = letters.index(letter)
         letter = letters[index + 1]
-
-
-# def enter_name():
-
-
-# def enter_amount():
-
-
-# def select_budget():
-
-
-# def confirm_choice():
-
-
-# def input_validation():
 
 def go_home():
     """
@@ -99,27 +80,26 @@ def new_budget():
     Returns the user home. 
     """
     print("\nOK, what is the name of your new budget?")
-    print("Please type the name (alphanumeric characters only) and hit enter.")
+    print("Please type the name and hit enter.")
     budget_name = input("Name: ")
-    if budget_name.isalnum():
-        worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
-        current_budget_worksheet = SHEET.get_worksheet(-1)
-        current_budget_worksheet.update_cell(1, 1, budget_name)
-        current_budget_worksheet.update_cell(2, 1, 'Running total')
-        current_budget_worksheet.update_cell(3, 1, 'Amount budgeted')
-        print("\nGreat, and how much do you want to allocate to this budget?")
+    
+    worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
+    current_budget_worksheet = SHEET.get_worksheet(-1)
+    current_budget_worksheet.update_cell(1, 1, budget_name)
+    current_budget_worksheet.update_cell(2, 1, 'Running total')
+    current_budget_worksheet.update_cell(3, 1, 'Amount budgeted')
+    print("\nGreat, and how much do you want to allocate to this budget?")
+    print("Please type the amount (numbers only) and hit enter.")
+    budget_amount = input("Amount: ")
+
+    while budget_amount.isnumeric() != True:
+        print("\nOnly numbers are accepted - this is not a number.\n")
         print("Please type the amount (numbers only) and hit enter.")
         budget_amount = input("Amount: ")
-        while budget_amount.isnumeric() != True:
-            print("\nOnly numbers are accepted - this is not a number.\n")
-            print("Please type the amount (numbers only) and hit enter.")
-            budget_amount = input("Amount: ")
-        else: 
-            worksheet.update_cell(3, 2, budget_amount)
-            worksheet.update_cell(2, 2, 0)
-    else:
-        print("\nOnly alphanumerical characters are accepted - this included punctuation or special characters.\n")
-        new_budget()
+    else: 
+        worksheet.update_cell(3, 2, budget_amount)
+        worksheet.update_cell(2, 2, 0)
+    
     print(f"Successfully added your new '{budget_name}' budget and allocated £{budget_amount}")
     print("Returning home...\n")
     main()
@@ -156,19 +136,14 @@ def edit_budget():
         else: 
             if name_or_amount.upper() == 'N':
                 print(f"OK, what would you like the new name for the '{budget_name}' to be?\n")
-                print("Please type the name (alphanumeric characters only) and hit enter.\n")
+                print("Please type the name and hit enter.\n")
                 new_name = input("Name: ")
-                while new_name.isalnum() != True:
-                    print("\nOnly alphanumerical characters are accepted - this included punctuation or special characters.\n")
-                    print("Please type the name (alphanumeric characters only) and hit enter.\n")
-                    new_name = input("Name: ")
-                else: 
-                    print(f"Changing the name of your '{budget_name}' budget to '{new_name}'")
-                    worksheet.update_cell(1, 1, new_name)
-                    worksheet.update_title(new_name)
-                    print("Successfully changed.")
-                    print("\nReturning home...")
-                    main()
+                print(f"Changing the name of your '{budget_name}' budget to '{new_name}'")
+                worksheet.update_cell(1, 1, new_name)
+                worksheet.update_title(new_name)
+                print("Successfully changed.")
+                print("\nReturning home...")
+                main()
             else: 
                 print(f"OK, how much would you like to allocate to '{budget_name}' now?")
                 print("Please type the amount (numbers only) and hit enter.\n")
@@ -301,30 +276,51 @@ def expense_menu():
 
 def new_expense(budget_name, worksheet):
     print("What is the name of your new expense?")
-    name = input("Please type the name (alphanumeric characters only) and hit enter. Name: ")
+    name = input("Please type the name and hit enter. Name: ")
     new_row = []
-    if name.isalnum():
-        new_row.append(name)
-        print(f"\nAnd how much did '{name}' cost?")
+    
+    new_row.append(name)
+    print(f"\nAnd how much did '{name}' cost?")
+    cost = input("Please type the amount (numbers only) and hit enter. Cost: ")
+    while cost.isnumeric() != True:
+        print("\nOnly numbers are accepted - this is not a number.\n")
         cost = input("Please type the amount (numbers only) and hit enter. Cost: ")
-        while cost.isnumeric() != True:
-            print("\nOnly numbers are accepted - this is not a number.\n")
-            cost = input("Please type the amount (numbers only) and hit enter. Cost: ")
-        else:
-            new_row.append(cost)
-            print(f"Adding your new expense: '{name}: £{cost}")
-            worksheet.append_row(new_row)
-            print("\nSuccessfully added.")
-            print(f"\nReturning to '{budget_name}' budget")
     else:
-        print("\nOnly alphanumerical characters are accepted - this included punctuation or special characters.\n")
-        new_expense(budget_name)
+        new_row.append(cost)
+        print(f"Adding your new expense: '{name}: £{cost}")
+        worksheet.append_row(new_row)
+        print("\nSuccessfully added.")
+        print(f"\nReturning to '{budget_name}' budget")
+    
     
 # def delete_expense(budget_name):
 
 # def edit_expense(budget_name):
 
-# def report_menu():
+def report_menu():
+    """
+    Option 5 from the home menu function comes to this report menu function which calls 
+    the appropriate function to produce the report that the user chose. Validates that the user
+    chose an available action. 
+    """
+    print("Which report would you like to run?")
+    print("\nA-> A report of budget categories with whether your spending is under/over")
+    print("\nB-> A report showing the last three expenses from every budget category")
+    print("\nC-> A report showing every expense in a specific budget category")
+    if menu_choice == '1':
+        new_budget()
+    elif menu_choice == '2':
+        edit_budget()
+    elif menu_choice == '3':
+        delete_budget()
+    elif menu_choice == '4':
+        expense_menu()
+    elif menu_choice == '5':
+        report_menu()
+    else:
+        print("\nThis is not an available option. Please check again.\n")
+        new_menu_choice = input("Please type the corresponding number and hit enter: ")
+        home_menu_choice(new_menu_choice)
 
 # def under_over_report():
 

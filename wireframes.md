@@ -27,7 +27,7 @@ Please type the corresponding number and hit enter: [______]
 
 ## 1. Create a new budget
 OK, what is the name of your new budget?<br>
-Please type the name (alphanumeric characters only) and hit enter. Name: [_____]
+Please type the name and hit enter. Name: [_____]
 
 
 Great, and how much do you want to allocate to this new budget? <br>
@@ -52,7 +52,7 @@ Please type 'N' for name or 'A' for amount: [____]
 ---
 
 OK, what would you like the new name for the ['Utilities'] budget to be?<br>
-Please type the name (alphanumeric characters only) and hit enter. Name: [_____]
+Please type the name and hit enter. Name: [_____]
 
 Changing the name of your ['Utilities'] budget to ['Bills']...
 
@@ -126,7 +126,7 @@ Please type the corresponding letter and hit enter: [____]
 ---
 
 What is the name of your new expense?<br>
-Please type the name (alphanumeric characters only) and hit enter. Name: [_____]
+Please type the name and hit enter. Name: [_____]
 
 And how much did ['Gravel'] cost?<br>
 Please type the amount (numbers only) and hit enter. Cost: [_____]
@@ -152,7 +152,7 @@ Please type 'N' for name or 'A' for amount: [____]
 ---
 
 What would you like the new name for the ['Umbrella'] expense to be?<br>
-Please type the name (alphanumeric characters only) and hit enter. Name: [_____]
+Please type the name and hit enter. Name: [_____]
 
 Changing the name of your ['Umbrella'] expense to ['Parasol']...
 
@@ -203,7 +203,8 @@ Returning to ['Miscellaneous'] budget...
 Which report would you like to run?
 
 A -> A report of budget categories with whether your spending is under/over<br>
-B -> A report showing the last three expenses from each category
+B -> A report showing the last three expenses from every budget category<br>
+C -> A report showing every expense in a specific budget category
 
 Please type the corresponding letter and hit enter: [____]
 
@@ -251,13 +252,20 @@ When you're ready to return home, type 'Y' and hit enter: [___]
 
 Returning home....
 
+### All expenses in a budget category report
+
+---
+
+From which budget would you like to see all of the expenses?
+
+Please type the corresponding letter and hit enter: [____]
+
+Here is the ['Utilities'] budget.
+
 ## Error Messaging
 
 ### Incorrect input: numerical
 Only numbers are accepted - this is not a number.
-
-### Incorrect input: alphanumerical
-Only alphanumerical characters are accepted - this included punctuation or special characters.
 
 ### Incorrect input: not an option
 This is not an available option. Please check again.
