@@ -90,7 +90,8 @@ flowchart TD
 
     B5 -->C6[Which report would \n you like to run?]
     C6 -->D4[Budgets with \n whether under or over]
-    C6 -->D5[Last three expenses \n from each budget]
+    C6 -->D5[Last three expenses \n from every budget]
+    C6 -->D6[Every expense in \n a specific budget \n category report]
 ```
 
 ### Data Model
@@ -142,17 +143,14 @@ This is option one when the program is run.
 ``` mermaid
 flowchart TD
     A(Start: user selects option 1) --> B[Request name of new budget from the user]
-    B --> C{Is the input \n provided valid?}
-    C -->|Yes| E[Update spreadsheet with \n new worksheet labelled \n with this name]
-    C -->|No| D[Print error message \n to terminal stating what \n is wrong with input]
-    D -->B
-    E -->F[Request amount to allocate \n to new budget from user]
-    F --> G{Is the input \n provided valid?}
-    G -->|Yes| I[Update worksheet \n with this amount]
-    G -->|No| H[Print error message \n to terminal stating what \n is wrong with input]
-    H -->F
-    I --> J[Print confirmation of \n adding the right \n name and amount]
-    J --> K(Return home)
+    B --> C[Update spreadsheet with \n new worksheet labelled \n with this name]
+    C --> D[Request amount to allocate \n to new budget from user]
+    D --> F{Is the input \n provided valid?}
+    F -->|Yes| G[Update worksheet \n with this amount]
+    F -->|No| H[Print error message \n to terminal stating what \n is wrong with input]
+    H -->D
+    G --> I[Print confirmation of \n adding the right \n name and amount]
+    I --> J(Return home)
 ```
 
 #### Update a budget
@@ -172,16 +170,13 @@ flowchart TD
     G -->|No| J[Print error message to terminal \n stating what is wrong with input]
     J --> F
     I -->|Name| K[Request new name \n from user]
-    I -->|Amount| L[Request new amount \n from user]
-    K --> M{Is the input \n provided valid?}
-    L --> N{is the input \n provided valid?}
-    M -->|Yes| Q[Change name of \n correct budget in spreadsheet]
-    M -->|No| O[Print error message to terminal \n stating what is wrong with input]
-    O --> K
+    K --> L[Change name of \n correct budget in spreadsheet]
+    I -->|Amount| M[Request new amount \n from user]
+    M --> N{Is the input \n provided valid?}
     N -->|Yes| R[Change amount of \n correct budget in spreadsheet]
     N -->|No| P[Print error message to terminal \n stating what is wrong with input]    
-    P --> L
-    Q --> S[Print confirmation of \n budget name change]
+    P --> M
+    L --> S[Print confirmation of \n budget name change]
     R --> T[Print confirmation of \n budget amount change]
     S --> U(Return home)
     T --> U
@@ -218,12 +213,9 @@ This is option A after a budget has been chosen in the expenses menu.
 
 ```mermaid
 flowchart TD
-     A(Start: user selects option A) --> B[Request name of new expense from the user]
-    B --> C{Is the input \n provided valid?}
-    C -->|Yes| E[Update correct worksheet \n with new expense]
-    C -->|No| D[Print error message \n to terminal stating what \n is wrong with input]
-    D -->B
-    E -->F[Request amount to allocate \n to new expense from user]
+    A(Start: user selects option A) --> B[Request name of new expense from the user]
+    B --> C[Update correct worksheet \n with new expense]
+    C -->F[Request amount to allocate \n to new expense from user]
     F --> G{Is the input \n provided valid?}
     G -->|Yes| I[Update expense \n with this amount]
     G -->|No| H[Print error message \n to terminal stating what \n is wrong with input]
@@ -249,15 +241,12 @@ flowchart TD
     J --> F
     I -->|Name| K[Request new name \n from user]
     I -->|Amount| L[Request new amount \n from user]
-    K --> M{Is the input \n provided valid?}
+    K --> M[Change name of correct \n expense in spreadsheet]
     L --> N{is the input \n provided valid?}
-    M -->|Yes| Q[Change name of \n correct expense in spreadsheet]
-    M -->|No| O[Print error message to terminal \n stating what is wrong with input]
-    O --> K
-    N -->|Yes| R[Change amount of \n correct expense in spreadsheet]
+    N -->|Yes| R[Change amount of correct \n expense in spreadsheet]
     N -->|No| P[Print error message to terminal \n stating what is wrong with input]    
     P --> L
-    Q --> S[Print confirmation of \n expense name change]
+    M --> S[Print confirmation of \n expense name change]
     R --> T[Print confirmation of \n expense amount change]
     S --> U(Return home)
     T --> U
@@ -301,9 +290,11 @@ flowchart TD
     H --> I[Print the report to the terminal]
     I --> J[Request user to confirm when \n they'd like to go home]
     J --> |Confirmed| K(Return home)
-    E --> |Last 3 expenses report| L[Retrieve the budget names, amounts, \n running totals and last 3 expenses \n from each budget or if < 3 retrieve \n all expenses from that budget]
-    L --> M[Print the report to the terminal]
-    M -->J
+    E --> |Last 3 expenses report| L[Retrieve the budget names, \n amounts, running totals and \n last 3 expenses from each \n budget or if < 3 retrieve all \n expenses from that budget]
+    L --> I
+    E --> |All expenses in \n a budget report| N{Which budget?}
+    N --> O[Retrieve all expenses \n in that budget]
+    O --> I
 ```
 
 ### Future Features
