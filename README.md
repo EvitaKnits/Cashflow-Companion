@@ -324,6 +324,10 @@ PEP8 validation using the Python Linter
 ## Resolved Bugs
 
 ### Bug One:
+About halfway through the project, I realised that the validation I had used for alphanumeric values and numeric values wouldn't work because I needed go allow spaces on the former and dots on the latter, e.g. 'Sausage Roll' could be an expense but would not be allowed with alphanumeric validation and it could cost '1.50' but this would not be allowes with numeric validation. 
+
+### Bug Two: 
+Adding expenses to my Google sheet as a pure number rather than in the financial format, meant that I would be printing costs as '£1.5' rather than '£1.50' when reading them back for whatever function in the program. 
 
 ### Unresolved Bugs
 

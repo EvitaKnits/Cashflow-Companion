@@ -293,19 +293,36 @@ def expense_menu():
             menu_choice = input("Please type the corresponding letter and hit enter: ")
         else:
             if menu_choice.upper() == 'A':
-                new_expense()
+                new_expense(budget_name, worksheet)
             elif menu_choice.upper() == 'B':
-                edit_expense()
+                edit_expense(budget_name, worksheet)
             elif menu_choice.upper() == 'C':
-                delete_expense()
-  
+                delete_expense(budget_name, worksheet)
+
+def new_expense(budget_name, worksheet):
+    print("What is the name of your new expense?")
+    name = input("Please type the name (alphanumeric characters only) and hit enter. Name: ")
+    new_row = []
+    if name.isalnum():
+        new_row.append(name)
+        print(f"\nAnd how much did '{name}' cost?")
+        cost = input("Please type the amount (numbers only) and hit enter. Cost: ")
+        while cost.isnumeric() != True:
+            print("\nOnly numbers are accepted - this is not a number.\n")
+            cost = input("Please type the amount (numbers only) and hit enter. Cost: ")
+        else:
+            new_row.append(cost)
+            print(f"Adding your new expense: '{name}: £{cost}")
+            worksheet.append_row(new_row)
+            print("\nSuccessfully added.")
+            print(f"\nReturning to '{budget_name}' budget")
+    else:
+        print("\nOnly alphanumerical characters are accepted - this included punctuation or special characters.\n")
+        new_expense(budget_name)
     
+# def delete_expense(budget_name):
 
-# def new_expense():
-
-# def delete_expense():
-
-# def edit_expense():
+# def edit_expense(budget_name):
 
 # def report_menu():
 

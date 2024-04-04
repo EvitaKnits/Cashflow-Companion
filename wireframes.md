@@ -115,9 +115,9 @@ Most Recent Expenses: <br>
 
 Would you like to add, edit or delete an expense in the ['Miscellaneous'] budget?
 
-A -> Add an expense
-B -> Edit an expense
-C -> Delete an expense
+A -> Add an expense<br>
+B -> Edit an expense<br>
+C -> Delete an expense<br>
 
 Please type the corresponding letter and hit enter: [____]
 
@@ -129,7 +129,7 @@ What is the name of your new expense?<br>
 Please type the name (alphanumeric characters only) and hit enter. Name: [_____]
 
 And how much did ['Gravel'] cost?<br>
-Please type the amount (numbers only) and hit enter: [_____]
+Please type the amount (numbers only) and hit enter. Cost: [_____]
 
 Adding your new expense: ['Gravel: £50']
 
