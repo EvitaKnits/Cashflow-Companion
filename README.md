@@ -319,21 +319,21 @@ PEP8 validation using the Python Linter
 ### Bug One:
 
 #### Issue:
-About halfway through the project, I realised that the validation I had used for alphanumeric values and numeric values wouldn't work because I needed to allow spaces on the former and dots on the latter, e.g. 'Sausage Roll' could be an expense but would not be allowed with alphanumeric validation and it could cost '1.50' but this would not be allowed with numeric validation. 
+About halfway through the project, I realised that the validation I had used for alphanumeric (`isalphnum`) values and numeric values (`isnumeric`) wouldn't work because I needed to allow spaces on the former and dots on the latter, e.g. 'Sausage Roll' could be an expense but would not be allowed with alphanumeric validation and it could cost '1.50' but this would not be allowed with numeric validation. 
 
 #### Solution: 
 
-1. Alphanumeric validation: in considering this issue, I realised that my program should not care what a user wants to call their expenses or budgets. Perhaps they have a categorising system that includes punctuation. I simply removed this validation and allowed users to call their expenses and budgets anything they like. 
-2. Numeric validation: I changed this from using `isnumeric` to trying to convert the string input to a float and stating an input is invalid if it fails to convert.
+1. Alphanumeric validation: in considering this issue, I realised that my program should not care what a user wants to call their expenses or budgets. Perhaps they have a categorising system that includes punctuation, for example. I simply removed this validation and allowed users to call their expenses and budgets anything they like. 
+2. Numeric validation: I changed this from using `isnumeric` to trying to cast the string input to a float. An input is invalid if it fails to cast. This is done inside a `while` loop that retries a `try: except: else:` block until a valid input is given.
 
 
 ### Bug Two: 
 
 #### Issue: 
-I realised that I was adding expenses to my Google sheet as a string rather than as a float. This meant that I would be printing costs as '£1.5' rather than '£1.50' when reading them back for whatever function in the program. 
+I realised that even after I was adding expenses to my Google sheet as a float rather than as a string (see solution of bug one above), I was still printing costs as '£1.5' rather than '£1.50' when reading them back for whatever function in the program. 
 
 #### Solution: 
-The solution from bug one actually resolves this one too because I am converting the string input to a float as part of that. This float is what will return my numbers in the correct format.
+
 
 ### Unresolved Bugs
 
