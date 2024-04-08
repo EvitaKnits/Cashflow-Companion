@@ -356,8 +356,15 @@ def delete_expense(budget_name, worksheet):
             confirm_choice = input("\nType 'Y' for yes or 'N' for no and hit enter: ")
         
         if confirm_choice.upper() == 'Y':
+            running_total = float(worksheet.acell('B2').value)
+            deleted_expense = worksheet.row_values(row_index)
+            deleted_expense_amount = deleted_expense[1]
+            running_total -= float(deleted_expense_amount)
+            worksheet.update_cell(2, 2, running_total)
             worksheet.delete_rows(row_index)
             print(f"\nThis expense has been deleted.")
+            print(f"\nCalculating the new running total for your '{budget_name}' budget")
+            print("\nSuccessfully calculated and updated.")
             print(f"\nReturning to '{budget_name}' budget")
         else:
             print("No expense has been deleted.")
