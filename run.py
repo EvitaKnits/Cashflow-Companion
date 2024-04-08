@@ -289,6 +289,9 @@ def expense_menu_action_choice(budget_name, worksheet):
             delete_expense(budget_name, worksheet)
 
 def new_expense(budget_name, worksheet):
+    """
+    Allows the user to add a new expense to their desired budget
+    """
     print("\nWhat is the name of your new expense?")
     name = input("Please type the name and hit enter. Name: ")
     new_row = []
@@ -322,28 +325,33 @@ def report_menu():
     the appropriate function to produce the report that the user chose. Validates that the user
     chose an available action. 
     """
-    print("Which report would you like to run?")
+    print("\nWhich report would you like to run?")
     print("\nA-> A report of budget categories with whether your spending is under/over")
     print("\nB-> A report showing the last three expenses from every budget category")
     print("\nC-> A report showing every expense in a specific budget category")
-    if menu_choice == '1':
-        new_budget()
-    elif menu_choice == '2':
-        edit_budget()
-    elif menu_choice == '3':
-        delete_budget()
-    elif menu_choice == '4':
-        expense_menu()
-    elif menu_choice == '5':
-        report_menu()
-    else:
-        print("\nThis is not an available option. Please check again.\n")
-        new_menu_choice = input("Please type the corresponding number and hit enter: ")
-        home_menu_choice(new_menu_choice)
+    while True:
+        report_choice = input("\nPlease type the corresponding letter and hit enter: ")
+        if report_choice.upper() == 'A':
+            under_over_report()
+            break
+        elif report_choice.upper() == 'B':
+            last_three_report()
+            break
+        elif report_choice.upper() == 'C':
+            every_expense_report()
+            break
+        else:
+            print("\nThis is not an available option. Please check again.")
+       
 
-# def under_over_report():
+def under_over_report():
+    print("under/over")
 
-# def last_three_report():
+def last_three_report():
+    print("last three")
+
+def every_expense_report():
+    print("every expense")
 
 #The main function where we have the layout of the program and run it from
 
