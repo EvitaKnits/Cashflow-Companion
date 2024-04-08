@@ -478,7 +478,49 @@ def last_three_report():
     print("last three")
 
 def every_expense_report():
-    print("every expense")
+    print("\nFrom which budget would you like to see all of the expenses?")
+    budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+    letters = string.ascii_uppercase
+    while budget_choice.upper() not in letters:
+        print("\nThis is not a letter. Please check again.")
+        budget_choice = input("Please type the corresponding letter and hit enter: ")
+    else: 
+        index_of_choice = letters.index(budget_choice.upper())
+        all_worksheets = SHEET.worksheets()
+        while index_of_choice > len(all_worksheets):
+            print("\nThis is not an available option. Please check again.")
+            budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+            index_of_choice = letters.index(budget_choice.upper())     
+
+        worksheet = SHEET.get_worksheet(index_of_choice) 
+        budget_name = worksheet.acell('A1').value
+        running_total = worksheet.acell('B2').value
+        amount_budgeted = worksheet.acell('B3').value
+        print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount Budgeted: £{amount_budgeted}")
+
+        # use the fact that None is falsy to break the while loop when the worksheet has no more expenses in it
+        num = 4
+        expenses = []
+        while True:
+            values_list = worksheet.row_values(num)
+            if not values_list:
+                break
+            current_expense = []
+            for row in values_list:
+                current_expense.append(row)
+            num += 1
+            expenses.append(current_expense)
+
+        if not expenses: 
+            print("\nNo expenses logged yet.")
+        else: 
+            print("\nAll Expenses:\n")
+            number = 1
+            while expenses:
+                print(f"{number}. {expenses[0][0]}: £{expenses[0][1]}")
+                expenses.pop(0)
+                number += 1
+    home = input("\nWhen you're ready to return home, type 'home' here and hit enter: ")
 
 #The main function where we have the layout of the program and run it from
 
