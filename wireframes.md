@@ -135,6 +135,10 @@ Adding your new expense: ['Gravel: £50']
 
 Successfully added.
 
+Calculating the new running total for your ['Miscellaneous'] budget.
+
+Successfully calculated and updated. 
+
 Returning to ['Miscellaneous'] budget
 
 ### Edit
@@ -164,12 +168,17 @@ Returning to ['Miscellaneous'] budget...
 
 ---
 
-What would you like to change the price of ['Umbrella'] to?<br>
-Please type the amount (numbers only) and hit enter: [_____]
+OK, how much would you like this expense to be now?<br>
+Please type the amount (numbers only) and hit enter.<br>
+Amount: [_____]
 
-Changing the price of ['Umbrella'] to ['£7.99']...
+Changing the amount of this expense to ['£7.99']...
 
 Successfully changed.
+
+Calculating the new running total for your ['Miscellaneous'] budget.
+
+Successfully calculated and updated.
 
 Returning to ['Miscellaneous'] budget...
 
@@ -187,7 +196,11 @@ Type 'Y' for yes or 'N' for no and hit enter: [____]
 
 ---
 
-Your ['Pencil sharpener'] expense has been deleted. 
+This expense has been deleted. 
+
+Calculating the new running total for your ['Miscellaneous'] budget
+
+Successfully calculated and updated. 
 
 Returning to ['Miscellaneous'] budget...
 

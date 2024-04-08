@@ -221,7 +221,9 @@ flowchart TD
     G -->|No| H[Print error message \n to terminal stating what \n is wrong with input]
     H -->F
     I --> J[Print confirmation of \n adding the right \n name and amount]
-    J --> K(Return to chosen budget)
+    J --> K[Update running total \n for this budget]
+    K --> L[Print confirmation of \n updating running total]
+    L --> M(Return to chosen budget)
 ```
 
 #### Edit an expense
@@ -248,8 +250,10 @@ flowchart TD
     P --> L
     M --> S[Print confirmation of \n expense name change]
     R --> T[Print confirmation of \n expense amount change]
-    S --> U(Return home)
-    T --> U
+    T --> U[Update running total \n for this budget]
+    U --> V[Print confirmation of \n updating running total]
+    V --> W(Return to chosen budget)
+    S --> W
 ```
 
 #### Delete an expense
@@ -269,9 +273,11 @@ flowchart TD
     H --> F
     I -->|Yes| J[Remove expense \n from the worksheet]
     I --> |No| K[Print message confirming no \n expense has been deleted]
-    K --> M
-    J --> L[Print message confirming this \n expense has been deleted]
-    L --> M(Return to chosen budget)
+    K --> O
+    N --> L[Update running total \n for this budget]
+    L --> M[Print confirmation of \n updating running total]
+    J --> N[Print message confirming this \n expense has been deleted]
+    M --> O(Return to chosen budget)
 ```
 
 ### Reports
