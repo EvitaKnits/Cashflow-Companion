@@ -432,9 +432,17 @@ def edit_expense(budget_name, worksheet):
                         new_amount = input("Amount: ")
                     else: 
                         print(f"\nChanging the amount of this expense to {new_amount}...\n")
+                        old_amount_row = worksheet.row_values(row_index)
+                        old_amount = old_amount_row[1]
                         formatted_number = "{:.2f}".format(float_amount)
                         worksheet.update_cell(row_index, 2, formatted_number)
                         print("Successfully changed.")
+                        print(f"\nCalculating the new running total for your '{budget_name}' budget")
+                        running_total = float(worksheet.acell('B2').value)
+                        running_total -= float(old_amount)
+                        running_total += float_amount 
+                        worksheet.update_cell(2, 2, running_total)
+                        print("\nSuccessfully calculated and updated.")
                         print(f"\nReturning to '{budget_name}' budget")
                         break
     expense_menu_action_choice(budget_name, worksheet)
