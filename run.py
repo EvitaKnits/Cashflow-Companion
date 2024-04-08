@@ -105,8 +105,6 @@ def new_budget():
             print(f"Successfully added your new '{budget_name}' budget and allocated £{budget_amount}")
             print("Returning home...\n")
             main()
-    
-    
 
 def edit_budget():
     """
@@ -207,7 +205,6 @@ def delete_budget():
             print("\nReturning home...")
             main()
             
-
 def expense_menu_budget_choice():
     """
     Allows user to select which budget they would like to perform an action in.
@@ -265,7 +262,6 @@ def expense_menu_budget_choice():
                     loop_counter += 1
         expense_menu_action_choice(budget_name, worksheet)
 
-
 def expense_menu_action_choice(budget_name, worksheet):
     """
     Prints the text for the menu of actions they can do in relation to expenses.
@@ -314,10 +310,56 @@ def new_expense(budget_name, worksheet):
             break
     expense_menu_action_choice(budget_name, worksheet)
         
-    
-# def delete_expense(budget_name):
+def delete_expense(budget_name, worksheet):
+    """
+    Allows the user to delete a specific expense from their desired budget. Then it
+    returns the user to that budget and the expense action menu
+    """
+    # use the fact that None is falsy to break the while loop when the worksheet has no more expenses in it
+    num = 4
+    expenses = []
+    while True:
+        values_list = worksheet.row_values(num)
+        if not values_list or not any(values_list):
+            break
+        expenses.append(values_list)
+        num += 1
 
-# def edit_expense(budget_name):
+    if not expenses: 
+        print("\nNo expenses logged yet.")
+    else: 
+        print("\nAll Expenses:\n")
+        number = 1
+        while expenses:
+                print(f"{number}. {expenses[0][0]}: £{expenses[0][1]}")
+                expenses.pop(0)
+                number += 1
+    print("\nWhich expense would you like to delete?")
+    select_expense = input("Please type the corresponding number and hit enter: ")
+    row_index = int(select_expense) + 3 
+    number_rows = worksheet.get_all_values()
+    while row_index > len(number_rows):
+        print("This is not an available option. Please check again.")
+        select_expense = input("Please type the corresponding number and hit enter: ")
+        row_index = int(select_expense) + 3 
+    else: 
+        print(f"\nAre you sure you want to delete this expense?")
+        confirm_choice = input("\nType 'Y' for yes or 'N' for no and hit enter: ")
+        while confirm_choice.upper() != 'Y' and confirm_choice.upper() != 'N':
+            print("\nThis is not an available option. Please check again.")
+            print(f"\nAre you sure you want to delete this expense?")
+            confirm_choice = input("\nType 'Y' for yes or 'N' for no and hit enter: ")
+        
+        if confirm_choice.upper() == 'Y':
+            worksheet.delete_rows(row_index)
+            print(f"\nThis expense has been deleted.")
+            print(f"\nReturning to '{budget_name}' budget")
+        else:
+            print("No expense has been deleted.")
+            print(f"\nReturning to '{budget_name}' budget")
+    expense_menu_action_choice(budget_name, worksheet)
+
+# def edit_expense(budget_name, worksheet):
 
 def report_menu():
     """
@@ -343,7 +385,6 @@ def report_menu():
         else:
             print("\nThis is not an available option. Please check again.")
        
-
 def under_over_report():
     print("under/over")
 
@@ -361,6 +402,5 @@ def main():
     """
     menu_choice = go_home()
     home_menu_choice(menu_choice)
-
 
 main()
