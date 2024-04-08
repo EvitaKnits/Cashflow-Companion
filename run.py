@@ -65,7 +65,7 @@ def home_menu_choice(menu_choice):
     elif menu_choice == '3':
         delete_budget()
     elif menu_choice == '4':
-        expense_menu()
+        expense_menu_budget_choice()
     elif menu_choice == '5':
         report_menu()
     else:
@@ -208,11 +208,9 @@ def delete_budget():
             main()
             
 
-def expense_menu():
+def expense_menu_budget_choice():
     """
-    Prints the text for the menu of actions they can do in relation to expenses.
-    Allows the user to pick from the menu and moves onto the correct function in the program 
-    to carry out that action.
+    Allows user to select which budget they would like to perform an action in.
     """
     print("\nOK, in which budget would you like to add, edit or delete an expense?\n")
     budget_choice = input("Please type the corresponding letter and hit enter: ")
@@ -265,22 +263,30 @@ def expense_menu():
                     expenses.pop(-1)
                     number += 1
                     loop_counter += 1
-            
-        print(f"\nWould you like to add, edit or delete an expense in the {budget_name} budget?")
-        print("\nA -> Add an expense")
-        print("B -> Edit an expense")
-        print("C -> Delete an expense")
-        menu_choice = input("\nPlease type the corresponding letter and hit enter: ")
-        while menu_choice.upper() != 'A' and menu_choice.upper() != 'B' and menu_choice.upper() != 'C':
-            print("\nThis is not an available option. Please check again.\n")
-            menu_choice = input("Please type the corresponding letter and hit enter: ")
-        else:
-            if menu_choice.upper() == 'A':
-                new_expense(budget_name, worksheet)
-            elif menu_choice.upper() == 'B':
-                edit_expense(budget_name, worksheet)
-            elif menu_choice.upper() == 'C':
-                delete_expense(budget_name, worksheet)
+        expense_menu_action_choice(budget_name, worksheet)
+
+
+def expense_menu_action_choice(budget_name, worksheet):
+    """
+    Prints the text for the menu of actions they can do in relation to expenses.
+    Allows the user to pick from the menu and moves onto the correct function in the program 
+    to carry out that action.
+    """
+    print(f"\nWould you like to add, edit or delete an expense in the {budget_name} budget?")
+    print("\nA -> Add an expense")
+    print("B -> Edit an expense")
+    print("C -> Delete an expense")
+    menu_choice = input("\nPlease type the corresponding letter and hit enter: ")
+    while menu_choice.upper() != 'A' and menu_choice.upper() != 'B' and menu_choice.upper() != 'C':
+        print("\nThis is not an available option. Please check again.\n")
+        menu_choice = input("Please type the corresponding letter and hit enter: ")
+    else:
+        if menu_choice.upper() == 'A':
+            new_expense(budget_name, worksheet)
+        elif menu_choice.upper() == 'B':
+            edit_expense(budget_name, worksheet)
+        elif menu_choice.upper() == 'C':
+            delete_expense(budget_name, worksheet)
 
 def new_expense(budget_name, worksheet):
     print("\nWhat is the name of your new expense?")
@@ -303,6 +309,7 @@ def new_expense(budget_name, worksheet):
             print("\nSuccessfully added.")
             print(f"\nReturning to '{budget_name}' budget")
             break
+    expense_menu_action_choice(budget_name, worksheet)
         
     
 # def delete_expense(budget_name):
