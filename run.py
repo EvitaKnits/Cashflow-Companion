@@ -359,7 +359,73 @@ def delete_expense(budget_name, worksheet):
             print(f"\nReturning to '{budget_name}' budget")
     expense_menu_action_choice(budget_name, worksheet)
 
-# def edit_expense(budget_name, worksheet):
+def edit_expense(budget_name, worksheet):
+    """
+    Allows the user to edit a specific expense from their desired budget. Then it
+    returns the user to that budget and the expense action menu
+    """
+    # use the fact that None is falsy to break the while loop when the worksheet has no more expenses in it
+    num = 4
+    expenses = []
+    while True:
+        values_list = worksheet.row_values(num)
+        if not values_list or not any(values_list):
+            break
+        expenses.append(values_list)
+        num += 1
+
+    if not expenses: 
+        print("\nNo expenses logged yet.")
+    else: 
+        print("\nAll Expenses:\n")
+        number = 1
+        while expenses:
+                print(f"{number}. {expenses[0][0]}: £{expenses[0][1]}")
+                expenses.pop(0)
+                number += 1
+    print("\nWhich expense would you like to edit?")
+    select_expense = input("Please type the corresponding number and hit enter: ")
+    row_index = int(select_expense) + 3 
+    number_rows = worksheet.get_all_values()
+    while row_index > len(number_rows):
+        print("This is not an available option. Please check again.")
+        select_expense = input("Please type the corresponding number and hit enter: ")
+        row_index = int(select_expense) + 3 
+    else: 
+        print("\nWould you like to change the name or the amount?\n")
+        name_or_amount = input("Please type 'N' for name or 'A' for amount: ")
+        while name_or_amount.upper() != 'N' and name_or_amount.upper() != 'A':
+            print("\nThis is not an available option. Please check again.")
+            print("\nWould you like to change the name or the amount?")
+            name_or_amount = input("\nPlease type 'N' for name or 'A' for amount: ")
+        else: 
+            if name_or_amount.upper() == 'N':
+                print(f"\nOK, what would you like the new name for this expense to be?\n")
+                print("Please type the name and hit enter.\n")
+                new_name = input("Name: ")
+                print(f"Changing the name of this expense to '{new_name}'")
+                worksheet.update_cell(row_index, 1, new_name)
+                print("Successfully changed.")
+                print(f"\nReturning to '{budget_name}' budget")
+            else: 
+                print(f"\nOK, how much would you like this expense to be now?")
+                print("\nPlease type the amount (numbers only) and hit enter.")
+                new_amount = input("Amount: ")
+                while True:
+                    try: 
+                        float_amount = float(new_amount)
+                    except:
+                        print("\nOnly numbers are accepted - this is not a number.\n")
+                        print("Please type the amount (numbers only) and hit enter.")
+                        new_amount = input("Amount: ")
+                    else: 
+                        print(f"\nChanging the amount of this expense to {new_amount}...\n")
+                        formatted_number = "{:.2f}".format(float_amount)
+                        worksheet.update_cell(row_index, 2, formatted_number)
+                        print("Successfully changed.")
+                        print(f"\nReturning to '{budget_name}' budget")
+                        break
+    expense_menu_action_choice(budget_name, worksheet)
 
 def report_menu():
     """
