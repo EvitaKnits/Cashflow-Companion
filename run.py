@@ -306,6 +306,11 @@ def new_expense(budget_name, worksheet):
             print(f"Adding your new expense: '{name}: £{cost}'")
             worksheet.append_row(new_row)
             print("\nSuccessfully added.")
+            print(f"\nCalculating the new running total for your '{budget_name}' budget")
+            running_total = float(worksheet.acell('B2').value)
+            running_total += float_amount 
+            worksheet.update_cell(2, 2, running_total)
+            print("\nSuccessfully calculated and updated.")
             print(f"\nReturning to '{budget_name}' budget")
             break
     expense_menu_action_choice(budget_name, worksheet)
