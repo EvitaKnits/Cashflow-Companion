@@ -21,30 +21,28 @@ What would you like to do?
 4 -> Add, edit or delete an expense<br>
 5 -> Generate a spending report
 
-(If you would like to return home at any point, type 'home' into any input field instead of the requested value)
+(To return home at any time, type 'home' into any input field)
 
 Please type the corresponding number and hit enter: [______]
 
 ## 1. Create a new budget
 OK, what is the name of your new budget?<br>
-Please type the name and hit enter. Name: [_____]
+Please type the name and hit enter: [_____]
 
-
-Great, and how much do you want to allocate to this new budget? <br>
-Please type the amount (numbers only) and hit enter. Amount: [_____]
+Great, and how much do you want to allocate to this budget?<br>
+Please type the amount (numbers only) and hit enter: [_____]
 
 Successfully added your new ['Fun'] budget and allocated [£200]...
 
 Returning home...
 
 ## 2. Update an existing budget's name or amount
-Which budget would you like to update?
-
+Which budget would you like to update?<br>
 Please type the corresponding letter and hit enter: [____]
 
 We're updating the ['Utilities'] budget.
 
-Would you like to change the name or the amount? <br>
+Would you like to change the name or the amount?<br>
 Please type 'N' for name or 'A' for amount: [____]
 
 ### Name
@@ -52,7 +50,7 @@ Please type 'N' for name or 'A' for amount: [____]
 ---
 
 OK, what would you like the new name for the ['Utilities'] budget to be?<br>
-Please type the name and hit enter. Name: [_____]
+Please type the name and hit enter: [_____]
 
 Changing the name of your ['Utilities'] budget to ['Bills']...
 
@@ -65,17 +63,16 @@ Returning home...
 ---
 
 OK, how much would you like to allocate to ['Utilities'] now?<br>
-Please type the amount (numbers only) and hit enter. Amount:[_____]
+Please type the amount (numbers only) and hit enter:[_____]
 
 Allocating [£500] to your ['Utilities'] budget...
 
-Successfully allocated.
+Successfully changed.
 
 Returning home...
 
 ## 3. Delete a budget
-OK, which budget would you like to delete?
-
+OK, which budget would you like to delete?<br>
 Please type the corresponding letter and hit enter: [____]
 
 Are you sure you would like to delete your ['Transport'] budget?<br>
@@ -98,15 +95,15 @@ No budget has been deleted.
 Returning home...
 
 ## 4. Add, edit or delete an expense
-OK, in which budget would you like to add, edit or delete an expense?
-
+OK, in which budget would you like to add, edit or delete an expense?<br>
 Please type the corresponding letter and hit enter: [____]
 
 Budget:['Miscellaneous']
 Total Spent: £[102]
 Amount Budgeted: £[200]<br>
 
-Most Recent Expenses: <br>
+Most Recent Expenses:
+
 1. Cat food: £10
 2. Hot chocolate: £2
 3. Gift for Anna: £80
@@ -126,39 +123,44 @@ Please type the corresponding letter and hit enter: [____]
 ---
 
 What is the name of your new expense?<br>
-Please type the name and hit enter. Name: [_____]
+Please type the name and hit enter: [_____]
 
 And how much did ['Gravel'] cost?<br>
-Please type the amount (numbers only) and hit enter. Cost: [_____]
+Please type the amount (numbers only) and hit enter: [_____]
 
-Adding your new expense: ['Gravel: £50']
+Adding your new expense: ['Gravel: £50']...
 
 Successfully added.
 
-Calculating the new running total for your ['Miscellaneous'] budget.
+Calculating the new running total for your ['Miscellaneous'] budget...
 
 Successfully calculated and updated. 
 
-Returning to ['Miscellaneous'] budget
+Returning to ['Miscellaneous'] budget...
 
 ### Edit
 
 ---
+All Expenses: 
+
+1. Gas: £50.00
+2. Pens: £150.00
+3. Water" £50.00
 
 Which expense would you like to edit?<br>
 Please type the corresponding number and hit enter: [____]
 
-OK, are we changing the name or amount of the ['Umbrella'] expense?<br>
+Would you like to change the name or the amount?<br>
 Please type 'N' for name or 'A' for amount: [____]
 
 #### Name
 
 ---
 
-What would you like the new name for the ['Umbrella'] expense to be?<br>
-Please type the name and hit enter. Name: [_____]
+OK, what would you like the new name for this expense to be?<br>
+Please type the name and hit enter: [_____]
 
-Changing the name of your ['Umbrella'] expense to ['Parasol']...
+Changing the name of this expense to ['Parasol']...
 
 Successfully changed. 
 
@@ -169,14 +171,13 @@ Returning to ['Miscellaneous'] budget...
 ---
 
 OK, how much would you like this expense to be now?<br>
-Please type the amount (numbers only) and hit enter.<br>
-Amount: [_____]
+Please type the amount (numbers only) and hit enter: [_____]
 
 Changing the amount of this expense to ['£7.99']...
 
 Successfully changed.
 
-Calculating the new running total for your ['Miscellaneous'] budget.
+Calculating the new running total for your ['Miscellaneous'] budget...
 
 Successfully calculated and updated.
 
@@ -189,7 +190,7 @@ Returning to ['Miscellaneous'] budget...
 Which expense would you like to delete?<br>
 Please type the corresponding number and hit enter: [____]
 
-Are you sure you would like to delete your ['Pencil sharpener'] expense?<br>
+Are you sure you would like to delete this expense?<br>
 Type 'Y' for yes or 'N' for no and hit enter: [____]
 
 #### Yes
@@ -198,7 +199,7 @@ Type 'Y' for yes or 'N' for no and hit enter: [____]
 
 This expense has been deleted. 
 
-Calculating the new running total for your ['Miscellaneous'] budget
+Calculating the new running total for your ['Miscellaneous'] budget...
 
 Successfully calculated and updated. 
 
@@ -225,7 +226,8 @@ Please type the corresponding letter and hit enter: [____]
 
 ---
 
-You are [35%] of the way through the month.<br>
+You are [35%] of the way through the month.
+
 Here is your spend for each category: 
 
 Food - £37.50 / £400 - 9.38% spent - UNDER budget<br>
@@ -233,9 +235,7 @@ Utilities - £200 / £450 - 44.44% spent - OVER budget<br>
 Transport - £7.50 / £50 - 15% spent - UNDER budget<br>
 Miscellaneous - £102 / £200 - 51% spent - OVER budget
 
-When you're ready to return home, type 'Y' and hit enter: [___]
-
-Returning home....
+When you're ready to return home, type 'home' here and hit enter: [____]
 
 ### Last three expenses report
 
@@ -257,23 +257,29 @@ Transport - £7.50 / £50<br>
 ---> Taxi: £7.50
 
 Miscellaneous - £102 / £200<br>
----> Gift for Anna: £80
----> Umbrella: £7.50
+---> Gift for Anna: £80<br>
+---> Umbrella: £7.50<br>
 ---> Pencil sharpener: £2.50
 
-When you're ready to return home, type 'Y' and hit enter: [___]
-
-Returning home....
+When you're ready to return home, type 'home' here and hit enter: [____]
 
 ### All expenses in a budget category report
 
 ---
 
-From which budget would you like to see all of the expenses?
-
+From which budget would you like to see all of the expenses?<br>
 Please type the corresponding letter and hit enter: [____]
 
-Here is the ['Utilities'] budget.
+Budget:['Utilities']<br>
+Total Spent: [£115.00]<br>
+Amount Budgeted: [£200.00]
+
+All Expenses: 
+
+1. Cat Food: £20.00
+2. Plant: £2.00
+
+When you're ready to return home, type 'home' here and hit enter: [____]
 
 ## Error Messaging
 

@@ -45,7 +45,7 @@ def go_home():
     print("3-> Delete a budget")
     print("4-> Add, edit or delete an expense")
     print("5-> Generate a spending report\n")
-    print("(If you would like to return home at any point, type 'home' into any input field instead of the requested value)\n")
+    print("(To return home at any time, type 'home' into any input field)\n")
     
     menu_choice = input("Please type the corresponding number and hit enter: ")
     return menu_choice
@@ -69,7 +69,7 @@ def home_menu_choice(menu_choice):
     elif menu_choice == '5':
         report_menu()
     else:
-        print("\nThis is not an available option. Please check again.\n")
+        print("\nThis is not an available option. Please check again.")
         new_menu_choice = input("Please type the corresponding number and hit enter: ")
         home_menu_choice(new_menu_choice)
 
@@ -80,8 +80,7 @@ def new_budget():
     Returns the user home. 
     """
     print("\nOK, what is the name of your new budget?")
-    print("Please type the name and hit enter.")
-    budget_name = input("Name: ")
+    budget_name = input("Please type the name and hit enter: ")
     new_budget = ['Amount budgeted']
 
     worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
@@ -89,21 +88,19 @@ def new_budget():
     current_budget_worksheet.update_cell(1, 1, budget_name)
     current_budget_worksheet.update_cell(2, 1, 'Running total')
     current_budget_worksheet.update_cell(2, 2, 0)
-    print("\nGreat, and how much do you want to allocate to this budget?\n")
-    print("Please type the amount (numbers only) and hit enter.")
-    budget_amount = input("Amount: ")
+    print("\nGreat, and how much do you want to allocate to this budget?")
+    budget_amount = input("Please type the amount (numbers only) and hit enter: ")
     while True: 
         try: 
             float_amount = float(budget_amount)
         except:
-            print("\nOnly numbers are accepted - this is not a number.\n")
-            print("Please type the amount (numbers only) and hit enter.")
-            budget_amount = input("Amount: ")
+            print("\nOnly numbers are accepted - this is not a number.")
+            budget_amount = input("Please type the amount (numbers only) and hit enter: ")
         else: 
             new_budget.append(format(float_amount, '.2f'))
             current_budget_worksheet.append_row(new_budget)
-            print(f"Successfully added your new '{budget_name}' budget and allocated £{budget_amount}")
-            print("Returning home...\n")
+            print(f"\nSuccessfully added your new '{budget_name}' budget and allocated £{budget_amount}.")
+            print("\nReturning home...\n")
             main()
 
 def edit_budget():
@@ -112,7 +109,7 @@ def edit_budget():
     Allows the user to change name or amount to whatever they input as long as it follows 
     formatting rules. Then it returns the user home. 
     """
-    print("\nWhich budget would you like to update?\n")
+    print("\nWhich budget would you like to update?")
     budget_choice = input("Please type the corresponding letter and hit enter: ")
     letters = string.ascii_uppercase
     if budget_choice.upper() not in letters:
@@ -123,40 +120,37 @@ def edit_budget():
         all_worksheets = SHEET.worksheets()
         while index_of_choice > len(all_worksheets):
             print("\nThis is not an available option. Please check again.")
-            budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+            budget_choice = input("Please type the corresponding letter and hit enter: ")
             index_of_choice = letters.index(budget_choice.upper())     
         
         worksheet = SHEET.get_worksheet(index_of_choice) 
         budget_name = worksheet.acell('A1').value
         print(f"\nWe're updating the '{budget_name}' budget.")
-        print("\nWould you like to change the name or the amount?\n")
+        print("\nWould you like to change the name or the amount?")
         name_or_amount = input("Please type 'N' for name or 'A' for amount: ")
         while name_or_amount.upper() != 'N' and name_or_amount.upper() != 'A':
             print("\nThis is not an available option. Please check again.")
-            print("\nWould you like to change the name or the amount?")
-            name_or_amount = input("\nPlease type 'N' for name or 'A' for amount: ")
+            print("Would you like to change the name or the amount?")
+            name_or_amount = input("Please type 'N' for name or 'A' for amount: ")
         else: 
             if name_or_amount.upper() == 'N':
-                print(f"\nOK, what would you like the new name for the '{budget_name}' to be?\n")
-                print("Please type the name and hit enter.\n")
-                new_name = input("Name: ")
-                print(f"Changing the name of your '{budget_name}' budget to '{new_name}'")
+                print(f"\nOK, what would you like the new name for the '{budget_name}' budget to be?")
+                new_name = input("Please type the name and hit enter: ")
+                print(f"\nChanging the name of your '{budget_name}' budget to '{new_name}'...")
                 worksheet.update_cell(1, 1, new_name)
                 worksheet.update_title(new_name)
-                print("Successfully changed.")
-                print("\nReturning home...")
+                print("\nSuccessfully changed.")
+                print("\nReturning home...\n")
                 main()
             else: 
                 print(f"\nOK, how much would you like to allocate to '{budget_name}' now?")
-                print("\nPlease type the amount (numbers only) and hit enter.")
-                new_amount = input("Amount: ")
+                new_amount = input("Please type the amount (numbers only) and hit enter: ")
                 while True:
                     try: 
                         float_amount = float(new_amount)
                     except:
-                        print("\nOnly numbers are accepted - this is not a number.\n")
-                        print("Please type the amount (numbers only) and hit enter.")
-                        new_amount = input("Amount: ")
+                        print("\nOnly numbers are accepted - this is not a number.")
+                        new_amount = input("Please type the amount (numbers only) and hit enter: ")
                     else: 
                         print(f"\nAllocating £{new_amount} to your '{budget_name}' budget...\n")
                         formatted_number = "{:.2f}".format(float_amount)
@@ -172,8 +166,8 @@ def delete_budget():
     the user home.				
     """				
 	
-    print("OK, which budget would you like to delete?")
-    budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+    print("\nOK, which budget would you like to delete?")
+    budget_choice = input("Please type the corresponding letter and hit enter: ")
     letters = string.ascii_uppercase
     if budget_choice.upper() not in letters:
         print("\nThis is not a letter. Please check again.")
@@ -183,33 +177,33 @@ def delete_budget():
         all_worksheets = SHEET.worksheets()
         while index_of_choice > len(all_worksheets):
             print("\nThis is not an available option. Please check again.")
-            budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+            budget_choice = input("Please type the corresponding letter and hit enter: ")
             index_of_choice = letters.index(budget_choice.upper())   
     
     worksheet = SHEET.get_worksheet(index_of_choice) 
     budget_name = worksheet.acell('A1').value
     print(f"\nAre you sure you want to delete your '{budget_name}' budget?")
-    confirm_choice = input("\nType 'Y' for yes or 'N' for no and hit enter: ")
+    confirm_choice = input("Type 'Y' for yes or 'N' for no and hit enter: ")
     while confirm_choice.upper() != 'Y' and confirm_choice.upper() != 'N':
         print("\nThis is not an available option. Please check again.")
-        print(f"\nAre you sure you want to delete your '{budget_name}' budget?")
-        confirm_choice = input("\nType 'Y' for yes or 'N' for no and hit enter: ")
+        print(f"Are you sure you want to delete your '{budget_name}' budget?")
+        confirm_choice = input("Type 'Y' for yes or 'N' for no and hit enter: ")
     else: 
         if confirm_choice.upper() == 'Y':
             SHEET.del_worksheet(worksheet)
             print(f"\nYour '{budget_name}' budget has been deleted.")
-            print("\nReturning home...")
+            print("\nReturning home...\n")
             main()
         else:
-            print("No budget has been deleted.")
-            print("\nReturning home...")
+            print("\nNo budget has been deleted.")
+            print("\nReturning home...\n")
             main()
             
 def expense_menu_budget_choice():
     """
     Allows user to select which budget they would like to perform an action in.
     """
-    print("\nOK, in which budget would you like to add, edit or delete an expense?\n")
+    print("\nOK, in which budget would you like to add, edit or delete an expense?")
     budget_choice = input("Please type the corresponding letter and hit enter: ")
     letters = string.ascii_uppercase
     while budget_choice.upper() not in letters:
@@ -220,7 +214,7 @@ def expense_menu_budget_choice():
         all_worksheets = SHEET.worksheets()
         while index_of_choice > len(all_worksheets):
             print("\nThis is not an available option. Please check again.")
-            budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+            budget_choice = input("Please type the corresponding letter and hit enter: ")
             index_of_choice = letters.index(budget_choice.upper())     
         
         worksheet = SHEET.get_worksheet(index_of_choice) 
@@ -268,13 +262,13 @@ def expense_menu_action_choice(budget_name, worksheet):
     Allows the user to pick from the menu and moves onto the correct function in the program 
     to carry out that action.
     """
-    print(f"\nWould you like to add, edit or delete an expense in the {budget_name} budget?")
+    print(f"\nWould you like to add, edit or delete an expense in the '{budget_name}' budget?")
     print("\nA -> Add an expense")
     print("B -> Edit an expense")
     print("C -> Delete an expense")
     menu_choice = input("\nPlease type the corresponding letter and hit enter: ")
     while menu_choice.upper() != 'A' and menu_choice.upper() != 'B' and menu_choice.upper() != 'C':
-        print("\nThis is not an available option. Please check again.\n")
+        print("\nThis is not an available option. Please check again.")
         menu_choice = input("Please type the corresponding letter and hit enter: ")
     else:
         if menu_choice.upper() == 'A':
@@ -289,29 +283,29 @@ def new_expense(budget_name, worksheet):
     Allows the user to add a new expense to their desired budget
     """
     print("\nWhat is the name of your new expense?")
-    name = input("Please type the name and hit enter. Name: ")
+    name = input("Please type the name and hit enter: ")
     new_row = []
     
     new_row.append(name)
     print(f"\nAnd how much did '{name}' cost?")
-    cost = input("Please type the amount (numbers only) and hit enter. Cost: ")
+    cost = input("Please type the amount (numbers only) and hit enter: ")
     while True:
         try: 
             float_amount = float(cost)
         except:
-            print("\nOnly numbers are accepted - this is not a number.\n")
-            cost = input("Please type the amount (numbers only) and hit enter. Cost: ")
+            print("\nOnly numbers are accepted - this is not a number.")
+            cost = input("Please type the amount (numbers only) and hit enter: ")
         else: 
             new_row.append(format(float_amount, '.2f'))
-            print(f"Adding your new expense: '{name}: £{cost}'")
+            print(f"\nAdding your new expense: '{name}: £{cost}'...")
             worksheet.append_row(new_row)
             print("\nSuccessfully added.")
-            print(f"\nCalculating the new running total for your '{budget_name}' budget")
+            print(f"\nCalculating the new running total for your '{budget_name}' budget...")
             running_total = float(worksheet.acell('B2').value)
             running_total += float_amount 
             worksheet.update_cell(2, 2, running_total)
             print("\nSuccessfully calculated and updated.")
-            print(f"\nReturning to '{budget_name}' budget")
+            print(f"\nReturning to '{budget_name}' budget.")
             break
     expense_menu_action_choice(budget_name, worksheet)
         
@@ -349,11 +343,11 @@ def delete_expense(budget_name, worksheet):
         row_index = int(select_expense) + 3 
     else: 
         print(f"\nAre you sure you want to delete this expense?")
-        confirm_choice = input("\nType 'Y' for yes or 'N' for no and hit enter: ")
+        confirm_choice = input("Type 'Y' for yes or 'N' for no and hit enter: ")
         while confirm_choice.upper() != 'Y' and confirm_choice.upper() != 'N':
             print("\nThis is not an available option. Please check again.")
-            print(f"\nAre you sure you want to delete this expense?")
-            confirm_choice = input("\nType 'Y' for yes or 'N' for no and hit enter: ")
+            print(f"Are you sure you want to delete this expense?")
+            confirm_choice = input("Type 'Y' for yes or 'N' for no and hit enter: ")
         
         if confirm_choice.upper() == 'Y':
             running_total = float(worksheet.acell('B2').value)
@@ -363,12 +357,12 @@ def delete_expense(budget_name, worksheet):
             worksheet.update_cell(2, 2, running_total)
             worksheet.delete_rows(row_index)
             print(f"\nThis expense has been deleted.")
-            print(f"\nCalculating the new running total for your '{budget_name}' budget")
+            print(f"\nCalculating the new running total for your '{budget_name}' budget...")
             print("\nSuccessfully calculated and updated.")
-            print(f"\nReturning to '{budget_name}' budget")
+            print(f"\nReturning to '{budget_name}' budget...")
         else:
-            print("No expense has been deleted.")
-            print(f"\nReturning to '{budget_name}' budget")
+            print("\nNo expense has been deleted.")
+            print(f"\nReturning to '{budget_name}' budget...")
     expense_menu_action_choice(budget_name, worksheet)
 
 def edit_expense(budget_name, worksheet):
@@ -400,50 +394,47 @@ def edit_expense(budget_name, worksheet):
     row_index = int(select_expense) + 3 
     number_rows = worksheet.get_all_values()
     while row_index > len(number_rows):
-        print("This is not an available option. Please check again.")
+        print("\nThis is not an available option. Please check again.")
         select_expense = input("Please type the corresponding number and hit enter: ")
         row_index = int(select_expense) + 3 
     else: 
-        print("\nWould you like to change the name or the amount?\n")
+        print("\nWould you like to change the name or the amount?")
         name_or_amount = input("Please type 'N' for name or 'A' for amount: ")
         while name_or_amount.upper() != 'N' and name_or_amount.upper() != 'A':
             print("\nThis is not an available option. Please check again.")
-            print("\nWould you like to change the name or the amount?")
-            name_or_amount = input("\nPlease type 'N' for name or 'A' for amount: ")
+            print("Would you like to change the name or the amount?")
+            name_or_amount = input("Please type 'N' for name or 'A' for amount: ")
         else: 
             if name_or_amount.upper() == 'N':
-                print(f"\nOK, what would you like the new name for this expense to be?\n")
-                print("Please type the name and hit enter.\n")
-                new_name = input("Name: ")
-                print(f"Changing the name of this expense to '{new_name}'")
+                print(f"\nOK, what would you like the new name for this expense to be?")
+                new_name = input("Please type the name and hit enter: ")
+                print(f"\nChanging the name of this expense to '{new_name}...'")
                 worksheet.update_cell(row_index, 1, new_name)
-                print("Successfully changed.")
-                print(f"\nReturning to '{budget_name}' budget")
+                print("\nSuccessfully changed.")
+                print(f"\nReturning to '{budget_name}' budget...")
             else: 
                 print(f"\nOK, how much would you like this expense to be now?")
-                print("\nPlease type the amount (numbers only) and hit enter.")
-                new_amount = input("Amount: ")
+                new_amount = input("Please type the amount (numbers only) and hit enter: ")
                 while True:
                     try: 
                         float_amount = float(new_amount)
                     except:
-                        print("\nOnly numbers are accepted - this is not a number.\n")
-                        print("Please type the amount (numbers only) and hit enter.")
-                        new_amount = input("Amount: ")
+                        print("\nOnly numbers are accepted - this is not a number.")
+                        new_amount = input("Please type the amount (numbers only) and hit enter: ")
                     else: 
-                        print(f"\nChanging the amount of this expense to {new_amount}...\n")
+                        print(f"\nChanging the amount of this expense to £{format(new_amount, '.2f')}...\n")
                         old_amount_row = worksheet.row_values(row_index)
                         old_amount = old_amount_row[1]
                         formatted_number = "{:.2f}".format(float_amount)
                         worksheet.update_cell(row_index, 2, formatted_number)
                         print("Successfully changed.")
-                        print(f"\nCalculating the new running total for your '{budget_name}' budget")
+                        print(f"\nCalculating the new running total for your '{budget_name}' budget...")
                         running_total = float(worksheet.acell('B2').value)
                         running_total -= float(old_amount)
                         running_total += float_amount 
                         worksheet.update_cell(2, 2, running_total)
                         print("\nSuccessfully calculated and updated.")
-                        print(f"\nReturning to '{budget_name}' budget")
+                        print(f"\nReturning to '{budget_name}' budget...")
                         break
     expense_menu_action_choice(budget_name, worksheet)
 
@@ -455,8 +446,8 @@ def report_menu():
     """
     print("\nWhich report would you like to run?")
     print("\nA-> A report of budget categories with whether your spending is under/over")
-    print("\nB-> A report showing the last three expenses from every budget category")
-    print("\nC-> A report showing every expense in a specific budget category")
+    print("B-> A report showing the last three expenses from every budget category")
+    print("C-> A report showing every expense in a specific budget category")
     while True:
         report_choice = input("\nPlease type the corresponding letter and hit enter: ")
         if report_choice.upper() == 'A':
@@ -479,7 +470,7 @@ def last_three_report():
 
 def every_expense_report():
     print("\nFrom which budget would you like to see all of the expenses?")
-    budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+    budget_choice = input("Please type the corresponding letter and hit enter: ")
     letters = string.ascii_uppercase
     while budget_choice.upper() not in letters:
         print("\nThis is not a letter. Please check again.")
@@ -489,7 +480,7 @@ def every_expense_report():
         all_worksheets = SHEET.worksheets()
         while index_of_choice > len(all_worksheets):
             print("\nThis is not an available option. Please check again.")
-            budget_choice = input("\nPlease type the corresponding letter and hit enter: ")
+            budget_choice = input("Please type the corresponding letter and hit enter: ")
             index_of_choice = letters.index(budget_choice.upper())     
 
         worksheet = SHEET.get_worksheet(index_of_choice) 
