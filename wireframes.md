@@ -216,9 +216,9 @@ Returning to ['Miscellaneous'] budget...
 ## 5. Generate a spending report
 Which report would you like to run?
 
-A -> A report of budget categories with whether your spending is under/over<br>
-B -> A report showing the last three expenses from every budget category<br>
-C -> A report showing every expense in a specific budget category
+A -> A report of all budgets with whether your spending is under/over<br>
+B -> A report showing the last three expenses from every budget<br>
+C -> A report showing every expense in a specific budget
 
 Please type the corresponding letter and hit enter: [____]
 
@@ -228,7 +228,7 @@ Please type the corresponding letter and hit enter: [____]
 
 You are [35%] of the way through the month.
 
-Here is your spend for each category: 
+Here is your spend for each budget: 
 
 Food - £37.50 / £400 - 9.38% spent - UNDER budget<br>
 Utilities - £200 / £450 - 44.44% spent - OVER budget<br>
@@ -241,8 +241,8 @@ When you're ready to return home, type 'home' here and hit enter: [____]
 
 ---
 
-Here are the latest three expenses from each category.<br>
-(Where there are less than three, all expenses in that category are displayed)
+Here are the latest three expenses from each budget:<br>
+(Where there are less than three, all expenses in that budget are displayed)
 
 Food - £37.50 / £400<br>
 ---> Ham: £2<br>
@@ -263,7 +263,7 @@ Miscellaneous - £102 / £200<br>
 
 When you're ready to return home, type 'home' here and hit enter: [____]
 
-### All expenses in a budget category report
+### All expenses in a budget report
 
 ---
 

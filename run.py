@@ -446,9 +446,9 @@ def report_menu():
     chose an available action. 
     """
     print("\nWhich report would you like to run?")
-    print("\nA-> A report of budget categories with whether your spending is under/over")
-    print("B-> A report showing the last three expenses from every budget category")
-    print("C-> A report showing every expense in a specific budget category")
+    print("\nA-> A report of all budgets with whether your spending is under/over")
+    print("B-> A report showing the last three expenses from every budget")
+    print("C-> A report showing every expense in a specific budget")
     while True:
         report_choice = input("\nPlease type the corresponding letter and hit enter: ")
         if report_choice.upper() == 'A':
@@ -465,9 +465,54 @@ def report_menu():
        
 def under_over_report():
     print("under/over")
+    home = input("\nWhen you're ready to return home, type 'home' here and hit enter: ")
 
 def last_three_report():
-    print("last three")
+    print("\nHere are the latest three expenses from each budget:")
+    print("Where there are less than three, all expenses in that budget are displayed.")
+    worksheets = SHEET.worksheets()
+    for worksheet in worksheets: 
+        budget_name = worksheet.acell('A1').value
+        running_total = worksheet.acell('B2').value
+        amount_budgeted = worksheet.acell('B3').value
+        print(f"\n{budget_name} - £{running_total} / £{amount_budgeted}")
+        
+        num = 4
+        expenses = []
+        while True:
+            values_list = worksheet.row_values(num)
+            if not values_list:
+                break
+            current_expense = []
+            for row in values_list:
+                current_expense.append(row)
+            num += 1
+            expenses.append(current_expense)
+        
+        if not expenses: 
+            print("No expenses logged yet.")
+        else: 
+            loop_counter = 0
+            while True:
+                if loop_counter == 3:
+                    break
+                if not expenses:
+                    break
+                for expense in expenses:
+                    if loop_counter == 3:
+                        break
+                    print(f"---> {expenses[-1][0]}: £{expenses[-1][1]}")
+                    expenses.pop (-1)
+                    loop_counter += 1
+        
+
+        # [['Ham', '2.00'], ['Cheese', '3.50'], ['Fillet steaks', '32.00'], ['Pancakes', '2.00']]
+
+
+                        
+
+    home = input("\nWhen you're ready to return home, type 'home' here and hit enter: ")
+    
 
 def every_expense_report():
     print("\nFrom which budget would you like to see all of the expenses?")
