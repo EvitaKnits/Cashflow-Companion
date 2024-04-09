@@ -336,10 +336,10 @@ About halfway through the project, I realised that the validation I had used for
 ### Bug Two: 
 
 #### Issue: 
-I realised that even after I was adding expenses to my Google sheet as a float rather than as a string (see solution of bug one above), I was still printing costs as '£1.5' rather than '£1.50' when reading them back for whatever function in the program. 
+I realised that even after I was adding expenses to my Google sheet as a float rather than as a string (see solution of bug one above), I was still printing costs as '£1.5' rather than '£1.50' within the new expense or editing an existing expense functions. I had not formatted the float correctly to give the two decimal places that is the standard formatting of currency.
 
 #### Solution: 
-
+I formatted the number before passing it to be printed to the terminal. I used this format string `{:.2f}`
 
 ### Unresolved Bugs
 

@@ -297,7 +297,8 @@ def new_expense(budget_name, worksheet):
             cost = input("Please type the amount (numbers only) and hit enter: ")
         else: 
             new_row.append(format(float_amount, '.2f'))
-            print(f"\nAdding your new expense: '{name}: £{cost}'...")
+            formatted_number = "{:.2f}".format(float_amount)
+            print(f"\nAdding your new expense: '{name}: £{formatted_number}'...")
             worksheet.append_row(new_row)
             print("\nSuccessfully added.")
             print(f"\nCalculating the new running total for your '{budget_name}' budget...")
@@ -422,10 +423,10 @@ def edit_expense(budget_name, worksheet):
                         print("\nOnly numbers are accepted - this is not a number.")
                         new_amount = input("Please type the amount (numbers only) and hit enter: ")
                     else: 
-                        print(f"\nChanging the amount of this expense to £{format(new_amount, '.2f')}...\n")
+                        formatted_number = "{:.2f}".format(float_amount)
+                        print(f"\nChanging the amount of this expense to £{formatted_number}...\n")
                         old_amount_row = worksheet.row_values(row_index)
                         old_amount = old_amount_row[1]
-                        formatted_number = "{:.2f}".format(float_amount)
                         worksheet.update_cell(row_index, 2, formatted_number)
                         print("Successfully changed.")
                         print(f"\nCalculating the new running total for your '{budget_name}' budget...")
