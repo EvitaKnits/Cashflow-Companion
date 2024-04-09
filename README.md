@@ -351,7 +351,9 @@ Explain how this app was deployed so that a non-technical user could do it. How 
 ## Credits
 
 ### APIs and Third Party Libraries
-Google Sheets API: 'gspread' - This was installed to provide access to the associated spreadsheet which will hold all the data for Cashflow Companion.
+1. Google Sheets API: 'gspread' - This was installed to provide access to the associated spreadsheet which will hold all the data for Cashflow Companion.
+2. String Module: 'string' - https://docs.python.org/3/library/string.html This was installed to assist me with letter input validation and selection of menu options and therefore data retrieval. 
+3. Date/Time Module: 'datetime' - https://docs.python.org/3/library/datetime.html This was installed to provide dates to work with for report A. This report figures out whether you are under or over budget based on the percentage through the month it is and the percentage through your budget you are.
 
 ### Sources of Learning
 I referred back to the Love Sandwiches Walkthrough Project set up videos to remind me how to set up the APIs, credentials and files before starting coding.
@@ -361,6 +363,7 @@ I learnt how to increment letters here: https://www.geeksforgeeks.org/ways-incre
 Although not in my final code, I learnt how to check if the user's input is alphanumeric here: https://www.w3schools.com/python/ref_string_isalnum.asp
 Although not in my final code, I learnt how to check if the user's input is numeric here: https://www.w3schools.com/python/ref_string_isnumeric.asp#:~:text=The%20isnumeric()%20method%20returns,considered%20to%20be%20numeric%20values.
 I learnt how to get the trailing zero on my expense and budget amounts here: https://stackoverflow.com/questions/455612/limiting-floats-to-two-decimal-points and here: https://www.w3schools.com/python/python_string_formatting.asp
+I learnt about using dates in Python here: https://www.w3schools.com/python/python_datetime.asp
 
 
 

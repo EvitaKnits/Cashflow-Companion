@@ -1,6 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import string
+import datetime
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -464,7 +465,42 @@ def report_menu():
             print("\nThis is not an available option. Please check again.")
        
 def under_over_report():
-    print("under/over")
+    todays_date = datetime.datetime.now()
+    day_only = todays_date.strftime("%d")
+    which_month = todays_date.strftime("%m")
+
+    if which_month == 4 or which_month == 6 or which_month == 9 or which_month == 11:
+        month_percentage = (float(day_only) / 30) * 100
+        formatted_percentage = round(month_percentage, 2)
+    elif which_month == 2:
+        month_percentage = (float(day_only) / 28) * 100
+        formatted_percentage = round(month_percentage, 2)
+    else:
+        month_percentage = (float(day_only) / 31) * 100
+        formatted_percentage = round(month_percentage, 2)
+    
+    print(f"\nYou are {formatted_percentage}% of the way through the month.")
+    print("\nThis report compares:")
+    print(" - how far through the month you are")
+    print(" - how far through your budgeted amount you are")
+    print("\nThen calculates an 'over'/'under'/'spot on' value for each budget.")
+
+    print("\nHere are your current calculations:\n")
+    worksheets = SHEET.worksheets()
+    for worksheet in worksheets: 
+        budget_name = worksheet.acell('A1').value
+        running_total = worksheet.acell('B2').value
+        amount_budgeted = worksheet.acell('B3').value
+        percentage_spent = (float(running_total) / float(amount_budgeted)) *100
+        formatted_spent = round(percentage_spent, 2)
+        if formatted_spent < formatted_percentage:
+            over_under = "UNDER"
+        elif formatted_spent == formatted_percentage:
+            over_under = "SPOT ON"
+        else: 
+            over_under = "OVER"
+        print(f"{budget_name} - £{running_total} / £{amount_budgeted} - {formatted_spent}% spent - {over_under} budget")
+    
     home = input("\nWhen you're ready to return home, type 'home' here and hit enter: ")
 
 def last_three_report():
@@ -503,13 +539,7 @@ def last_three_report():
                         break
                     print(f"---> {expenses[-1][0]}: £{expenses[-1][1]}")
                     expenses.pop (-1)
-                    loop_counter += 1
-        
-
-        # [['Ham', '2.00'], ['Cheese', '3.50'], ['Fillet steaks', '32.00'], ['Pancakes', '2.00']]
-
-
-                        
+                    loop_counter += 1       
 
     home = input("\nWhen you're ready to return home, type 'home' here and hit enter: ")
     
