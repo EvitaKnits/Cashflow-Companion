@@ -98,9 +98,9 @@ Returning home...
 OK, in which budget would you like to add, edit or delete an expense?<br>
 Please type the corresponding letter and hit enter: [____]
 
-Budget:['Miscellaneous']
-Total Spent: £[102]
-Amount Budgeted: £[200]<br>
+Budget:['Miscellaneous']<br>
+Total Spent: £[102]<br>
+Amount Budgeted: £[200]
 
 Most Recent Expenses:
 
@@ -145,7 +145,7 @@ All Expenses:
 
 1. Gas: £50.00
 2. Pens: £150.00
-3. Water" £50.00
+3. Water: £50.00
 
 Which expense would you like to edit?<br>
 Please type the corresponding number and hit enter: [____]
