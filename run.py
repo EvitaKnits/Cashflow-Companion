@@ -119,7 +119,7 @@ def edit_budget():
     else: 
         index_of_choice = letters.index(budget_choice.upper())
         all_worksheets = SHEET.worksheets()
-        while index_of_choice > len(all_worksheets):
+        while index_of_choice >= len(all_worksheets):
             print("\nThis is not an available option. Please check again.")
             budget_choice = input("Please type the corresponding letter and hit enter: ")
             index_of_choice = letters.index(budget_choice.upper())     
@@ -176,7 +176,7 @@ def delete_budget():
     else: 
         index_of_choice = letters.index(budget_choice.upper())
         all_worksheets = SHEET.worksheets()
-        while index_of_choice > len(all_worksheets):
+        while index_of_choice >= len(all_worksheets):
             print("\nThis is not an available option. Please check again.")
             budget_choice = input("Please type the corresponding letter and hit enter: ")
             index_of_choice = letters.index(budget_choice.upper())   
@@ -213,7 +213,7 @@ def expense_menu_budget_choice():
     else: 
         index_of_choice = letters.index(budget_choice.upper())
         all_worksheets = SHEET.worksheets()
-        while index_of_choice > len(all_worksheets):
+        while index_of_choice >= len(all_worksheets):
             print("\nThis is not an available option. Please check again.")
             budget_choice = input("Please type the corresponding letter and hit enter: ")
             index_of_choice = letters.index(budget_choice.upper())     
@@ -224,11 +224,12 @@ def expense_menu_budget_choice():
         amount_budgeted = worksheet.acell('B3').value
         print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount Budgeted: £{amount_budgeted}")
 
-        # use the fact that None is falsy to break the while loop when the worksheet has no more expenses in it
+        
         num = 4
         expenses = []
         while True:
             values_list = worksheet.row_values(num)
+            # use the fact that None is falsy to break the while loop when the worksheet has no more expenses in it
             if not values_list:
                 break
             current_expense = []
@@ -554,7 +555,7 @@ def every_expense_report():
     else: 
         index_of_choice = letters.index(budget_choice.upper())
         all_worksheets = SHEET.worksheets()
-        while index_of_choice > len(all_worksheets):
+        while index_of_choice >= len(all_worksheets):
             print("\nThis is not an available option. Please check again.")
             budget_choice = input("Please type the corresponding letter and hit enter: ")
             index_of_choice = letters.index(budget_choice.upper())     

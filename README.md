@@ -332,7 +332,6 @@ About halfway through the project, I realised that the validation I had used for
 1. Alphanumeric validation: in considering this issue, I realised that my program should not care what a user wants to call their expenses or budgets. Perhaps they have a categorising system that includes punctuation, for example. I simply removed this validation and allowed users to call their expenses and budgets anything they like. 
 2. Numeric validation: I changed this from using `isnumeric` to trying to cast the string input to a float. An input is invalid if it fails to cast. This is done inside a `while` loop that retries a `try: except: else:` block until a valid input is given.
 
-
 ### Bug Two: 
 
 #### Issue: 
@@ -340,6 +339,18 @@ I realised that even after I was adding expenses to my Google sheet as a float r
 
 #### Solution: 
 I formatted the number before passing it to be printed to the terminal. I used this format string `{:.2f}`
+
+### Bug Three: 
+
+#### Issue: 
+Each time I validated whether the letter the user has entered corresponds to a worksheet in my Google sheet, I got an incorrect 'valid' response for one letter of the alphabet beyond those available as valid responses. This meant that my program was asking the API for a worksheet that did not exist and therefore resulted in an exception. 
+
+#### Why?
+
+I was checking whether the index of that letter in the letters list: `letters = string.ascii_uppercase` was greater than the length of the list of worksheets in my Google sheet. So if there are budgets A, B, C, D and E, these are at indexes 0-4 in this letters list. In my list of all worksheets in the Google sheet, these budgets are at the same indexes. The issue is that if the user entered 'F' in this scenario, that would be an index of 5 and would be compared to the number of worksheets, which is also 5 and give a valid result. This is wrong and resulted in the exception. 
+
+#### Solution
+I changed the validation to check whether the user-inputted letter was greater than or equal to the length of all worksheets. I added the 'equal to' part to cover this scenario. 
 
 ### Unresolved Bugs
 
