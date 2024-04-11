@@ -82,41 +82,50 @@ def new_budget():
     Google sheet with it. Validates that the inputs are provided in the desired format. 
     Returns the user home. 
     """
-    print("\nOK, what is the name of your new budget?")
-    budget_name = input("Please type the name and hit enter: ")
-    new_budget = ['Amount budgeted']
-    if budget_name.lower() == 'home':
-        main()
+    list_budgets = SHEET.worksheets()
+    number_budgets = len(list_budgets)
 
-    print("\nGreat, and how much do you want to allocate to this budget?")
-    budget_amount = input("Please type the amount (numbers only) and hit enter: ")
-    if budget_amount.lower() == 'home':
+    if number_budgets >= 20:
+        print("\nThe maximum number of 20 budgets has already been reached.")
+        print("To create a new budget, first delete an existing budget")
+        print("\nReturning home...\n")
         main()
-    
-    while True: 
-        try: 
-            float_amount = float(budget_amount)
-            if float_amount < 0:
-                print("\nNegative values are not accepted. Please enter a positive number.")
-                budget_amount = input("Please type the amount (numbers only) and hit enter: ")
-                continue
-        except:
-            if budget_amount.lower() == 'home':
-                main()  
-            else:
-                print("\nOnly numbers are accepted - this is not a number.")
-                budget_amount = input("Please type the amount (numbers only) and hit enter: ")
-        else: 
-            worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
-            current_budget_worksheet = SHEET.get_worksheet(-1)
-            current_budget_worksheet.update_cell(1, 1, budget_name)
-            current_budget_worksheet.update_cell(2, 1, 'Running total')
-            current_budget_worksheet.update_cell(2, 2, 0)
-            new_budget.append(format(float_amount, '.2f'))
-            current_budget_worksheet.append_row(new_budget)
-            print(f"\nSuccessfully added your new '{budget_name}' budget and allocated £{budget_amount}.")
-            print("\nReturning home...\n")
+    else: 
+        print("\nOK, what is the name of your new budget?")
+        budget_name = input("Please type the name and hit enter: ")
+        new_budget = ['Amount budgeted']
+        if budget_name.lower() == 'home':
             main()
+
+        print("\nGreat, and how much do you want to allocate to this budget?")
+        budget_amount = input("Please type the amount (numbers only) and hit enter: ")
+        if budget_amount.lower() == 'home':
+            main()
+        
+        while True: 
+            try: 
+                float_amount = float(budget_amount)
+                if float_amount < 0:
+                    print("\nNegative values are not accepted. Please enter a positive number.")
+                    budget_amount = input("Please type the amount (numbers only) and hit enter: ")
+                    continue
+            except:
+                if budget_amount.lower() == 'home':
+                    main()  
+                else:
+                    print("\nOnly numbers are accepted - this is not a number.")
+                    budget_amount = input("Please type the amount (numbers only) and hit enter: ")
+            else: 
+                worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
+                current_budget_worksheet = SHEET.get_worksheet(-1)
+                current_budget_worksheet.update_cell(1, 1, budget_name)
+                current_budget_worksheet.update_cell(2, 1, 'Running total')
+                current_budget_worksheet.update_cell(2, 2, 0)
+                new_budget.append(format(float_amount, '.2f'))
+                current_budget_worksheet.append_row(new_budget)
+                print(f"\nSuccessfully added your new '{budget_name}' budget and allocated £{budget_amount}.")
+                print("\nReturning home...\n")
+                main()
 
 def edit_budget():
     """
