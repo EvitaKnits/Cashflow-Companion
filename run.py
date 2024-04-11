@@ -88,11 +88,6 @@ def new_budget():
     if budget_name.lower() == 'home':
         main()
 
-    worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
-    current_budget_worksheet = SHEET.get_worksheet(-1)
-    current_budget_worksheet.update_cell(1, 1, budget_name)
-    current_budget_worksheet.update_cell(2, 1, 'Running total')
-    current_budget_worksheet.update_cell(2, 2, 0)
     print("\nGreat, and how much do you want to allocate to this budget?")
     budget_amount = input("Please type the amount (numbers only) and hit enter: ")
     if budget_amount.lower() == 'home':
@@ -108,6 +103,11 @@ def new_budget():
                 print("\nOnly numbers are accepted - this is not a number.")
                 budget_amount = input("Please type the amount (numbers only) and hit enter: ")
         else: 
+            worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
+            current_budget_worksheet = SHEET.get_worksheet(-1)
+            current_budget_worksheet.update_cell(1, 1, budget_name)
+            current_budget_worksheet.update_cell(2, 1, 'Running total')
+            current_budget_worksheet.update_cell(2, 2, 0)
             new_budget.append(format(float_amount, '.2f'))
             current_budget_worksheet.append_row(new_budget)
             print(f"\nSuccessfully added your new '{budget_name}' budget and allocated £{budget_amount}.")
