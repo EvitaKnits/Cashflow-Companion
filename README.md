@@ -303,6 +303,14 @@ flowchart TD
     O --> I
 ```
 
+### Exception Handling
+
+#### Attempting to create two worksheets with the same name
+
+`gspread.exceptions.APIError` is raised when a user attempts to create a new budget (which in turn creates a new worksheet in the Google Sheet) with the same name. It also occurs if they try to edit an existing budget and give it the same name as another existing budget. 
+
+This has been caught in both the new budget and edit budget processes, using a try statement.
+
 ### Future Features
 Planned enhancements/features for future implementation go here. 
 

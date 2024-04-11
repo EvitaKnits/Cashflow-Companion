@@ -29,7 +29,7 @@ def get_budgets():
         print(f'{letter}-> {budget_name}: £{running_total} / £{amount_budgeted}')
         letters = string.ascii_uppercase
         index = letters.index(letter)
-        letter = letters[index + 1]
+        letter = letters[index + 1]  
 
 def go_home():
     """
@@ -60,7 +60,7 @@ def home_menu_choice(menu_choice):
     chose an available action. 
     """
     if menu_choice == '1':
-        new_budget()
+        create_new_budget()
     elif menu_choice == '2':
         edit_budget()
     elif menu_choice == '3':
@@ -76,7 +76,7 @@ def home_menu_choice(menu_choice):
         new_menu_choice = input("Please type the corresponding number and hit enter: ")
         home_menu_choice(new_menu_choice)
 
-def new_budget():
+def create_new_budget():
     """
     Allows the user to create a new budget and amount allocated to it and updates the 
     Google sheet with it. Validates that the inputs are provided in the desired format. 
@@ -116,16 +116,22 @@ def new_budget():
                     print("\nOnly numbers are accepted - this is not a number.")
                     budget_amount = input("Please type the amount (numbers only) and hit enter: ")
             else: 
-                worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
-                current_budget_worksheet = SHEET.get_worksheet(-1)
-                current_budget_worksheet.update_cell(1, 1, budget_name)
-                current_budget_worksheet.update_cell(2, 1, 'Running total')
-                current_budget_worksheet.update_cell(2, 2, 0)
-                new_budget.append(format(float_amount, '.2f'))
-                current_budget_worksheet.append_row(new_budget)
-                print(f"\nSuccessfully added your new '{budget_name}' budget and allocated £{budget_amount}.")
-                print("\nReturning home...\n")
-                main()
+                try: 
+                    worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
+                except gspread.exceptions.APIError:
+                    # This catches were the user attempts to use the same name for a budget twice
+                    print("This budget name is already taken.")                    
+                    create_new_budget()
+                else:
+                    current_budget_worksheet = SHEET.get_worksheet(-1)
+                    current_budget_worksheet.update_cell(1, 1, budget_name)
+                    current_budget_worksheet.update_cell(2, 1, 'Running total')
+                    current_budget_worksheet.update_cell(2, 2, 0)
+                    new_budget.append(format(float_amount, '.2f'))
+                    current_budget_worksheet.append_row(new_budget)
+                    print(f"\nSuccessfully added your new '{budget_name}' budget and allocated £{budget_amount}.")
+                    print("\nReturning home...\n")
+                    main()
 
 def edit_budget():
     """
@@ -167,17 +173,24 @@ def edit_budget():
             name_or_amount = input("Please type 'N' for name or 'A' for amount: ")
     else: 
         if name_or_amount.upper() == 'N':
-            print(f"\nOK, what would you like the new name for the '{budget_name}' budget to be?")
-            new_name = input("Please type the name and hit enter: ")
-            if new_name.lower() == 'home':
-                main()
-            else:
-                print(f"\nChanging the name of your '{budget_name}' budget to '{new_name}'...")
-                worksheet.update_cell(1, 1, new_name)
-                worksheet.update_title(new_name)
-                print("\nSuccessfully changed.")
-                print("\nReturning home...\n")
-                main()
+            while True: 
+                print(f"\nOK, what would you like the new name for the '{budget_name}' budget to be?")
+                new_name = input("Please type the name and hit enter: ")
+                if new_name.lower() == 'home':
+                    main()
+                else:
+                    try: 
+                        worksheet.update_title(new_name)
+                    except gspread.exceptions.APIError:
+                        # This catches were the user attempts to use the same name for a budget twice
+                        print("This budget name is already taken.")  
+                        continue
+                    else:
+                        print(f"\nChanging the name of your '{budget_name}' budget to '{new_name}'...")
+                        worksheet.update_cell(1, 1, new_name)
+                        print("\nSuccessfully changed.")
+                        print("\nReturning home...\n")
+                        main()
         else: 
             print(f"\nOK, how much would you like to allocate to '{budget_name}' now?")
             new_amount = input("Please type the amount (numbers only) and hit enter: ")
