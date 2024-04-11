@@ -96,9 +96,13 @@ def new_budget():
     while True: 
         try: 
             float_amount = float(budget_amount)
+            if float_amount < 0:
+                print("\nNegative values are not accepted. Please enter a positive number.")
+                budget_amount = input("Please type the amount (numbers only) and hit enter: ")
+                continue
         except:
             if budget_amount.lower() == 'home':
-                main()
+                main()  
             else:
                 print("\nOnly numbers are accepted - this is not a number.")
                 budget_amount = input("Please type the amount (numbers only) and hit enter: ")
@@ -171,6 +175,10 @@ def edit_budget():
             while True:
                 try: 
                     float_amount = float(new_amount)
+                    if float_amount < 0:
+                        print("\nNegative values are not accepted. Please enter a positive number.")
+                        new_amount = input("Please type the amount (numbers only) and hit enter: ")
+                        continue
                 except:
                     if new_amount.lower() == 'home':
                         main()
@@ -342,6 +350,10 @@ def new_expense(budget_name, worksheet):
     while True:
         try: 
             float_amount = float(cost)
+            if float_amount < 0:
+                print("\nNegative values are not accepted. Please enter a positive number.")
+                cost = input("Please type the amount (numbers only) and hit enter: ")
+                continue
         except:
             print("\nOnly numbers are accepted - this is not a number.")
             cost = input("Please type the amount (numbers only) and hit enter: ")
@@ -500,6 +512,10 @@ def edit_expense(budget_name, worksheet):
             while True:
                 try: 
                     float_amount = float(new_amount)
+                    if float_amount < 0:
+                        print("\nNegative values are not accepted. Please enter a positive number.")
+                        new_amount = input("Please type the amount (numbers only) and hit enter: ")
+                        continue
                 except:
                     if new_amount.lower() == 'home':
                         main()
