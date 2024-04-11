@@ -349,8 +349,16 @@ Each time I validated whether the letter the user has entered corresponds to a w
 
 I was checking whether the index of that letter in the letters list: `letters = string.ascii_uppercase` was greater than the length of the list of worksheets in my Google sheet. So if there are budgets A, B, C, D and E, these are at indexes 0-4 in this letters list. In my list of all worksheets in the Google sheet, these budgets are at the same indexes. The issue is that if the user entered 'F' in this scenario, that would be an index of 5 and would be compared to the number of worksheets, which is also 5 and give a valid result. This is wrong and resulted in the exception. 
 
-#### Solution
+#### Solution:
 I changed the validation to check whether the user-inputted letter was greater than or equal to the length of all worksheets. I added the 'equal to' part to cover this scenario. 
+
+### Bug Four: 
+
+#### Issue:
+It was possible for a user to add an incomplete new budget (new worksheet in the Google sheet) by partially completing the new budget process that the new_budget function leads them through, then opting to go home by typing 'home' in an input. 
+
+#### Solution:
+I found that this was because I was adding the information in stages throughout that function, rather than in one big chunk at the end when all the data needed for a complete budget was present. I moved all of the writing of data to the Google sheet to the end of the function all together. 
 
 ### Unresolved Bugs
 
