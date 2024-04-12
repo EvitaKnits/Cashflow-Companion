@@ -95,7 +95,6 @@ def create_new_budget():
     else: 
         print("\nOK, what is the name of your new budget?")
         budget_name = input("Please type the name and hit enter:\n")
-        new_budget = ['Amount budgeted']
         if budget_name.lower() == 'home':
             main()
 
@@ -125,12 +124,9 @@ def create_new_budget():
                     print("This budget name is already taken.")                    
                     create_new_budget()
                 else:
+                    budget_amount = format(float_amount, '.2f')
                     current_budget_worksheet = SHEET.get_worksheet(-1)
-                    current_budget_worksheet.update_cell(1, 1, budget_name)
-                    current_budget_worksheet.update_cell(2, 1, 'Running total')
-                    current_budget_worksheet.update_cell(2, 2, 0)
-                    new_budget.append(format(float_amount, '.2f'))
-                    current_budget_worksheet.append_row(new_budget)
+                    current_budget_worksheet.update([[budget_name, '',] , ['Running Total', 0, ], ['Amount Budgeted', budget_amount]])
                     print(f"\nSuccessfully added your new '{budget_name}' budget and allocated £{budget_amount}.")
                     print("\nReturning home...\n")
                     main()
