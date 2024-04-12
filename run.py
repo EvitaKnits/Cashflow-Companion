@@ -287,42 +287,33 @@ def expense_menu_budget_choice():
             break   
             
     worksheet = SHEET.get_worksheet(index_of_choice) 
-    budget_name = worksheet.acell('A1').value
-    running_total = worksheet.acell('B2').value
-    amount_budgeted = worksheet.acell('B3').value
+    value_range = worksheet.get('A1:B3')
+    budget_name = value_range[0][0]
+    running_total = value_range[1][1]
+    amount_budgeted = value_range[2][1]
     print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount Budgeted: £{amount_budgeted}")
-
-    num = 4
-    expenses = []
-    while True:
-        values_list = worksheet.row_values(num)
-        # use the fact that None is falsy to break the while loop when the worksheet has no more expenses in it
-        if not values_list:
-            break
-        current_expense = []
-        for row in values_list:
-            current_expense.append(row)
-        num += 1
-        expenses.append(current_expense)
-
-    if not expenses: 
+    
+    all_rows = worksheet.get_all_records()
+    all_expenses = all_rows[2:]
+    all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
+  
+    if not all_expenses:
         print("\nNo expenses logged yet.")
-    else: 
+    else:
         print("\nMost Recent Expenses:\n")
         number = 1
         loop_counter = 0
         while True: 
-            if loop_counter == 5:
+            if not all_expenses_list: 
                 break
-            if not expenses:
-                break
-            for expense in expenses:
+            for expense in reversed(all_expenses_list):
                 if loop_counter == 5:
                     break
-                print(f"{number}. {expenses[-1][0]}: £{expenses[-1][1]}")
-                expenses.pop(-1)
+                formatted_number = "{:.2f}".format(expense[1])
+                print(f"{number}. {expense[0]}: £{formatted_number}")
                 number += 1
                 loop_counter += 1
+            break
     expense_menu_action_choice(budget_name, worksheet)
 
 def expense_menu_action_choice(budget_name, worksheet):
