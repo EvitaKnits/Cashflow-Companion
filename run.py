@@ -15,6 +15,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('cashflow_companion')
 
 # Home menu functions
+
 def get_budgets():
     """
     Collects the names, running totals and allocated amounts of each budget available 
@@ -23,9 +24,10 @@ def get_budgets():
     budgets_list = SHEET.worksheets()
     letter = 'A'
     for budget in budgets_list:
-        budget_name = budget.acell('A1').value
-        running_total = budget.acell('B2').value
-        amount_budgeted = budget.acell('B3').value
+        value_range = budget.get('A1:B3')
+        budget_name = value_range[0][0]
+        running_total = value_range[1][1]
+        amount_budgeted = value_range[2][1]
         print(f'{letter}-> {budget_name}: £{running_total} / £{amount_budgeted}')
         letters = string.ascii_uppercase
         index = letters.index(letter)
