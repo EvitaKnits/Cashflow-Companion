@@ -14,6 +14,13 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('cashflow_companion')
 
+def length_check(user_input):
+    if len(user_input) <= 15: 
+        return True
+    else: 
+        print("Your input exceeds the max length of 15 characters. Please try again.") 
+        return False
+
 # Home menu functions
 
 def get_budgets():
@@ -93,8 +100,11 @@ def create_new_budget():
         print("\nReturning home...\n")
         main()
     else: 
-        print("\nOK, what is the name of your new budget?")
-        budget_name = input("Please type the name and hit enter:\n")
+        while True: 
+            print("\nOK, what is the name of your new budget?")
+            budget_name = input("Please type the name and hit enter:\n")
+            if length_check(budget_name):
+                break
         if budget_name.lower() == 'home':
             main()
 
@@ -120,7 +130,7 @@ def create_new_budget():
                 try: 
                     worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
                 except gspread.exceptions.APIError:
-                    # This catches were the user attempts to use the same name for a budget twice
+                    # This catches where the user attempts to use the same name for a budget twice
                     print("This budget name is already taken.")                    
                     create_new_budget()
                 else:
@@ -172,8 +182,11 @@ def edit_budget():
     else: 
         if name_or_amount.upper() == 'N':
             while True: 
-                print(f"\nOK, what would you like the new name for the '{budget_name}' budget to be?")
-                new_name = input("Please type the name and hit enter:\n")
+                while True: 
+                    print(f"\nOK, what would you like the new name for the '{budget_name}' budget to be?")
+                    new_name = input("Please type the name and hit enter:\n")
+                    if length_check(new_name):
+                        break
                 if new_name.lower() == 'home':
                     main()
                 else:
@@ -348,8 +361,11 @@ def new_expense(budget_name, worksheet):
     """
     Allows the user to add a new expense to their desired budget
     """
-    print("\nWhat is the name of your new expense?")
-    name = input("Please type the name and hit enter:\n")
+    while True:
+        print("\nWhat is the name of your new expense?")
+        name = input("Please type the name and hit enter:\n")
+        if length_check(name):
+            break
     if name.lower() == 'home':
         main()
     else: 
@@ -504,8 +520,11 @@ def edit_expense(budget_name, worksheet):
             name_or_amount = input("Please type 'N' for name or 'A' for amount:\n")
     else: 
         if name_or_amount.upper() == 'N':
-            print(f"\nOK, what would you like the new name for this expense to be?")
-            new_name = input("Please type the name and hit enter:\n")
+            while True: 
+                print(f"\nOK, what would you like the new name for this expense to be?")
+                new_name = input("Please type the name and hit enter:\n")
+                if length_check(new_name):
+                    break
             if new_name.lower() == 'home':
                 main()
             else:
