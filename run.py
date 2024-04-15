@@ -615,9 +615,10 @@ def under_over_report():
     print("\nHere are your current calculations:\n")
     worksheets = SHEET.worksheets()
     for worksheet in worksheets: 
-        budget_name = worksheet.acell('A1').value
-        running_total = worksheet.acell('B2').value
-        amount_budgeted = worksheet.acell('B3').value
+        value_range = worksheet.get('A1:B3')
+        budget_name = value_range[0][0]
+        running_total = value_range[1][1]
+        amount_budgeted = value_range[2][1]
         percentage_spent = (float(running_total) / float(amount_budgeted)) *100
         formatted_spent = round(percentage_spent, 2)
         if formatted_spent < formatted_percentage:
@@ -640,38 +641,33 @@ def last_three_report():
     print("Where there are less than three, all expenses in that budget are displayed.")
     worksheets = SHEET.worksheets()
     for worksheet in worksheets: 
-        budget_name = worksheet.acell('A1').value
-        running_total = worksheet.acell('B2').value
-        amount_budgeted = worksheet.acell('B3').value
+        value_range = worksheet.get('A1:B3')
+        budget_name = value_range[0][0]
+        running_total = value_range[1][1]
+        amount_budgeted = value_range[2][1]
         print(f"\n{budget_name} - £{running_total} / £{amount_budgeted}")
         
-        num = 4
-        expenses = []
-        while True:
-            values_list = worksheet.row_values(num)
-            if not values_list:
-                break
-            current_expense = []
-            for row in values_list:
-                current_expense.append(row)
-            num += 1
-            expenses.append(current_expense)
-        
-        if not expenses: 
-            print("No expenses logged yet.")
-        else: 
+        all_rows = worksheet.get_all_records()
+        all_expenses = all_rows[2:]
+        all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
+  
+        if not all_expenses:
+            print("---> No expenses logged yet.")
+        else:
             loop_counter = 0
-            while True:
+            while True: 
                 if loop_counter == 3:
                     break
-                if not expenses:
+                if not all_expenses_list: 
                     break
-                for expense in expenses:
+                # use the fact that None is falsy to break the while loop when the list has no more expenses in it before reaching 5
+                for expense in reversed(all_expenses_list):
                     if loop_counter == 3:
                         break
-                    print(f"---> {expenses[-1][0]}: £{expenses[-1][1]}")
-                    expenses.pop (-1)
-                    loop_counter += 1       
+                    formatted_number = "{:.2f}".format(expense[1])
+                    print(f"---> {expense[0]}: £{formatted_number}")
+                    loop_counter += 1
+                break
 
     home = input("\nWhen you're ready to return home, type 'home' here and hit enter:\n")
     while True: 
@@ -703,33 +699,30 @@ def every_expense_report():
             break
               
     worksheet = SHEET.get_worksheet(index_of_choice) 
-    budget_name = worksheet.acell('A1').value
-    running_total = worksheet.acell('B2').value
-    amount_budgeted = worksheet.acell('B3').value
+    value_range = worksheet.get('A1:B3')
+    budget_name = value_range[0][0]
+    running_total = value_range[1][1]
+    amount_budgeted = value_range[2][1]
     print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount Budgeted: £{amount_budgeted}")
 
-    # use the fact that None is falsy to break the while loop when the worksheet has no more expenses in it
-    num = 4
-    expenses = []
-    while True:
-        values_list = worksheet.row_values(num)
-        if not values_list:
-            break
-        current_expense = []
-        for row in values_list:
-            current_expense.append(row)
-        num += 1
-        expenses.append(current_expense)
-
-    if not expenses: 
+    all_rows = worksheet.get_all_records()
+    all_expenses = all_rows[2:]
+    all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
+   
+    if not all_expenses: 
         print("\nNo expenses logged yet.")
     else: 
         print("\nAll Expenses:\n")
         number = 1
-        while expenses:
-            print(f"{number}. {expenses[0][0]}: £{expenses[0][1]}")
-            expenses.pop(0)
-            number += 1
+        while True: 
+            # use the fact that None is falsy to break the while loop when the list has no more expenses in it before reaching 5
+            if not all_expenses_list: 
+                break
+            for expense in all_expenses_list:
+                formatted_number = "{:.2f}".format(expense[1])
+                print(f"{number}. {expense[0]}: £{formatted_number}")
+                number += 1
+            break
     home = input("\nWhen you're ready to return home, type 'home' here and hit enter:\n")
     while True: 
         if home.lower() == 'home':
