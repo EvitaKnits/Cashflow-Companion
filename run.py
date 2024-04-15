@@ -471,25 +471,25 @@ def edit_expense(budget_name, worksheet):
     Allows the user to edit a specific expense from their desired budget. Then it
     returns the user to that budget and the expense action menu
     """
-    # use the fact that None is falsy to break the while loop when the worksheet has no more expenses in it
-    num = 4
-    expenses = []
-    while True:
-        values_list = worksheet.row_values(num)
-        if not values_list or not any(values_list):
-            break
-        expenses.append(values_list)
-        num += 1
 
-    if not expenses: 
+    all_rows = worksheet.get_all_records()
+    all_expenses = all_rows[2:]
+    all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
+
+    if not all_expenses: 
         print("\nNo expenses logged yet.")
     else: 
         print("\nAll Expenses:\n")
         number = 1
-        while expenses:
-                print(f"{number}. {expenses[0][0]}: £{expenses[0][1]}")
-                expenses.pop(0)
+        while True: 
+            # use the fact that None is falsy to break the while loop when the list has no more expenses in it before reaching 5
+            if not all_expenses_list: 
+                break
+            for expense in all_expenses_list:
+                formatted_number = "{:.2f}".format(expense[1])
+                print(f"{number}. {expense[0]}: £{formatted_number}")
                 number += 1
+            break
     print("\nWhich expense would you like to edit?")
     select_expense = input("Please type the corresponding number and hit enter:\n")
     number_rows = worksheet.get_all_values()
