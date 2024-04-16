@@ -16,13 +16,14 @@ SHEET = GSPREAD_CLIENT.open('cashflow_companion')
 
 def length_check(user_input):
     """
-    Enforces a 15 character limit on text inputs when called. This is used for budget
-    and expense names.
+    Enforces a minimum of 1 chraracter and maximum of 15 characters on text inputs 
+    when called. This is used for budget and expense names.
     """
-    if len(user_input) <= 15: 
-        return True
+    if len(user_input) <= 15 and len(user_input) >= 1: 
+        stripped_input = user_input.strip()
+        return stripped_input
     else: 
-        print("Your input exceeds the max length of 15 characters. Please try again.") 
+        print("Your input must be between 1 and 15 characters long. Please try again.") 
         return False
 
 def get_data(api_call, *args):
@@ -286,7 +287,10 @@ def edit_budget():
 
     while True:  
         if budget_choice.lower() == 'home':
-                main()
+            main()
+        if budget_choice == '':
+            print("Blank values not accepted.")
+            edit_budget()
         if budget_choice.upper() not in letters:
             print("\nThis is not a letter. Please check again.")
             budget_choice = input("Please type the corresponding letter and hit enter:\n")
@@ -341,13 +345,13 @@ def edit_budget():
                     except:
                         # This catches all other exceptions
                         print("Sorry, something went wrong. Returning home...")                    
-                        main()
-                    else:
+                        main()    
+                    else: 
                         print(f"\nChanging the name of your '{budget_name}' budget to '{new_name}'...")
-                        write_data('cell update', worksheet, 1, 1, new_name)
+                        write_data('cell_update', worksheet, 1, 1, new_name)
                         print("\nSuccessfully changed.")
                         print("\nReturning home...\n")
-                        main()
+                        main()                    
         else: 
             print(f"\nOK, how much would you like to allocate to '{budget_name}' now?")
             new_amount = input("Please type the amount (numbers only) and hit enter:\n")
@@ -387,6 +391,9 @@ def delete_budget():
     while True: 
         if budget_choice.lower() == 'home':
             main()
+        if budget_choice == '':
+            print("Blank values not accepted.")
+            delete_budget()
         if budget_choice.upper() not in letters:
             print("\nThis is not a letter. Please check again.")
             budget_choice = input("Please type the corresponding letter and hit enter:\n")
@@ -441,7 +448,10 @@ def expense_menu_budget_choice():
 
     while True:  
         if budget_choice.lower() == 'home':
-                main()
+            main()
+        if budget_choice == '':
+            print("Blank values not accepted.")
+            expense_menu_budget_choice()
         if budget_choice.upper() not in letters:
             print("\nThis is not a letter. Please check again.")
             budget_choice = input("Please type the corresponding letter and hit enter:\n")
@@ -857,7 +867,10 @@ def every_expense_report():
     
     while True:  
         if budget_choice.lower() == 'home':
-                main()
+            main()
+        if budget_choice == '':
+            print("Blank values not accepted.")
+            every_expense_report()
         if budget_choice.upper() not in letters:
             print("\nThis is not a letter. Please check again.")
             budget_choice = input("Please type the corresponding letter and hit enter:\n")
