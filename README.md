@@ -305,6 +305,8 @@ flowchart TD
 
 ### Exception Handling
 
+I struck a balance between centralising the exception handling when there were mulitple instances of the same request, and including the exception handling directly in the original function when there was only one of that type of request, e.g. 'worksheets' was used a lot but 'update_title' was used only once. So I have a section in the 'get_data' function for getting the worksheets, but not for updating a title of a worksheet.
+
 #### Attempting to create two worksheets with the same name
 
 `gspread.exceptions.APIError` is raised when a user attempts to create a new budget (which in turn creates a new worksheet in the Google Sheet) with the same name. It also occurs if they try to edit an existing budget and give it the same name as another existing budget. 

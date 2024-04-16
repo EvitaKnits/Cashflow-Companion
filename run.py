@@ -15,12 +15,116 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('cashflow_companion')
 
 def length_check(user_input):
+    """
+    Enforces a 15 character limit on text inputs when called. This is used for budget
+    and expense names.
+    """
     if len(user_input) <= 15: 
         return True
     else: 
         print("Your input exceeds the max length of 15 characters. Please try again.") 
         return False
 
+def get_data(api_call, *args):
+    """
+    Calls the API to get all the different types of data the program needs for those types that
+    are used more than once. Catches 429 exceptions which are thrown when your API call quota is 
+    exceeded and exits the program. Also catches any other exception when calling the API in a 
+    generic fashion and starts the program again.
+    """
+    if api_call == "all_worksheets":
+        try:
+            return (SHEET.worksheets())
+        except gspread.exceptions.APIError as e: 
+            if e.response.status_code == 429:
+                print("System busy. Please try again in one minute.")
+                exit()
+        except:
+            print("Sorry, something went wrong. Returning you home...")
+            main()
+    elif api_call == "one_cell":
+        try: 
+            worksheet = args[0]
+            cell_address = args[1]
+            return worksheet.acell(cell_address)
+        except gspread.exceptions.APIError as e: 
+            if e.response.status_code == 429:
+                print("System busy. Please try again in one minute.")
+                exit()
+        except:
+            print("Sorry, something went wrong. Returning you home...")
+            main()
+    elif api_call == 'get_records':
+        try:
+            worksheet = args[0]
+            return worksheet.get_all_records()
+        except gspread.exceptions.APIError as e: 
+            if e.response.status_code == 429:
+                print("System busy. Please try again in one minute.")
+                exit()
+        except:
+            print("Sorry, something went wrong. Returning you home...")
+            main()
+    elif api_call == 'get_info':
+        try:
+            worksheet = args[0]
+            range = args[1]
+            return worksheet.get(range)
+        except gspread.exceptions.APIError as e: 
+            if e.response.status_code == 429:
+                print("System busy. Please try again in one minute.")
+                exit()
+        except:
+            print("Sorry, something went wrong. Returning you home...")
+            main()
+    elif api_call == 'get_values':
+        try: 
+            worksheet = args[0]
+            return worksheet.get_all_values()
+        except gspread.exceptions.APIError as e: 
+            if e.response.status_code == 429:
+                print("System busy. Please try again in one minute.")
+                exit()
+        except:
+            print("Sorry, something went wrong. Returning you home...")
+            main()
+    elif api_call == 'get_rows':
+        try: 
+            worksheet = args[0]
+            row_index = args[1]
+            return worksheet.row_values(row_index)
+        except gspread.exceptions.APIError as e: 
+            if e.response.status_code == 429:
+                print("System busy. Please try again in one minute.")
+                exit()
+        except:
+            print("Sorry, something went wrong. Returning you home...")
+            main()
+
+
+def write_data(api_call, *args):
+    """
+    Calls the API to write all the different types of data the program needs for those types that
+    are used more than once to update in the Google sheet. Catches 429 exceptions which are 
+    thrown when your API call quota is exceeded and exits the program. Also catches any other 
+    exception when calling the API in a generic fashion and starts the program again.
+    """
+    if api_call == 'cell_update':
+        try:
+            worksheet = args[0]
+            row = args[1]
+            column = args[2]
+            value = args[3]
+            worksheet.update_cell(row, column, value)
+        except gspread.exceptions.APIError as e: 
+            if e.response.status_code == 429:
+                print("System busy. Please try again in one minute.")
+                exit()
+        except:
+            print("Sorry, something went wrong. Returning you home...")
+            main()
+            
+        
 # Home menu functions
 
 def get_budgets():
@@ -28,7 +132,7 @@ def get_budgets():
     Collects the names, running totals and allocated amounts of each budget available 
     in the spreadsheet
     """
-    budgets_list = SHEET.worksheets()
+    budgets_list = get_data("all_worksheets")
     letter = 'A'
     for budget in budgets_list:
         value_range = budget.get('A1:B3')
@@ -91,7 +195,7 @@ def create_new_budget():
     Google sheet with it. Validates that the inputs are provided in the desired format. 
     Returns the user home. 
     """
-    list_budgets = SHEET.worksheets()
+    list_budgets = get_data("all_worksheets")
     number_budgets = len(list_budgets)
 
     if number_budgets >= 20:
@@ -129,14 +233,42 @@ def create_new_budget():
             else: 
                 try: 
                     worksheet = SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
-                except gspread.exceptions.APIError:
-                    # This catches where the user attempts to use the same name for a budget twice
-                    print("This budget name is already taken.")                    
-                    create_new_budget()
+                except gspread.exceptions.APIError as e: 
+                    if e.response.status_code == 429:
+                        # This catches where this request pushes over the quota limit
+                        print("System busy. Please try again in one minute.")
+                        exit()
+                    elif e.response.status_code == 400:
+                        # This catches where the user attempts to use the same name for a budget twice
+                        print("This budget name is already taken.")
+                        create_new_budget()
+                    else:
+                        # This catches all other APIError codes
+                        print("Sorry, something went wrong. Returning home...")                    
+                        main()
+                except:
+                    # This catches all other exceptions
+                    print("Sorry, something went wrong. Returning home...")                    
+                    main()
                 else:
                     budget_amount = format(float_amount, '.2f')
-                    current_budget_worksheet = SHEET.get_worksheet(-1)
-                    current_budget_worksheet.update([[budget_name, '',] , ['Running Total', 0, ], ['Amount Budgeted', budget_amount]])
+                    all_worksheets = get_data("all_worksheets")
+                    current_budget_worksheet = all_worksheets[-1]
+                    try:
+                        current_budget_worksheet.update([[budget_name, '',] , ['Running Total', 0, ], ['Amount Budgeted', budget_amount]])
+                    except gspread.exceptions.APIError as e: 
+                        if e.response.status_code == 429:
+                            # This catches where this request pushes over the quota limit
+                            print("System busy. Please try again in one minute.")
+                            exit()
+                        else:
+                            # This catches all other APIError codes
+                            print("Sorry, something went wrong. Returning home...")                    
+                            main()
+                    except:
+                        # This catches all other exceptions
+                        print("Sorry, something went wrong. Returning home...")                    
+                        main()
                     print(f"\nSuccessfully added your new '{budget_name}' budget and allocated £{budget_amount}.")
                     print("\nReturning home...\n")
                     main()
@@ -150,7 +282,7 @@ def edit_budget():
     print("\nWhich budget would you like to update?")
     budget_choice = input("Please type the corresponding letter and hit enter:\n")
     letters = string.ascii_uppercase
-    all_worksheets = SHEET.worksheets()
+    all_worksheets = get_data("all_worksheets")
 
     while True:  
         if budget_choice.lower() == 'home':
@@ -167,8 +299,9 @@ def edit_budget():
         else:     
             break  
         
-    worksheet = SHEET.get_worksheet(index_of_choice) 
-    budget_name = worksheet.acell('A1').value
+    all_worksheets = get_data("all_worksheets")
+    worksheet = all_worksheets[index_of_choice]
+    budget_name = get_data('one_cell', worksheet, 'A1').value
     print(f"\nWe're updating the '{budget_name}' budget.")
     print("\nWould you like to change the name or the amount?")
     name_or_amount = input("Please type 'N' for name or 'A' for amount:\n")
@@ -192,13 +325,26 @@ def edit_budget():
                 else:
                     try: 
                         worksheet.update_title(new_name)
-                    except gspread.exceptions.APIError:
-                        # This catches were the user attempts to use the same name for a budget twice
-                        print("This budget name is already taken.")  
-                        continue
+                    except gspread.exceptions.APIError as e: 
+                        if e.response.status_code == 429:
+                            # This catches where this request pushes over the quota limit
+                            print("System busy. Please try again in one minute.")
+                            exit()
+                        elif e.response.status_code == 400:
+                            # This catches where the user attempts to use the same name for a budget twice
+                            print("This budget name is already taken.")
+                            edit_budget()
+                        else:
+                            # This catches all other APIError codes
+                            print("Sorry, something went wrong. Returning home...")                    
+                            main()
+                    except:
+                        # This catches all other exceptions
+                        print("Sorry, something went wrong. Returning home...")                    
+                        main()
                     else:
                         print(f"\nChanging the name of your '{budget_name}' budget to '{new_name}'...")
-                        worksheet.update_cell(1, 1, new_name)
+                        write_data('cell update', worksheet, 1, 1, new_name)
                         print("\nSuccessfully changed.")
                         print("\nReturning home...\n")
                         main()
@@ -221,7 +367,7 @@ def edit_budget():
                 else: 
                     print(f"\nAllocating £{new_amount} to your '{budget_name}' budget...\n")
                     formatted_number = "{:.2f}".format(float_amount)
-                    worksheet.update_cell(3, 2, formatted_number)
+                    write_data('cell_update', worksheet, 3, 2, formatted_number)
                     print("Successfully changed.")
                     print("\nReturning home...\n")
                     main()
@@ -236,7 +382,7 @@ def delete_budget():
     print("\nOK, which budget would you like to delete?")
     budget_choice = input("Please type the corresponding letter and hit enter:\n")
     letters = string.ascii_uppercase
-    all_worksheets = SHEET.worksheets()
+    all_worksheets = get_data("all_worksheets")
 
     while True: 
         if budget_choice.lower() == 'home':
@@ -253,8 +399,9 @@ def delete_budget():
         else:
             break   
     
-    worksheet = SHEET.get_worksheet(index_of_choice) 
-    budget_name = worksheet.acell('A1').value
+    all_worksheets = get_data("all_worksheets")
+    worksheet = all_worksheets[index_of_choice]
+    budget_name = get_data('one_cell', worksheet, 'A1').value
     print(f"\nAre you sure you want to delete your '{budget_name}' budget?")
     confirm_choice = input("Type 'Y' for yes or 'N' for no and hit enter:\n")
     while confirm_choice.upper() != 'Y' and confirm_choice.upper() != 'N':
@@ -266,7 +413,15 @@ def delete_budget():
             confirm_choice = input("Type 'Y' for yes or 'N' for no and hit enter:\n")
     else: 
         if confirm_choice.upper() == 'Y':
-            SHEET.del_worksheet(worksheet)
+            try:
+                SHEET.del_worksheet(worksheet)
+            except gspread.exceptions.APIError as e: 
+                if e.response.status_code == 429:
+                    print("System busy. Please try again in one minute.")
+                    exit()
+            except:
+                print("Sorry, something went wrong. Returning you home...")
+                main()
             print(f"\nYour '{budget_name}' budget has been deleted.")
             print("\nReturning home...\n")
             main()
@@ -282,7 +437,7 @@ def expense_menu_budget_choice():
     print("\nOK, in which budget would you like to add, edit or delete an expense?")
     budget_choice = input("Please type the corresponding letter and hit enter:\n")
     letters = string.ascii_uppercase
-    all_worksheets = SHEET.worksheets()
+    all_worksheets = get_data("all_worksheets")
 
     while True:  
         if budget_choice.lower() == 'home':
@@ -299,14 +454,15 @@ def expense_menu_budget_choice():
         else:     
             break   
             
-    worksheet = SHEET.get_worksheet(index_of_choice) 
-    value_range = worksheet.get('A1:B3')
+    all_worksheets = get_data("all_worksheets")
+    worksheet = all_worksheets[index_of_choice]
+    value_range = get_data('get_info', worksheet, 'A1:B3')
     budget_name = value_range[0][0]
     running_total = value_range[1][1]
     amount_budgeted = value_range[2][1]
     print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount Budgeted: £{amount_budgeted}")
     
-    all_rows = worksheet.get_all_records()
+    all_rows = get_data('get_records', worksheet)
     all_expenses = all_rows[2:]
     all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
   
@@ -391,12 +547,20 @@ def new_expense(budget_name, worksheet):
             new_row.append(format(float_amount, '.2f'))
             formatted_number = "{:.2f}".format(float_amount)
             print(f"\nAdding your new expense: '{name}: £{formatted_number}'...")
-            worksheet.append_row(new_row)
+            try:
+                worksheet.append_row(new_row)
+            except gspread.exceptions.APIError as e: 
+                if e.response.status_code == 429:
+                    print("System busy. Please try again in one minute.")
+                    exit()
+            except:
+                print("Sorry, something went wrong. Returning you home...")
+                main()
             print("\nSuccessfully added.")
             print(f"\nCalculating the new running total for your '{budget_name}' budget...")
-            running_total = float(worksheet.acell('B2').value)
+            running_total = float(get_data('one_cell', worksheet, 'B2').value)
             running_total += float_amount 
-            worksheet.update_cell(2, 2, running_total)
+            write_data('cell_update', worksheet, 2, 2, running_total)
             print("\nSuccessfully calculated and updated.")
             print(f"\nReturning to '{budget_name}' budget.")
             break
@@ -407,7 +571,7 @@ def delete_expense(budget_name, worksheet):
     Allows the user to delete a specific expense from their desired budget. Then it
     returns the user to that budget and the expense action menu
     """
-    all_rows = worksheet.get_all_records()
+    all_rows = get_data('get_records', worksheet)
     all_expenses = all_rows[2:]
     all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
 
@@ -423,7 +587,7 @@ def delete_expense(budget_name, worksheet):
 
     print("\nWhich expense would you like to delete?")
     select_expense = input("Please type the corresponding number and hit enter:\n")
-    number_rows = worksheet.get_all_values()
+    number_rows = get_data('get_values', worksheet)
 
     while True:  
         if select_expense.lower() == 'home':
@@ -451,12 +615,20 @@ def delete_expense(budget_name, worksheet):
             confirm_choice = input("Type 'Y' for yes or 'N' for no and hit enter:\n")
     else:
         if confirm_choice.upper() == 'Y':
-            running_total = float(worksheet.acell('B2').value)
-            deleted_expense = worksheet.row_values(row_index)
+            running_total = float(get_data('one_cell', worksheet, 'B2').value)
+            deleted_expense = get_data('get_rows', worksheet, row_index)
             deleted_expense_amount = deleted_expense[1]
             running_total -= float(deleted_expense_amount)
-            worksheet.update_cell(2, 2, running_total)
-            worksheet.delete_rows(row_index)
+            write_data('cell_update', worksheet, 2, 2, running_total)
+            try: 
+                worksheet.delete_rows(row_index)
+            except gspread.exceptions.APIError as e: 
+                if e.response.status_code == 429:
+                    print("System busy. Please try again in one minute.")
+                    exit()
+            except:
+                print("Sorry, something went wrong. Returning you home...")
+                main()
             print(f"\nThis expense has been deleted.")
             print(f"\nCalculating the new running total for your '{budget_name}' budget...")
             print("\nSuccessfully calculated and updated.")
@@ -472,7 +644,7 @@ def edit_expense(budget_name, worksheet):
     returns the user to that budget and the expense action menu
     """
 
-    all_rows = worksheet.get_all_records()
+    all_rows = get_data('get_records', worksheet)
     all_expenses = all_rows[2:]
     all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
 
@@ -492,7 +664,7 @@ def edit_expense(budget_name, worksheet):
             break
     print("\nWhich expense would you like to edit?")
     select_expense = input("Please type the corresponding number and hit enter:\n")
-    number_rows = worksheet.get_all_values()
+    number_rows = get_data('get_values', worksheet)
 
     while True:  
         if select_expense.lower() == 'home':
@@ -529,7 +701,7 @@ def edit_expense(budget_name, worksheet):
                 main()
             else:
                 print(f"\nChanging the name of this expense to '{new_name}...'")
-                worksheet.update_cell(row_index, 1, new_name)
+                write_data('cell_update', worksheet, row_index, 1, new_name)
                 print("\nSuccessfully changed.")
                 print(f"\nReturning to '{budget_name}' budget...")
         else: 
@@ -551,15 +723,15 @@ def edit_expense(budget_name, worksheet):
                 else: 
                     formatted_number = "{:.2f}".format(float_amount)
                     print(f"\nChanging the amount of this expense to £{formatted_number}...\n")
-                    old_amount_row = worksheet.row_values(row_index)
+                    old_amount_row = get_data('get_rows', worksheet, row_index)
                     old_amount = old_amount_row[1]
-                    worksheet.update_cell(row_index, 2, formatted_number)
+                    write_data('cell_update', worksheet, row_index, 2, formatted_number)
                     print("Successfully changed.")
                     print(f"\nCalculating the new running total for your '{budget_name}' budget...")
-                    running_total = float(worksheet.acell('B2').value)
+                    running_total = float(get_data('one_cell', worksheet, 'B2').value)
                     running_total -= float(old_amount)
                     running_total += float_amount 
-                    worksheet.update_cell(2, 2, running_total)
+                    write_data('cell_update', worksheet, 2, 2, running_total)
                     print("\nSuccessfully calculated and updated.")
                     print(f"\nReturning to '{budget_name}' budget...")
                     break
@@ -613,9 +785,9 @@ def under_over_report():
     print("\nThen calculates an 'over'/'under'/'spot on' value for each budget.")
 
     print("\nHere are your current calculations:\n")
-    worksheets = SHEET.worksheets()
+    worksheets = get_data("all_worksheets")
     for worksheet in worksheets: 
-        value_range = worksheet.get('A1:B3')
+        value_range = get_data('get_info', worksheet, 'A1:B3')
         budget_name = value_range[0][0]
         running_total = value_range[1][1]
         amount_budgeted = value_range[2][1]
@@ -639,15 +811,15 @@ def under_over_report():
 def last_three_report():
     print("\nHere are the latest three expenses from each budget:")
     print("Where there are less than three, all expenses in that budget are displayed.")
-    worksheets = SHEET.worksheets()
+    worksheets = get_data("all_worksheets")
     for worksheet in worksheets: 
-        value_range = worksheet.get('A1:B3')
+        value_range = get_data('get_info', worksheet, 'A1:B3')
         budget_name = value_range[0][0]
         running_total = value_range[1][1]
         amount_budgeted = value_range[2][1]
         print(f"\n{budget_name} - £{running_total} / £{amount_budgeted}")
         
-        all_rows = worksheet.get_all_records()
+        all_rows = get_data('get_records', worksheet)
         all_expenses = all_rows[2:]
         all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
   
@@ -681,7 +853,7 @@ def every_expense_report():
     print("\nFrom which budget would you like to see all of the expenses?")
     budget_choice = input("Please type the corresponding letter and hit enter:\n")
     letters = string.ascii_uppercase
-    all_worksheets = SHEET.worksheets()
+    all_worksheets = get_data("all_worksheets")
     
     while True:  
         if budget_choice.lower() == 'home':
@@ -698,14 +870,15 @@ def every_expense_report():
         else:     
             break
               
-    worksheet = SHEET.get_worksheet(index_of_choice) 
-    value_range = worksheet.get('A1:B3')
+    all_worksheets = get_data("all_worksheets")
+    worksheet = all_worksheets[index_of_choice]
+    value_range = get_data('get_info', worksheet, 'A1:B3')
     budget_name = value_range[0][0]
     running_total = value_range[1][1]
     amount_budgeted = value_range[2][1]
     print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount Budgeted: £{amount_budgeted}")
 
-    all_rows = worksheet.get_all_records()
+    all_rows = get_data('get_records', worksheet)
     all_expenses = all_rows[2:]
     all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
    
