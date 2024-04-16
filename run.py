@@ -478,6 +478,9 @@ def expense_menu_budget_choice():
   
     if not all_expenses:
         print("\nNo expenses logged yet.")
+        print("You can only add a new expense.")
+        new_expense(budget_name, worksheet)
+        
     else:
         print("\nMost Recent Expenses:\n")
         number = 1
