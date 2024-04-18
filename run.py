@@ -72,32 +72,6 @@ def access_data(api_call, *args):
         print("Sorry, something went wrong. Returning you home...")
         main()
 
-# Common action functions
-
-def get_budgets(): 
-    """ Collects budget names, running totals, and allocated amounts from the 
-    spreadsheet, then prints them in a consistent format.
-    """
-    # Retrieve all worksheets (budgets) from the spreadsheet.
-    budgets_list = access_data("all_worksheets")
-
-    # Informs user if no budgets exist.
-    if budgets_list is None: 
-        print("You have not added any budgets yet. Please select option 1 below to add some.")
-    else:
-        # Iterates through each budget and prints its details, lettering them sequentially.
-        letter = 'A'
-        for budget in budgets_list:
-            value_range = budget.get('A1:B3')
-            budget_name = value_range[0][0]
-            running_total = value_range[1][1]
-            amount_budgeted = value_range[2][1]
-            print(f'{letter}-> {budget_name}: £{running_total} / £{amount_budgeted}')
-            # This increments the letters alongside the budget names each time.
-            letters = string.ascii_uppercase
-            index = letters.index(letter)
-            letter = letters[index + 1]
-
 
 def valid_budget_choice(budget_choice):
     """Validates user input received from the calling function and returns 
@@ -121,6 +95,96 @@ def valid_budget_choice(budget_choice):
         else:
             return "valid"
 
+
+# Common action functions
+
+def get_budget_details(worksheet):
+    """ Retrieves budget details from the given worksheet. """
+    value_range = access_data('get_info', worksheet, 'A1:B3')
+    budget_name = value_range[0][0]
+    running_total = value_range[1][1]
+    amount_budgeted = value_range[2][1]
+    return budget_name, running_total, amount_budgeted
+
+def get_budgets(type, index_of_choice):
+    """ Collects budget names, running totals, and allocated amounts from the 
+    spreadsheet, then prints them in a consistent format.
+    """
+    # Retrieve all budgets/worksheets from the spreadsheet.
+    all_worksheets = access_data("all_worksheets")
+
+    # Retrieves a specific budget/worksheet.
+    if type == 'one':
+        worksheet = all_worksheets[index_of_choice]
+        budget_name, running_total, amount_budgeted = get_budget_details(worksheet)
+        return worksheet, budget_name, running_total, amount_budgeted
+    elif type == 'all':
+        if all_worksheets is None: 
+            print("You have not added any budgets yet. Please select option 1 from the main menu to add some.")
+        else:
+            # Iterates through each budget and prints its details, lettering them sequentially.
+            letter = 'A'
+            for worksheet in all_worksheets:
+                budget_name, running_total, amount_budgeted = get_budget_details(worksheet)
+                print(f'{letter}-> {budget_name}: £{running_total} / £{amount_budgeted}')
+                # This increments the letters alongside the budget names each time.
+                letters = string.ascii_uppercase
+                index = letters.index(letter)
+                letter = letters[index + 1]
+    elif type == 'last_three_report':
+        for worksheet in all_worksheets:
+                budget_name, running_total, amount_budgeted = get_budget_details(worksheet)
+                print(f"\n{budget_name} - £{running_total} / £{amount_budgeted}")
+                print_expenses(3, worksheet)
+        return
+
+def print_expenses(number, worksheet):
+    """
+    Prints the requested number of expenses in the required direction, depending on the function 
+    calling this function. Takes arguments for how many expenses to print and from which budget.
+    """
+    all_rows = access_data('get_records', worksheet)
+    all_expenses = all_rows[2:]
+    all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
+    # For no expenses
+    if not all_expenses:
+        print("\nNo expenses logged yet.")
+        return None
+    # For a specific number of expenses, printed in reverse order
+    elif number > 0:
+        loop_counter = 0
+        while True:
+            if loop_counter == number:
+                break
+            if not all_expenses_list:
+                break
+            # use the fact that None is falsy to break the while loop when the list has no more expenses in it before reaching 5
+            for expense in reversed(all_expenses_list):
+                if loop_counter == number:
+                    break
+                formatted_number = "{:.2f}".format(expense[1])
+                print(f"---> {expense[0]}: £{formatted_number}")
+                loop_counter += 1
+            break
+        return 1
+    # For all expenses
+    else: 
+        print("\nAll Expenses:\n")
+        number = 1
+        while True:
+            # use the fact that None is falsy to break the while loop when the list has no more expenses in it before reaching 5
+            if not all_expenses_list:
+                break
+            for expense in all_expenses_list:
+                # Displays all expenses in a numbered list.
+                formatted_number = "{:.2f}".format(expense[1])
+                print(f"{number}. {expense[0]}: £{formatted_number}")
+                number += 1
+            break
+        return
+        
+
+
 # Home menu functions
 
 def go_home():
@@ -129,7 +193,7 @@ def go_home():
     """
     # Prints the welcome message, current budget information and menu options.
     print("Welcome to Cashflow Companion!\n\nHere are your current budgets:\n")
-    get_budgets()
+    get_budgets("all", 0)
     print("\nWhat would you like to do?\n")
     print("1-> Create a new budget\n2-> Edit a budget\n3-> Delete a budget")
     print("4-> Add, edit or delete an expense\n5-> Generate a spending report\n")
@@ -402,45 +466,20 @@ def expense_menu_budget_choice():
         validity = valid_budget_choice(budget_choice)
 
     letters = string.ascii_uppercase
-    all_worksheets = access_data("all_worksheets")
     index_of_choice = letters.index(budget_choice.upper())
 
-    # Retrieves information about the selected budget and prints it
-    worksheet = all_worksheets[index_of_choice]
-    value_range = access_data('get_info', worksheet, 'A1:B3')
-    budget_name = value_range[0][0]
-    running_total = value_range[1][1]
-    amount_budgeted = value_range[2][1]
+    # Calls function to print budget info, receives the worksheet and budget name back.
+    worksheet, budget_name, running_total, amount_budgeted = get_budgets("one", index_of_choice)
     print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount Budgeted: £{amount_budgeted}")
+    print("\nRecent expenses:")
 
     # Retrieves recent expenses for the selected budget and prints them, if any.
-    all_rows = access_data('get_records', worksheet)
-    all_expenses = access_data('get_records', worksheet)[2:]
-    all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
-
-    # Explains there are no expenses yet and takes the user directly to new expense creation.
-    if not all_expenses:
-        print("\nNo expenses logged yet.\nYou can only add a new expense.")
+    expenses = print_expenses(3, worksheet)
+    if not expenses: 
+        print("\nYou can only add a new expense.")
         new_expense(budget_name, worksheet)
-
     else:
-        print("\nMost Recent Expenses:\n")
-        number = 1
-        loop_counter = 0
-        while True:
-            # use the fact that None is falsy to break the while loop when the list has no more expenses in it before reaching 5
-            if not all_expenses_list:
-                break
-            for expense in reversed(all_expenses_list):
-                if loop_counter == 5:
-                    break
-                formatted_number = "{:.2f}".format(expense[1])
-                print(f"{number}. {expense[0]}: £{formatted_number}")
-                number += 1
-                loop_counter += 1
-            break
-    # Proceeds to the expense action menu for the selected budget.
-    expense_menu_action_choice(budget_name, worksheet)
+        expense_menu_action_choice(budget_name, worksheet)
 
 def expense_menu_action_choice(budget_name, worksheet):
     """ Displays the expense-related action menu, allowing users to select an option. 
@@ -532,26 +571,9 @@ def edit_expense(budget_name, worksheet):
     """Enables the user to edit a specific expense within their chosen budget, then 
     returns to that budget's expense action menu.
     """
-    # Retrieves all expenses from the relevant budget worksheet.
-    all_rows = access_data('get_records', worksheet)
-    all_expenses = all_rows[2:]
-    all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
-
-    if not all_expenses:
-        print("\nNo expenses logged yet.")
-    else:
-        print("\nAll Expenses:\n")
-        number = 1
-        while True:
-            # use the fact that None is falsy to break the while loop when the list has no more expenses in it before reaching 5
-            if not all_expenses_list:
-                break
-            for expense in all_expenses_list:
-                # Displays all expenses in a numbered list.
-                formatted_number = "{:.2f}".format(expense[1])
-                print(f"{number}. {expense[0]}: £{formatted_number}")
-                number += 1
-            break
+    # Retrieves and prints all expenses from the relevant budget worksheet.
+    expenses = print_expenses(0,worksheet)
+        
     # Prompts user to select an expense to edit.
     print("\nWhich expense would you like to edit?")
     select_expense = input("Please type the corresponding number and hit enter:\n")
@@ -635,21 +657,8 @@ def delete_expense(budget_name, worksheet):
     """ Deletes a specific expense within a chosen budget, then returns to that budget's
     expense action menu.
     """
-    # Retrieves all expenses from the relevant budget's worksheet.
-    all_rows = access_data('get_records', worksheet)
-    all_expenses = all_rows[2:]
-    all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
-
-    # Informs where there are no expenses or if there are some, displays all of them.
-    if not all_expenses:
-        print("\nNo expenses logged yet.")
-    else:
-        print("\nAll Expenses:\n")
-        number = 1
-        for expense in all_expenses_list:
-            formatted_number = "{:.2f}".format(expense[1])
-            print(f"{number}. {expense[0]}: £{formatted_number}")
-            number += 1
+    # Retrieves and prints all expenses from the relevant budget worksheet.
+    expenses = print_expenses(0,worksheet)
 
     # Asks the user to select an expense to delete
     print("\nWhich expense would you like to delete?")
@@ -766,12 +775,11 @@ def under_over_report():
     print("\nHere are your current calculations:\n")
 
     # Retrieves budget information and calculates progress for each budget.
-    worksheets = access_data("all_worksheets")
-    for worksheet in worksheets:
-        value_range = access_data('get_info', worksheet, 'A1:B3')
-        budget_name = value_range[0][0]
-        running_total = value_range[1][1]
-        amount_budgeted = value_range[2][1]
+    all_worksheets = access_data("all_worksheets")
+    index_of_choice = 0
+    for worksheet in all_worksheets:
+        worksheet, budget_name, running_total, amount_budgeted = get_budgets("one", index_of_choice)
+        index_of_choice += 1
         percentage_spent = (float(running_total) / float(amount_budgeted)) * 100
         formatted_spent = round(percentage_spent, 2)
         """ 
@@ -803,37 +811,7 @@ def last_three_report():
     """
     print("\nHere are the latest three expenses from each budget:")
     print("Where there are less than three, all expenses in that budget are displayed.")
-    # Retrieves information for each budget and prints it
-    worksheets = access_data("all_worksheets")
-    for worksheet in worksheets:
-        value_range = access_data('get_info', worksheet, 'A1:B3')
-        budget_name = value_range[0][0]
-        running_total = value_range[1][1]
-        amount_budgeted = value_range[2][1]
-        print(f"\n{budget_name} - £{running_total} / £{amount_budgeted}")
-
-        # Retrieves the 3 (or fewer) expenses for each budget and prints them.
-        all_rows = access_data('get_records', worksheet)
-        all_expenses = all_rows[2:]
-        all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
-
-        if not all_expenses:
-            print("---> No expenses logged yet.")
-        else:
-            loop_counter = 0
-            while True:
-                if loop_counter == 3:
-                    break
-                if not all_expenses_list:
-                    break
-                # use the fact that None is falsy to break the while loop when the list has no more expenses in it before reaching 5
-                for expense in reversed(all_expenses_list):
-                    if loop_counter == 3:
-                        break
-                    formatted_number = "{:.2f}".format(expense[1])
-                    print(f"---> {expense[0]}: £{formatted_number}")
-                    loop_counter += 1
-                break
+    get_budgets("last_three_report", 0)
 
     # Reminds the user how to return home and provides an input field to do so.abs
     home = input("\nWhen you're ready to return home, type 'home' here and hit enter:\n")
@@ -862,32 +840,12 @@ def every_expense_report():
     index_of_choice = letters.index(budget_choice.upper())
 
     # Retrieves information for the chosen budget and prints it.
-    worksheet = all_worksheets[index_of_choice]
-    value_range = access_data('get_info', worksheet, 'A1:B3')
-    budget_name = value_range[0][0]
-    running_total = value_range[1][1]
-    amount_budgeted = value_range[2][1]
+    worksheet, budget_name, running_total, amount_budgeted = get_budgets("one", index_of_choice)
     print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount Budgeted: £{amount_budgeted}")
 
-    # Retrieves and prints all expenses from the chosen budget.
-    all_rows = access_data('get_records', worksheet)
-    all_expenses = all_rows[2:]
-    all_expenses_list = [list(dictionary.values()) for dictionary in all_expenses]
+     # Retrieves and prints all expenses from the relevant budget worksheet.
+    expenses = print_expenses(0,worksheet)
 
-    if not all_expenses:
-        print("\nNo expenses logged yet.")
-    else:
-        print("\nAll Expenses:\n")
-        number = 1
-        while True:
-            # use the fact that None is falsy to break the while loop when the list has no more expenses in it before reaching 5
-            if not all_expenses_list:
-                break
-            for expense in all_expenses_list:
-                formatted_number = "{:.2f}".format(expense[1])
-                print(f"{number}. {expense[0]}: £{formatted_number}")
-                number += 1
-            break
     # Reminds the user how to return home and provides an input field to do so.abs
     home = input("\nWhen you're ready to return home, type 'home' here and hit enter:\n")
     while True:
