@@ -13,6 +13,7 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('cashflow_companion')
+LETTERS = string.ascii_uppercase
 
 # Validation and exception functions:
 
@@ -77,7 +78,7 @@ def valid_budget_choice(budget_choice):
     """Validates user input received from the calling function and returns 
     its validity status.
     """
-    letters = string.ascii_uppercase
+    
     all_worksheets = access_data("all_worksheets")
     
     # Checks the validity of the budget choice and returns the result.
@@ -85,10 +86,10 @@ def valid_budget_choice(budget_choice):
         if budget_choice == '':
             print("Blank values not accepted.")
             return "invalid"
-        if budget_choice.upper() not in letters:
+        if budget_choice.upper() not in LETTERS:
             print("\nThis is not a letter. Please check again.")
             return "invalid"
-        index_of_choice = letters.index(budget_choice.upper())
+        index_of_choice = LETTERS.index(budget_choice.upper())
         if index_of_choice >= len(all_worksheets):
             print("\nThis is not an available option. Please check again.")
             return "invalid"
@@ -128,9 +129,8 @@ def get_budgets(type, index_of_choice):
                 budget_name, running_total, amount_budgeted = get_budget_details(worksheet)
                 print(f'{letter}-> {budget_name}: £{running_total} / £{amount_budgeted}')
                 # This increments the letters alongside the budget names each time.
-                letters = string.ascii_uppercase
-                index = letters.index(letter)
-                letter = letters[index + 1]
+                index = LETTERS.index(letter)
+                letter = LETTERS[index + 1]
     elif type == 'last_three_report':
         for worksheet in all_worksheets:
                 budget_name, running_total, amount_budgeted = get_budget_details(worksheet)
@@ -139,8 +139,7 @@ def get_budgets(type, index_of_choice):
         return
 
 def print_expenses(number, worksheet):
-    """
-    Prints the requested number of expenses in the required direction, depending on the function 
+    """ Prints the requested number of expenses in the required direction, depending on the function 
     calling this function. Takes arguments for how many expenses to print and from which budget.
     """
     all_rows = access_data('get_records', worksheet)
@@ -182,8 +181,6 @@ def print_expenses(number, worksheet):
                 number += 1
             break
         return
-        
-
 
 # Home menu functions
 
@@ -314,9 +311,8 @@ def edit_budget():
             main()
         validity = valid_budget_choice(budget_choice)
     
-    letters = string.ascii_uppercase
     all_worksheets = access_data("all_worksheets")
-    index_of_choice = letters.index(budget_choice.upper())
+    index_of_choice = LETTERS.index(budget_choice.upper())
 
     # Retrieves the worksheet corresponding to the selected budget.
     worksheet = all_worksheets[index_of_choice]
@@ -414,9 +410,8 @@ def delete_budget():
             main()
         validity = valid_budget_choice(budget_choice)
 
-    letters = string.ascii_uppercase
     all_worksheets = access_data("all_worksheets")
-    index_of_choice = letters.index(budget_choice.upper())
+    index_of_choice = LETTERS.index(budget_choice.upper())
     
     # Retrieves the name of the selected budget and asks for confirmation of deletion.
     worksheet = all_worksheets[index_of_choice]
@@ -465,8 +460,7 @@ def expense_menu_budget_choice():
             main()
         validity = valid_budget_choice(budget_choice)
 
-    letters = string.ascii_uppercase
-    index_of_choice = letters.index(budget_choice.upper())
+    index_of_choice = LETTERS.index(budget_choice.upper())
 
     # Calls function to print budget info, receives the worksheet and budget name back.
     worksheet, budget_name, running_total, amount_budgeted = get_budgets("one", index_of_choice)
@@ -835,9 +829,8 @@ def every_expense_report():
             main()
         validity = valid_budget_choice(budget_choice)
     
-    letters = string.ascii_uppercase
     all_worksheets = access_data("all_worksheets")
-    index_of_choice = letters.index(budget_choice.upper())
+    index_of_choice = LETTERS.index(budget_choice.upper())
 
     # Retrieves information for the chosen budget and prints it.
     worksheet, budget_name, running_total, amount_budgeted = get_budgets("one", index_of_choice)
