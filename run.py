@@ -157,7 +157,7 @@ def print_expenses(number, worksheet):
             for expense in reversed(all_expenses_list):
                 if loop_counter == number:
                     break
-                print(f" ---> {expense[0]}: £{'{:.2f}''.format(expense[1])}")
+                print(f"--->{expense[0]} : £{'{:.2f}'.format(expense[1])}")
                 loop_counter += 1
             break
         return 1
