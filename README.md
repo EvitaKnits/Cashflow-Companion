@@ -370,6 +370,21 @@ It was possible for a user to add an incomplete new budget (new worksheet in the
 #### Solution:
 I found that this was because I was adding the information in stages throughout that function, rather than in one big chunk at the end when all the data needed for a complete budget was present. I moved all of the writing of data to the Google sheet to the end of the function all together. 
 
+### Bug Five: 
+
+#### Issue: 
+When editing the amount allocated to a newly created budget, it did not format the number correctly, omitting the '.00' expected at the end. This is the format that is used everywhere else and the bug did not occur with budgets I had previously manually interacted with on the Google Sheet. The user would of course not have access to the Google Sheet so this needed resolving. 
+
+Example: <br>
+On budget creation: G-> Cosmetics: £0.00 / £150.00<br>
+On budget edit (bug): G-> Cosmetics: £0 / £150<br>
+On budget edit (bug resolved): G-> Cosmetics: £0.00 / £150.00
+
+#### Solution:
+I found out how to format the cell that the newly created budget's allocated amount went into on creation of the new worksheet dedicated to that budget. I did this using the gspread documentation. 
+
+I used the appropriate formatting so that any future number received by that cell would retain the correct formatting. I added this line in and it solved the issue:`current_budget_worksheet.format("B:B", { "numberFormat": { "type":"NUMBER", "pattern":"#####0.00" }})`
+
 ### Unresolved Bugs
 
 I don't believe I have left any of my bugs unresolved. 
