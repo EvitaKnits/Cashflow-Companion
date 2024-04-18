@@ -393,6 +393,7 @@ Although not in my final code, I learnt how to check if the user's input is alph
 Although not in my final code, I learnt how to check if the user's input is numeric here: https://www.w3schools.com/python/ref_string_isnumeric.asp#:~:text=The%20isnumeric()%20method%20returns,considered%20to%20be%20numeric%20values.
 I learnt how to get the trailing zero on my expense and budget amounts here: https://stackoverflow.com/questions/455612/limiting-floats-to-two-decimal-points and here: https://www.w3schools.com/python/python_string_formatting.asp
 I learnt about using dates in Python here: https://www.w3schools.com/python/python_datetime.asp
+I learnt how to format strings, especially adding two decimal places, here: https://www.w3schools.com/python/python_string_formatting.asp
 
 
 
