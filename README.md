@@ -409,6 +409,8 @@ Although not in my final code, I learnt how to check if the user's input is nume
 I learnt how to get the trailing zero on my expense and budget amounts here: https://stackoverflow.com/questions/455612/limiting-floats-to-two-decimal-points and here: https://www.w3schools.com/python/python_string_formatting.asp
 I learnt about using dates in Python here: https://www.w3schools.com/python/python_datetime.asp
 I learnt how to format strings, especially adding two decimal places, here: https://www.w3schools.com/python/python_string_formatting.asp
+How to split one line of code across multiple for line length PEP8 purposes: https://www.geeksforgeeks.org/python-multi-line-statements/
+
 
 
 
