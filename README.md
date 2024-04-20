@@ -385,6 +385,14 @@ I found out how to format the cell that the newly created budget's allocated amo
 
 I used the appropriate formatting so that any future number received by that cell would retain the correct formatting. I added this line in and it solved the issue:`current_budget_worksheet.format("B:B", { "numberFormat": { "type":"NUMBER", "pattern":"#####0.00" }})`
 
+### Bug Six
+
+#### Issue: 
+During testing I found that sometimes putting a lower case 'n' or 'a' in one of the 'Name or Amount' choices when editing a budget or an expense, didn't work. The entry was not recognised as a valid option. 
+
+#### Solution: 
+I found that this was because I was transforming the user input with `.upper()`, the first time the program asked for the name or amount. But I was not doing this on subsequent requests for this information AFTER the user had entered an invalid input. I moved the location of the `.upper()` so it catches both new inputs and inputs after an invalid input. 
+
 ### Unresolved Bugs
 
 I don't believe I have left any of my bugs unresolved. 

@@ -348,8 +348,8 @@ def edit_budget():
     # Asks the user which aspect they want to change
     print("\nWould you like to change the name or the amount?")
     name_or_amount = input("Please type 'N' for name or 'A' for "
-                           "amount:\n").upper()
-    while name_or_amount not in ("N", "A"):
+                           "amount:\n")
+    while name_or_amount.upper() not in ("N", "A"):
         if name_or_amount.lower() == "home":
             main()
         else:
@@ -434,13 +434,13 @@ def delete_budget():
     budget_name = access_data("one_cell", worksheet, "A1").value
     print(f"\nAre you sure you want to delete your '{budget_name}' budget?")
     confirm_choice = input("Type 'Y' for yes or 'N' for no and "
-                           "hit enter:\n").upper()
-    while confirm_choice not in ("Y", "N"):
+                           "hit enter:\n")
+    while confirm_choice.upper() not in ("Y", "N"):
         if confirm_choice.lower() == "home":
             main()
         else:
             confirm_choice = input("Invalid input. Type 'Y' for yes or 'N' for"
-                                   " no and hit enter:\n").upper()
+                                   " no and hit enter:\n")
 
     # Deletes budget if confirmed, or notifies if not, returns to main menu
     if confirm_choice == "Y":
@@ -611,8 +611,8 @@ def edit_expense(budget_name, worksheet):
     # Prompts user to choose editing expense name or amount
     print("\nWould you like to change the name or the amount?")
     name_or_amount = input("Please type 'N' for name or 'A' for "
-                           "amount:\n").upper()
-    while name_or_amount not in ("N", "A"):
+                           "amount:\n")
+    while name_or_amount.upper() not in ("N", "A"):
         if name_or_amount.lower() == "home":
             main()
         else:
@@ -713,13 +713,13 @@ def delete_expense(budget_name, worksheet):
     # Prompts user to confirm deletion and deletes if yes
     print(f"\nAre you sure you want to delete this expense?")
     confirm_choice = input("Type 'Y' for yes or 'N' for no and "
-                           "hit enter:\n").upper()
-    while confirm_choice not in ("Y", "N"):
+                           "hit enter:\n")
+    while confirm_choice.upper() not in ("Y", "N"):
         if confirm_choice.lower() == "home":
             main()
         else:
             confirm_choice = input("Invalid input. Type 'Y' for yes or 'N' for"
-                                   " no and hit enter:\n").upper()
+                                   " no and hit enter:\n")
 
     if confirm_choice.upper() == "Y":
         running_total = float(access_data("one_cell", worksheet, "B2").value)
