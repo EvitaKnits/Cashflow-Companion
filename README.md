@@ -412,14 +412,19 @@ I learnt how to format strings, especially adding two decimal places, here: http
 How to split one line of code across multiple for line length PEP8 purposes: https://www.geeksforgeeks.org/python-multi-line-statements/
 
 
-
-
 ### General Credit
 As ever, I want to thank the open source community for the great resources that teach me so much and also remind me of what I learnt in my Code Institute lessons, especially 
 
 I believe I have specifically credited where I used specific items in the previous section but this is a general credit to the reference resources I looked through to remind me how things worked as I went along. 
 
 Every effort has been made to credit everything used, but if I find anything else specific later on that needs crediting, that I missed, I will be sure to add it. 
+
+### Retrospective
+I learnt a lot during this project and this can be seen over the course of the iterative improvements made, viewable via my commit history. Two examples were: 
+
+1. Refactoring to reduce API calls: I had gotten into a situation where I was making so many API calls to retrieve information cell by cell, that I was frequently triggering 429 quota exceeded errors from the Google Sheet API. I had to reduce this to make my program more usable and drastically reduce the possibility of 429 errors. To do this, I switched to bulk data retrieval that was stored in a variable, then I was able to take the parts out of it that were relevant to the task at hand. One example of where I did this was in the welcome messaging - I was getting the budget name, the running total for that budget and the amount budgeted individually for each budget. With five budgets to display the information for that turned out to be 15 calls. The result of my refactoring in this way was that I reduced the calls for that section from 15 to 1.
+
+2. Refactoring to reduce repetition: I was repeating the same actions when doing things like accessing data, validating budget choices, getting budgets and their details, and printing expenses. These could be found in various functions, written out in full inside each one. I refactored to strip this repetition and created central functions that could be called to perform the desired actions, then return the required information. 
 
 -------------------------------------------------------------------------
 
