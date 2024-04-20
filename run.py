@@ -726,16 +726,12 @@ def delete_expense(budget_name, worksheet):
         deleted_expense_amount = access_data("get_rows", worksheet,
                                              row_index)[1]
         running_total -= float(deleted_expense_amount)
-        # Call API function to update running total before deletion
-        access_data("cell_update", worksheet, 2, 2, running_total)
-        # Call API function to delete expense row in sheet
+        # Call API function to delete expense then update running total 
         access_data("delete_expense", worksheet, row_index)
+        access_data("cell_update", worksheet, 2, 2, running_total)
         print(f"\nThis expense has been deleted.")
-        # Updates the running total for the budget after an expense deletion
-        print(f"\nCalculating the new running total for your '{budget_name}' "
-              f"budget...")
-        print(f"\nSuccessfully calculated and updated.\n\nReturning to "
-              f"'{budget_name}' budget...")
+        print("Updated the running total for this budget")
+        print(f"Returning to '{budget_name}' budget...")
     else:
         print(f"\nNo expense has been deleted.\n\nReturning to '{budget_name}'"
               f" budget...")
