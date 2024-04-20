@@ -253,7 +253,7 @@ def home_menu_choice(menu_choice):
     elif menu_choice == "3":
         delete_budget()
     elif menu_choice == "4":
-        expense_menu_budget_choice()
+        expense_menu_budget_choice(show_budgets=False)
     elif menu_choice == "5":
         report_menu()
     elif menu_choice.lower() == "home":
@@ -456,10 +456,13 @@ def delete_budget():
 
 # User journeys: expenses
 
-def expense_menu_budget_choice():
+def expense_menu_budget_choice(show_budgets):
     """ Enables the user to choose a budget for expense-related actions.
     Displays information about the selected budget and provides recent expenses
     """
+    if show_budgets: 
+        get_budgets("all", 0)
+
     # Asks the user to select a budget
     validity = "invalid"
     print("\nOK, in which budget would you like to add, edit "
@@ -574,9 +577,9 @@ def new_expense(budget_name, worksheet):
             running_total += float(cost)
             access_data("cell_update", worksheet, 2, 2, running_total)
             print(f"\nSuccessfully calculated and updated.\n")
-            print(f"Returning to '{budget_name}' budget.")
+            print("Returning to the budget menu...\n")
             break
-    expense_menu_action_choice(budget_name, worksheet)
+    expense_menu_budget_choice(show_budgets=True)
 
 
 def edit_expense(budget_name, worksheet):
@@ -635,7 +638,7 @@ def edit_expense(budget_name, worksheet):
             print(f"\nChanging the name of this expense to '{new_name}...'")
             access_data("cell_update", worksheet, row_index, 1, new_name)
             print(f"\nSuccessfully changed.\n")
-            print(f"Returning to '{budget_name}' budget...")
+            print("Returning to the budget menu...\n")
     else:
         # Asks the user for the new amount
         print(f"\nOK, how much would you like this expense to be now?")
@@ -674,10 +677,10 @@ def edit_expense(budget_name, worksheet):
                 running_total += float(new_amount)
                 access_data("cell_update", worksheet, 2, 2, running_total)
                 print(f"\nSuccessfully calculated and updated.\n")
-                print(f"Returning to '{budget_name}' budget...")
+                print("Returning to the budget menu...\n")
                 break
     # Returns the user to the expense-related action menu
-    expense_menu_action_choice(budget_name, worksheet)
+    expense_menu_budget_choice(show_budgets=True)
 
 
 def delete_expense(budget_name, worksheet):
@@ -733,10 +736,10 @@ def delete_expense(budget_name, worksheet):
         print("Updated the running total for this budget")
         print(f"Returning to '{budget_name}' budget...")
     else:
-        print(f"\nNo expense has been deleted.\n\nReturning to '{budget_name}'"
-              f" budget...")
+        print("\nNo expense has been deleted.")
+        print("Returning to the budget menu...\n")
     # Returns the user to the expense-related action menu
-    expense_menu_action_choice(budget_name, worksheet)
+    expense_menu_budget_choice(show_budgets=True)
 
 
 # User journeys: reports

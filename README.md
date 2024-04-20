@@ -401,6 +401,14 @@ It was possible to delete the amount budgeted from a budget's worksheet when typ
 #### Solution: 
 When I was validating that the number the user inputs when asked which expense they want to delete is an available option, I only accounted for if the user put in a number higher than the highest available expense. This had the effect of deleting the amount budgeted row on my worksheet when the user enters '0', as this is the data directly above the expense rows on each budget's worksheet. I added validation for too low a number as well now, so this has been resolved.
 
+### Bug Eight
+
+#### Issue: 
+After an expense action is taken, instead of taking the user back to the main menu, the program takes the user to the expense action menu for the same budget they had originally chosen. I had accounted for when there were no expenses in a budget, the expense action menu would not ask the user whether they wanted to edit or delete an expense and took them directly to adding an expense. However this was only when they freshly came from the main menu - what I didn't account for was when a budget with a single expense in it, had that single expense deleted. This still took the user back to the expense action menu and asked them whether they wanted to add, edit or delete an expense. 
+
+#### Solution: 
+I amended all expense actions so that they return to the part of the menu where the user is asked to select which budget they would like to add, edit or delete an expense in. By going back one step further, the system will retrigger the checks for whether any expense exists and not offer the option of editing or deleting an expense in a budget that doesn't have any expenses in it. I also added a print out of the budget list again on subsequent visits to the budget choice menu because the list of budgets is going to be a lot further back. So instead of requiring a lot of scrolling, I just print the list afresh for them to choose from. 
+
 ### Unresolved Bugs
 
 I don't believe I have left any of my bugs unresolved. 
