@@ -393,6 +393,14 @@ During testing I found that sometimes putting a lower case 'n' or 'a' in one of 
 #### Solution: 
 I found that this was because I was transforming the user input with `.upper()`, the first time the program asked for the name or amount. But I was not doing this on subsequent requests for this information AFTER the user had entered an invalid input. I moved the location of the `.upper()` so it catches both new inputs and inputs after an invalid input. 
 
+### Bug Seven
+
+#### Issue: 
+It was possible to delete the amount budgeted from a budget's worksheet when typing '0' as the input when asked which number expense you want to delete. 
+
+#### Solution: 
+When I was validating that the number the user inputs when asked which expense they want to delete is an available option, I only accounted for if the user put in a number higher than the highest available expense. This had the effect of deleting the amount budgeted row on my worksheet when the user enters '0', as this is the data directly above the expense rows on each budget's worksheet. I added validation for too low a number as well now, so this has been resolved.
+
 ### Unresolved Bugs
 
 I don't believe I have left any of my bugs unresolved. 

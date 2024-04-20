@@ -702,7 +702,7 @@ def delete_expense(budget_name, worksheet):
                                    "and hit enter:\n")
             continue
         row_index = int(select_expense) + 3
-        if row_index > len(number_rows):
+        if row_index > len(number_rows) or row_index <4:
             print("\nThis is not an available option. Please check again.")
             select_expense = input("Please type the relevant number "
                                    "and hit enter:\n")
