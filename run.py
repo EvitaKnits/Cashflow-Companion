@@ -443,7 +443,7 @@ def delete_budget():
                                    " no and hit enter:\n")
 
     # Deletes budget if confirmed, or notifies if not, returns to main menu
-    if confirm_choice == "Y":
+    if confirm_choice.upper() == "Y":
         # Calls API function to delete the worksheet for this budget
         access_data("delete_budget", worksheet)
         print(f"\nYour '{budget_name}' budget has been deleted.\n")
@@ -481,7 +481,7 @@ def expense_menu_budget_choice(show_budgets):
     # Calls function to print budget info, receiving worksheet and name
     worksheet, budget_name, running_total,\
         amount_budgeted = get_budgets("one", index_of_choice)
-    print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount"
+    print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount "
           f"Budgeted: £{amount_budgeted}")
     print("\nRecent expenses:")
 
@@ -734,7 +734,7 @@ def delete_expense(budget_name, worksheet):
         access_data("cell_update", worksheet, 2, 2, running_total)
         print(f"\nThis expense has been deleted.")
         print("Updated the running total for this budget")
-        print(f"Returning to '{budget_name}' budget...")
+        print("Returning to the budget menu...\n")
     else:
         print("\nNo expense has been deleted.")
         print("Returning to the budget menu...\n")
@@ -800,7 +800,7 @@ def under_over_report():
     print(f"\nYou are {formatted_percentage}% of the way through the month.")
     print("\nFor each budget, this report compares:")
     print("- how far through the month you are")
-    print(" - how far through your budgeted amount you are")
+    print("- how far through your budgeted amount you are")
     print("\nThen calculates an 'over'/'under'/'spot on' value.")
     print("\nHere are your current calculations:\n")
 
