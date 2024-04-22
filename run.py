@@ -122,6 +122,35 @@ def valid_budget_choice(budget_choice):
 
 # Common action functions
 
+def select_budget(type):
+
+    # Calls the valid budget choice checker until a valid option is chosen
+    validity = "invalid"
+    while validity == "invalid":
+        # Prompts the user for which budget they want to select
+        budget_choice = input("please type the relevant letter "
+                              "and hit enter:\n")
+        if budget_choice.lower() == "home":
+            main()
+        validity = valid_budget_choice(budget_choice)
+
+    # Retrieves the worksheet corresponding to the selected budget
+    all_worksheets = access_data("all_worksheets")
+    index_of_choice = LETTERS.index(budget_choice.upper())
+    worksheet, budget_name, running_total, amount_budgeted \
+        = get_budgets("one", index_of_choice)
+
+    if type == "delete":
+        print(f"\nAre you sure you want to delete your "
+        f"'{budget_name}' budget?")
+    elif type == "update":
+        print(f"\nWe're updating the '{budget_name} budget.")
+    else: 
+        print(f"\nBudget: {budget_name}\nTotal Spent: "
+              f"£{running_total}\nAmount Budgeted: £{amount_budgeted}")
+
+    return worksheet, budget_name, running_total, amount_budgeted
+
 def get_budget_details(worksheet):
     """ Retrieves budget details from the given worksheet. """
     value_range = access_data("get_info", worksheet, "A1:B3")
@@ -323,25 +352,9 @@ def edit_budget():
     Validates input and enforces formatting rules for the new name. Returns to
     the main menu after updating the budget.
     """
-    # Prompts the user for which budget they want to update
-    validity = "invalid"
     print("\nWhich budget would you like to update?")
-
-    # Calls the valid budget choice checker until a valid option is chosen
-    while validity == "invalid":
-        budget_choice = input("Please type the relevant letter "
-                              "and hit enter:\n")
-        if budget_choice.lower() == "home":
-            main()
-        validity = valid_budget_choice(budget_choice)
-
-    all_worksheets = access_data("all_worksheets")
-    index_of_choice = LETTERS.index(budget_choice.upper())
-
-    # Retrieves the worksheet corresponding to the selected budget
-    worksheet = all_worksheets[index_of_choice]
-    budget_name = access_data("one_cell", worksheet, "A1").value
-    print(f"\nWe're updating the '{budget_name}' budget.")
+    # Calls budget selection function to get the budget selection and info
+    worksheet, budget_name, running_total, amount_budgeted = select_budget("update")
 
     # Asks the user which aspect they want to change
     print("\nWould you like to change the name or the amount?")
@@ -412,25 +425,10 @@ def delete_budget():
     confirmed, the budget is deleted; otherwise, a message confirms no
     deletion. Returns the user to the main menu afterward.
     """
-    # Asks the user which budget they want deleted
-    validity = "invalid"
+
+    # Calls budget selection function to get the budget selection and info
     print("\nOK, which budget would you like to delete?")
-
-    # Calls the valid budget choice checker until a valid option is chosen
-    while validity == "invalid":
-        budget_choice = input("Please type the relevant letter "
-                              "and hit enter:\n")
-        if budget_choice.lower() == "home":
-            main()
-        validity = valid_budget_choice(budget_choice)
-
-    all_worksheets = access_data("all_worksheets")
-    index_of_choice = LETTERS.index(budget_choice.upper())
-
-    # Gets the selected budget name and prompts for deletion confirmation
-    worksheet = all_worksheets[index_of_choice]
-    budget_name = access_data("one_cell", worksheet, "A1").value
-    print(f"\nAre you sure you want to delete your '{budget_name}' budget?")
+    worksheet, budget_name, running_total, amount_budgeted = select_budget("delete")
     confirm_choice = input("Type 'Y' for yes or 'N' for no and "
                            "hit enter:\n")
     while confirm_choice.upper() not in ("Y", "N"):
@@ -461,29 +459,13 @@ def expense_menu_budget_choice(show_budgets):
     if show_budgets: 
         get_budgets("all", 0)
 
-    # Asks the user to select a budget
-    validity = "invalid"
+    # Calls budget selection function to get the budget selection and info
     print("\nOK, in which budget would you like to add, edit "
           "or delete an expense?")
-
-    # Calls the valid budget choice checker until a valid option is chosen
-    while validity == "invalid":
-        budget_choice = input("Please type the relevant letter "
-                              "and hit enter:\n")
-        if budget_choice.lower() == "home":
-            main()
-        validity = valid_budget_choice(budget_choice)
-
-    index_of_choice = LETTERS.index(budget_choice.upper())
-
-    # Calls function to print budget info, receiving worksheet and name
-    worksheet, budget_name, running_total,\
-        amount_budgeted = get_budgets("one", index_of_choice)
-    print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount "
-          f"Budgeted: £{amount_budgeted}")
-    print("\nRecent expenses:")
+    worksheet, budget_name, running_total, amount_budgeted = select_budget("expense_menu")     
 
     # Retrieves recent expenses for the selected budget and prints them, if any
+    print("\nRecent expenses:")
     expenses = print_expenses(3, worksheet)
     if not expenses:
         print("\nYou can only add a new expense.")
@@ -863,26 +845,9 @@ def every_expense_report():
     """ Generates a report showing all expenses from a specific budget chosen
     by the user.
     """
-    # Asks the user which budget they want the report to run on.
-    validity = "invalid"
     print("\nFrom which budget would you like to see all of the expenses?")
-
-    # Calls the valid budget choice checker until a valid option is chosen
-    while validity == "invalid":
-        budget_choice = input("Please type the relevant letter "
-                              "and hit enter:\n")
-        if budget_choice.lower() == "home":
-            main()
-        validity = valid_budget_choice(budget_choice)
-
-    all_worksheets = access_data("all_worksheets")
-    index_of_choice = LETTERS.index(budget_choice.upper())
-
-    # Retrieves information for the chosen budget and prints it.
-    worksheet, budget_name, running_total, amount_budgeted\
-        = get_budgets("one", index_of_choice)
-    print(f"\nBudget: {budget_name}\nTotal Spent: £{running_total}\nAmount "
-          f"Budgeted: £{amount_budgeted}")
+    # Calls budget selection function to get the budget selection and info
+    worksheet, budget_name, running_total, amount_budgeted = select_budget("expense_report")
 
     # Retrieves and prints all expenses from the relevant budget worksheet.
     expenses = print_expenses(0, worksheet)
