@@ -70,23 +70,18 @@ def access_data(api_call, *args):
                                             ["Running Total", 0, ],
                                             ["Amount Budgeted",
                                             budget_amount]], raw=False)
-            return
         elif api_call == "update_name":
             worksheet, new_name = args
             worksheet.update_title(new_name)
-            return 
         elif api_call == "delete_budget":
             worksheet = args[0]
             SHEET.del_worksheet(worksheet)
-            return
         elif api_call == "add_expense":
             worksheet, new_row = args
             worksheet.append_row(new_row)
-            return
         elif api_call == "delete_expense":
             worksheet, row_index = args
             worksheet.delete_rows(row_index)
-            return
     except gspread.exceptions.APIError as e:
         if e.response.status_code == 429:
             print("System busy. Please try again in one minute.")

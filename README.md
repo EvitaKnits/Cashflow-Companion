@@ -375,6 +375,7 @@ Planned enhancements/features for future implementation go here.
 
 - Changing the architecture to allow the budget name to be validated before asking the user for the amount they wish to allocate to it, when creating a new budget. 
 - Reporting that shows the user trends in their spending over time, rather than just a monthly view.
+- Adding the ability to do more accurate leap year reporting. At the moment it'll be slightly off because February is always set to 28 days regardless of whether its a leap year.
 - Adding graphs for all the reports.
 - Styling the front end part in Heroku, around the terminal window as an added bonus to make it more attractive.
 - Letting the user select the currency type rather than defaulting to GBP
