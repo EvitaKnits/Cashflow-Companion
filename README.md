@@ -170,7 +170,8 @@ During design and when changes were made, I considered whether enough of the lin
 
 ## Features
 The features of the app can be grouped into four main areas: 
-1. Main Menu 
+
+1. Main Menu
 2. Budgets
 3. Expenses
 4. Reports
@@ -185,8 +186,12 @@ The 'read' element of the CRUD framework is presented automatically to the user 
     - Last Three Report: this shows each budget's name, running total and allocated amount with the last three expenses in each budget to give an overview of the most recent expenses in each.
     - Every Expense Report: this shows one budget's name, running total and allocated amount with all expenses in that budget listed below. 
 
+Screenshots of each feature are provided below each flowchart.
+
 ### Main Menu
 The main menu is what is shown when the app is first run and anytime the user is returned home. It provides a menu of all the possible paths through the app, including to the expense sub-menu. The logical path through the main menu is the same as the top two rows of the journey flowchart, with the addition of validation of the user's input. This validation checks that the input provided is one of the available choices (see validation section of data model for further information).
+
+![Main Menu](documentation/Main-Menu.png)
 
 ### Budgets
 All budget actions can be accessed directly from the first part of the app, selecting options 1, 2 or 3. Here are the logic paths through the app for each budget feature.
@@ -207,8 +212,9 @@ flowchart TD
     G-->I(Return home)
     H-->I
 ```
+![Create a budget](documentation/New-Budget.png)
 
-#### Update a budget
+#### Edit a budget
 This is option two when the app is run. 
 
 ```mermaid
@@ -239,6 +245,8 @@ flowchart TD
     S-->T
 ```
 
+![Edit Budget](documentation/Edit-Budget.png)
+
 #### Delete a budget
 This is option three when the app is run. 
 
@@ -259,12 +267,15 @@ flowchart TD
     J --> L[Print message confirming this \n budget has been deleted]
     L --> M(Return home)
 ```
+![Delete Budget](documentation/Delete-Budget.png)
 
 ### Expenses
 All expense actions are accessed from main menu option 4 when the app is run. 
 
 #### Expense Menu
 The expense menu is what is shown when option 4 is selected in the main menu and anytime the user is returned to the expense menu after completing an expense action. In the latter scenario of being returned to this menu, the list of budgets is also printed again to remind the user and prevent excessive scrolling up to see this list from when it was originally printed. In this menu, the user is first asked which budget they want to access for expense purposes, then which expense action they want to carry out in that budget and are given the options A - to add an expense, B - to edit an expense and C - to delete an expense. In the event that there are no existing expenses in the budget chosen, the user is skipped automatically to adding an expense (option A).
+
+![Expense Menu](documentation/Expense-Menu.png)
 
 #### Add an expense
 This is option A after a budget has been chosen in the expenses menu.
@@ -285,6 +296,8 @@ flowchart TD
     J-->K[Print confirmation of \n updating running total]
     K-->L(Return to budget menu)
 ```
+
+![Add Expense](documentation/New-Expense.png)
 
 #### Edit an expense
 This is option B after a budget has been chosen in the expenses menu.
@@ -320,6 +333,9 @@ flowchart TD
 
 ```
 
+![Edit Expense](documentation/Edit-Expense.png)
+![Edit Expense 2](documentation/Edit-Expense2.png)
+
 #### Delete an expense
 This is option C after a budget has been chosen in the expenses menu.
 
@@ -343,7 +359,9 @@ flowchart TD
     M --> O(Return to chosen budget)
     J-->O
 ```
-    
+
+![Delete Expense](documentation/Delete-Expense.png)
+
 ### Reports Menu and Outputs
 The report menu is accessed from option 5 when the app is run. All three reports are printed from the report menu. As these are simpler, I have put them all into a single flowchart.
 
@@ -369,6 +387,15 @@ flowchart TD
     Q -->N
     P -->I
 ```
+
+![Report Menu](documentation/Report-Menu.png)
+
+![Under Over](documentation/Under-Over.png)
+
+![Last Three](documentation/Last-Three.png)
+![Three Three 2](documentation/Last-Three2.png)
+
+![All Expenses](documentation/All-Expenses.png)
 
 ### Future Features
 Planned enhancements/features for future implementation go here. 
