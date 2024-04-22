@@ -55,7 +55,10 @@ def access_data(api_call, *args):
             return worksheet.row_values(row_index)
         elif api_call == "cell_update":
             worksheet, row, column, value = args
-            worksheet.update_cell(row, column, value)
+            try:
+                worksheet.update_cell(row, column, float(value))
+            except ValueError:
+                worksheet.update_cell(row, column, value)
         elif api_call == "new_worksheet":
             budget_name, budget_amount = args
             SHEET.add_worksheet(title=f"{budget_name}", rows=100, cols=20)
@@ -66,7 +69,7 @@ def access_data(api_call, *args):
             current_budget_worksheet.update([[budget_name, "", ],
                                             ["Running Total", 0, ],
                                             ["Amount Budgeted",
-                                            budget_amount]])
+                                            budget_amount]], raw=False)
             return
         elif api_call == "update_name":
             worksheet, new_name = args
@@ -563,7 +566,7 @@ def new_expense(budget_name, worksheet):
                 main()
         else:
             # Adds the new expense to the correct budget's worksheet
-            new_row.append(format(float(cost), ".2f"))
+            new_row.append(float(cost))
             print(f"\nAdding your new expense: '{name}: "
                   f"£{'{:.2f}'.format(float(cost))}'...")
             # Calls the API function to add the new expense to the sheet

@@ -472,6 +472,14 @@ After an expense action is taken, instead of taking the user back to the main me
 #### Solution: 
 I amended all expense actions so that they return to the part of the menu where the user is asked to select which budget they would like to add, edit or delete an expense in. By going back one step further, the system will retrigger the checks for whether any expense exists and not offer the option of editing or deleting an expense in a budget that doesn't have any expenses in it. I also added a print out of the budget list again on subsequent visits to the budget choice menu because the list of budgets is going to be a lot further back. So instead of requiring a lot of scrolling, I just print the list afresh for them to choose from. 
 
+### Bug Nine
+
+#### Issue: 
+Despite formatting the column that holds all the numbers to float format with 2 decimal places when creating a new worksheet/budget, the formatting was not persisting throughout the application. Sometimes I did not get the decimal places. 
+
+#### Solution: 
+Firstly, I tweaked the formatting to set the `value_input_option` to be user entered by adding the `raw` boolean set to false, as per the gspread documentation. Then, to ensure all my bases are covered, I also added casting to float to my `cell_update` API call inside `access_data()` in the format of a `try: except` statement so that the numbers are converted and it doesn't raise an unhandled exception when the words are not. This is because the cell update API call handles both words and numbers. Finally, I also realised that by adding `{.2f}` to my new row holding my new expense data, I was negating the casting to float I had done, by turning it back into a string with the use of this string format modifier. 
+
 ### Unresolved Bugs
 
 I don't believe I have left any of my bugs unresolved. 
