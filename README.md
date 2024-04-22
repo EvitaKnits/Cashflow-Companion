@@ -42,7 +42,7 @@ There were quite a few user stories for this app so to make them more readable a
 
 ### Process Flowchart 
 
-I created this flowchart to think about the various paths through the app from the command line and what the user journeys would look like. Please open the chart full width or use the zoom function in Git Hub to see the information.
+I created this flowchart to think about the various paths through the app from the command line and what the user journeys would look like. Please open the chart full width or use the zoom function in GitHub to see the information.
 
 There are two more details regarding the user journeys that I have omitted from the flowchart so as not to crowd it and make it illegible: 
 - At the end of each journey the user will be automatically returned home(to the start of the flowchart), apart from on the expense arm of the flowchart where the user will be returned to the budget choice menu instead. 
@@ -188,10 +188,15 @@ The 'read' element of the CRUD framework is presented automatically to the user 
 
 Screenshots of each feature are provided below each flowchart.
 
+---
+
 ### Main Menu
 The main menu is what is shown when the app is first run and anytime the user is returned home. It provides a menu of all the possible paths through the app, including to the expense sub-menu. The logical path through the main menu is the same as the top two rows of the journey flowchart, with the addition of validation of the user's input. This validation checks that the input provided is one of the available choices (see validation section of data model for further information).
 
+#### Main Menu Screenshot
 ![Main Menu](documentation/Main-Menu.png)
+
+---
 
 ### Budgets
 All budget actions can be accessed directly from the first part of the app, selecting options 1, 2 or 3. Here are the logic paths through the app for each budget feature.
@@ -212,7 +217,10 @@ flowchart TD
     G-->I(Return home)
     H-->I
 ```
+##### New Budget Screenshot
 ![Create a budget](documentation/New-Budget.png)
+
+---
 
 #### Edit a budget
 This is option two when the app is run. 
@@ -244,8 +252,10 @@ flowchart TD
     R-->T(Return home)
     S-->T
 ```
-
+##### Edit Budget Screenshot
 ![Edit Budget](documentation/Edit-Budget.png)
+
+---
 
 #### Delete a budget
 This is option three when the app is run. 
@@ -267,7 +277,11 @@ flowchart TD
     J --> L[Print message confirming this \n budget has been deleted]
     L --> M(Return home)
 ```
+
+##### Delete Budget Screenshot
 ![Delete Budget](documentation/Delete-Budget.png)
+
+---
 
 ### Expenses
 All expense actions are accessed from main menu option 4 when the app is run. 
@@ -275,7 +289,10 @@ All expense actions are accessed from main menu option 4 when the app is run.
 #### Expense Menu
 The expense menu is what is shown when option 4 is selected in the main menu and anytime the user is returned to the expense menu after completing an expense action. In the latter scenario of being returned to this menu, the list of budgets is also printed again to remind the user and prevent excessive scrolling up to see this list from when it was originally printed. In this menu, the user is first asked which budget they want to access for expense purposes, then which expense action they want to carry out in that budget and are given the options A - to add an expense, B - to edit an expense and C - to delete an expense. In the event that there are no existing expenses in the budget chosen, the user is skipped automatically to adding an expense (option A).
 
+##### Expense Menu Screenshot
 ![Expense Menu](documentation/Expense-Menu.png)
+
+---
 
 #### Add an expense
 This is option A after a budget has been chosen in the expenses menu.
@@ -297,7 +314,10 @@ flowchart TD
     K-->L(Return to budget menu)
 ```
 
+##### Add Expense Screenshot
 ![Add Expense](documentation/New-Expense.png)
+
+---
 
 #### Edit an expense
 This is option B after a budget has been chosen in the expenses menu.
@@ -332,9 +352,11 @@ flowchart TD
     U-->R
 
 ```
-
+##### Edit Expense Screenshot
 ![Edit Expense](documentation/Edit-Expense.png)
 ![Edit Expense 2](documentation/Edit-Expense2.png)
+
+---
 
 #### Delete an expense
 This is option C after a budget has been chosen in the expenses menu.
@@ -360,7 +382,10 @@ flowchart TD
     J-->O
 ```
 
+##### Delete Expense Screenshot
 ![Delete Expense](documentation/Delete-Expense.png)
+
+---
 
 ### Reports Menu and Outputs
 The report menu is accessed from option 5 when the app is run. All three reports are printed from the report menu. As these are simpler, I have put them all into a single flowchart.
@@ -387,29 +412,34 @@ flowchart TD
     Q -->N
     P -->I
 ```
-
+#### Report Menu Screenshot
 ![Report Menu](documentation/Report-Menu.png)
 
+#### Under/Over Report Screenshot
 ![Under Over](documentation/Under-Over.png)
 
+#### Last Three Expenses Report Screenshots
 ![Last Three](documentation/Last-Three.png)
 ![Three Three 2](documentation/Last-Three2.png)
 
+#### All Expenses Report Screenshot
 ![All Expenses](documentation/All-Expenses.png)
+
+---
 
 ### Future Features
 Planned enhancements/features for future implementation go here. 
 
 - Changing the architecture to allow the budget name to be validated before asking the user for the amount they wish to allocate to it, when creating a new budget. 
 - Reporting that shows the user trends in their spending over time, rather than just a monthly view.
-- Adding the ability to do more accurate leap year reporting. At the moment it'll be slightly off because February is always set to 28 days regardless of whether its a leap year.
+- Adding the ability to do more accurate leap year reporting. At the moment it'll be slightly off because February is always set to 28 days regardless of whether it is a leap year.
 - Adding graphs for all the reports.
 - Styling the front end part in Heroku, around the terminal window as an added bonus to make it more attractive.
 - Letting the user select the currency type rather than defaulting to GBP
 
 ## Testing
 
-I took a test-as-you-0go approach - testing after each change to ensure that my desired outcome was achieved. 
+I took a test-as-you-go approach - testing after each change to ensure that my desired outcome was achieved. 
 
 I also completed an end-to-end test covering these aspects, at milestones throughout the project:
 
@@ -423,122 +453,138 @@ PEP8 validation using the Code Institute Python Linter was completed at mileston
 
 ## Resolved Bugs
 
-### Bug One:
+### Bug One
 
 #### Issue:
-About halfway through the project, I realised that the validation I had used for alphanumeric (`isalphnum`) values and numeric values (`isnumeric`) wouldn't work because I needed to allow spaces on the former and dots on the latter, e.g. 'Sausage Roll' could be an expense but would not be allowed with alphanumeric validation and it could cost '1.50' but this would not be allowed with numeric validation. 
+- About halfway through the project, I realised that the validation I had used for alphanumeric (`isalphnum`) values and numeric values (`isnumeric`) wouldn't work because I needed to allow spaces on the former and dots on the latter, e.g. 'Sausage Roll' could be an expense but would not be allowed with alphanumeric validation and it could cost '1.50' but this would not be allowed with numeric validation. 
 
 #### Solution: 
 
 1. Alphanumeric validation: in considering this issue, I realised that my app should not care what a user wants to call their expenses or budgets. Perhaps they have a categorising system that includes punctuation, for example. I simply removed this validation and allowed users to call their expenses and budgets anything they like. 
 2. Numeric validation: I changed this from using `isnumeric` to trying to cast the string input to a float. An input is invalid if it fails to cast. This is done inside a `while` loop that retries a `try: except: else:` block until a valid input is given.
 
-### Bug Two: 
+### Bug Two
 
 #### Issue: 
-I realised that even after I was adding expenses to my Google sheet as a float rather than as a string (see solution of bug one above), I was still printing costs as '£1.5' rather than '£1.50' within the new expense or editing an existing expense functions. I had not formatted the float correctly to give the two decimal places that is the standard formatting of currency.
+- I realised that even after I was adding expenses to my Google sheet as a float rather than as a string (see solution of bug one above), I was still printing costs as '£1.5' rather than '£1.50' within the 'new expense' or 'editing an existing expense' functions. I had not formatted the float correctly to give the two decimal places that is the standard formatting of currency.
 
 #### Solution: 
-I formatted the number before passing it to be printed to the terminal. I used this format string `{:.2f}`
+- I formatted the number before passing it to be printed to the terminal. I used this format string `{:.2f}`
 
-### Bug Three: 
+### Bug Three 
 
 #### Issue: 
-Each time I validated whether the letter the user has entered corresponds to a worksheet in my Google sheet, I got an incorrect 'valid' response for one letter of the alphabet beyond those available as valid responses. This meant that my app was asking the API for a worksheet that did not exist and therefore resulted in an exception. 
+- Each time I validated whether the letter the user has entered corresponds to a worksheet in my Google sheet, I got an incorrect 'valid' response for one letter of the alphabet beyond those available as valid responses. This meant that my app was asking the API for a worksheet that did not exist and therefore resulted in an exception. 
 
 #### Why?
-
-I was checking whether the index of that letter in the letters list: `letters = string.ascii_uppercase` was greater than the length of the list of worksheets in my Google sheet. So if there are budgets A, B, C, D and E, these are at indexes 0-4 in this letters list. In my list of all worksheets in the Google sheet, these budgets are at the same indexes. The issue is that if the user entered 'F' in this scenario, that would be an index of 5 and would be compared to the number of worksheets, which is also 5 and give a valid result. This is wrong and resulted in the exception. 
+- I was checking whether the index of that letter in the letters list: `letters = string.ascii_uppercase` was greater than the length of the list of worksheets in my Google sheet. So if there are budgets A, B, C, D and E, these are at indexes 0-4 in this letters list. In my list of all worksheets in the Google sheet, these budgets are at the same indexes. The issue is that if the user entered 'F' in this scenario, that would be an index of 5 and would be compared to the number of worksheets, which is also 5 and give a valid result. This is wrong and resulted in the exception. 
 
 #### Solution:
-I changed the validation to check whether the user-inputted letter was greater than or equal to the length of all worksheets. I added the 'equal to' part to cover this scenario. 
+- I changed the validation to check whether the user-inputted letter was greater than or equal to the length of all worksheets. I added the 'equal to' part to cover this scenario. 
 
-### Bug Four: 
+### Bug Four 
 
 #### Issue:
-It was possible for a user to add an incomplete new budget (new worksheet in the Google sheet) by partially completing the new budget process that the new_budget function leads them through, then opting to go home by typing 'home' in an input. 
+- It was possible for a user to add an incomplete new budget (new worksheet in the Google sheet) by partially completing the new budget process that the new_budget function leads them through, then opting to go home by typing 'home' in an input. 
 
 #### Solution:
-I found that this was because I was adding the information in stages throughout that function, rather than in one big chunk at the end when all the data needed for a complete budget was present. I moved all of the writing of data to the Google sheet to the end of the function all together. 
+- I found that this was because I was adding the information in stages throughout that function, rather than in one big chunk at the end when all the data needed for a complete budget was present. I moved all of the writing of data to the Google sheet to the end of the function all together. 
 
-### Bug Five: 
+### Bug Five 
 
 #### Issue: 
-When editing the amount allocated to a newly created budget, it did not format the number correctly, omitting the '.00' expected at the end. This is the format that is used everywhere else and the bug did not occur with budgets I had previously manually interacted with on the Google Sheet. The user would of course not have access to the Google Sheet so this needed resolving. 
+- When editing the amount allocated to a newly created budget, it did not format the number correctly, omitting the '.00' expected at the end. This is the format that is used everywhere else and the bug did not occur with budgets I had previously manually interacted with on the Google Sheet. The user would of course not have access to the Google Sheet so this needed resolving. 
 
-Example: <br>
-On budget creation: G-> Cosmetics: £0.00 / £150.00<br>
-On budget edit (bug): G-> Cosmetics: £0 / £150<br>
-On budget edit (bug resolved): G-> Cosmetics: £0.00 / £150.00
+ - Example: <br>
+    On budget creation: G-> Cosmetics: £0.00 / £150.00<br>
+    On budget edit (bug): G-> Cosmetics: £0 / £150<br>
+    On budget edit (bug resolved): G-> Cosmetics: £0.00 / £150.00
 
 #### Solution:
-I found out how to format the cell that the newly created budget's allocated amount went into on creation of the new worksheet dedicated to that budget. I did this using the gspread documentation. 
+- I found out how to format the cell that the newly created budget's allocated amount went into on creation of the new worksheet dedicated to that budget. I did this using the gspread documentation. 
 
-I used the appropriate formatting so that any future number received by that cell would retain the correct formatting. I added this line in and it solved the issue:`current_budget_worksheet.format("B:B", { "numberFormat": { "type":"NUMBER", "pattern":"#####0.00" }})`
+- I used the appropriate formatting so that any future number received by that cell would retain the correct formatting. I added this line in and it solved the issue:`current_budget_worksheet.format("B:B", { "numberFormat": { "type":"NUMBER", "pattern":"#####0.00" }})`
 
 ### Bug Six
 
 #### Issue: 
-During testing I found that sometimes putting a lower case 'n' or 'a' in one of the 'Name or Amount' choices when editing a budget or an expense, didn't work. The entry was not recognised as a valid option. 
+- During testing I found that sometimes putting a lower case 'n' or 'a' in one of the 'Name or Amount' choices when editing a budget or an expense, didn't work. The entry was not recognised as a valid option. 
 
 #### Solution: 
-I found that this was because I was transforming the user input with `.upper()`, the first time the app asked for the name or amount. But I was not doing this on subsequent requests for this information AFTER the user had entered an invalid input. I moved the location of the `.upper()` so it catches both new inputs and inputs after an invalid input. 
+- I found that this was because I was transforming the user input with `.upper()`, the first time the app asked for the name or amount. But I was not doing this on subsequent requests for this information AFTER the user had entered an invalid input. I moved the location of the `.upper()` so it catches both new inputs and inputs after an invalid input. 
 
 ### Bug Seven
 
 #### Issue: 
-It was possible to delete the amount budgeted from a budget's worksheet when typing '0' as the input when asked which number expense you want to delete. 
+- It was possible to delete the amount budgeted from a budget's worksheet when typing '0' as the input when asked which number expense you want to delete. 
 
 #### Solution: 
-When I was validating that the number the user inputs when asked which expense they want to delete is an available option, I only accounted for if the user put in a number higher than the highest available expense. This had the effect of deleting the amount budgeted row on my worksheet when the user enters '0', as this is the data directly above the expense rows on each budget's worksheet. I added validation for too low a number as well now, so this has been resolved.
+- When I was validating that the number the user inputs when asked which expense they want to delete is an available option, I only accounted for if the user put in a number higher than the highest available expense. This had the effect of deleting the amount budgeted row on my worksheet when the user enters '0', as this is the data directly above the expense rows on each budget's worksheet. I added validation for too low a number as well now, so this has been resolved.
 
 ### Bug Eight
 
 #### Issue: 
-After an expense action is taken, instead of taking the user back to the main menu, the app takes the user to the expense action menu for the same budget they had originally chosen. I had accounted for when there were no expenses in a budget, the expense action menu would not ask the user whether they wanted to edit or delete an expense and took them directly to adding an expense. However this was only when they freshly came from the main menu - what I didn't account for was when a budget with a single expense in it, had that single expense deleted. This still took the user back to the expense action menu and asked them whether they wanted to add, edit or delete an expense. 
+- After an expense action is taken, instead of taking the user back to the main menu, the app takes the user to the expense action menu for the same budget they had originally chosen. I had accounted for when there were no expenses in a budget, the expense action menu would not ask the user whether they wanted to edit or delete an expense and took them directly to adding an expense. However this was only when they freshly came from the main menu - what I didn't account for was when a budget with a single expense in it, had that single expense deleted. This still took the user back to the expense action menu and asked them whether they wanted to add, edit or delete an expense. 
 
 #### Solution: 
-I amended all expense actions so that they return to the part of the menu where the user is asked to select which budget they would like to add, edit or delete an expense in. By going back one step further, the system will retrigger the checks for whether any expense exists and not offer the option of editing or deleting an expense in a budget that doesn't have any expenses in it. I also added a print out of the budget list again on subsequent visits to the budget choice menu because the list of budgets is going to be a lot further back. So instead of requiring a lot of scrolling, I just print the list afresh for them to choose from. 
+- I amended all expense actions so that they return to the part of the menu where the user is asked to select which budget they would like to add, edit or delete an expense in. By going back one step further, the system will retrigger the checks for whether any expense exists and not offer the option of editing or deleting an expense in a budget that doesn't have any expenses in it. I also added a print out of the budget list again on subsequent visits to the budget choice menu because the list of budgets is going to be a lot further back. So instead of requiring a lot of scrolling, I just print the list afresh for them to choose from. 
 
 ### Bug Nine
 
 #### Issue: 
-Despite formatting the column that holds all the numbers to float format with 2 decimal places when creating a new worksheet/budget, the formatting was not persisting throughout the application. Sometimes I did not get the decimal places. 
+- Despite formatting the column that holds all the numbers to float format with 2 decimal places when creating a new worksheet/budget, the formatting was not persisting throughout the application. Sometimes I did not get the decimal places. 
 
 #### Solution: 
-Firstly, I tweaked the formatting to set the `value_input_option` to be user entered by adding the `raw` boolean set to false, as per the gspread documentation. Then, to ensure all my bases are covered, I also added casting to float to my `cell_update` API call inside `access_data()` in the format of a `try: except` statement so that the numbers are converted and it doesn't raise an unhandled exception when the words are not. This is because the cell update API call handles both words and numbers. Finally, I also realised that by adding `{.2f}` to my new row holding my new expense data, I was negating the casting to float I had done, by turning it back into a string with the use of this string format modifier. 
+- Firstly, I tweaked the formatting to set the `value_input_option` to be user entered by adding the `raw` boolean set to false, as per the gspread documentation. Then, to ensure all my bases are covered, I also added casting to float to my `cell_update` API call inside `access_data()` in the format of a `try: except` statement so that the numbers are converted and it doesn't raise an unhandled exception when the words are not. This is because the cell update API call handles both words and numbers. Finally, I also realised that by adding `{.2f}` to my new row holding my new expense data, I was negating the casting to float I had done, by turning it back into a string with the use of this string format modifier. 
 
 ### Unresolved Bugs
 
 I don't believe I have left any of my bugs unresolved. 
 
 ## Deployment
-Explain how this app was deployed so that a non-technical user could do it. How to deploy the app to heroku including any necessary config files or environment variables.
+
+This project was deployed to [Heroku](https://id.heroku.com/login): a hosting platform and is accessible via the mock terminal displayed on the [dedicated app page here](https://cashflow-companion-df3e84b2af73.herokuapp.com/). 
+
+These are the steps I took to set up my infrastructure and deploy my app:
+
+1. Created a blank [Google Sheet](https://docs.google.com/spreadsheets/create) to store my data with the name 'cashflow_companion'.
+2. Created a new project on the [Google Cloud Platform](https://console.cloud.google.com/) by clicking 'New Project' from the project selection dropdown in the top menu bar.
+3. Navigated to the Cashflow Companion project page and clicked on 'APIs & Services' in the left hand burger menu. 
+4. From here I enabled the 'Google Drive API' and navigated to the 'Credentials' section. I set the API being used as the 'Google Drive API' and the type of data I'll be accessing to 'Application Data'. I answered 'No' to the question asking me if I would be using one or more of a specific set of other services.
+5. Next I set up the Service Account details with a name and the editor role, leaving everything else blank.
+6. When this was created I clicked on the service account on the next page, and the 'Keys' tab, where I created a new JSON key file which I downloaded to my computer.
+7. Next, I enabled the Google Sheets API. This was just a case of searching for this API on from the 'APIs & Services' page and clicking 'Enable'. Nothing further was required.
+8. I created a new repository on my GitHub from the [Code Institute template](https://github.com/Code-Institute-Org/p3-template) and named it 'cashflow-companion'.
+9. I opened this repo on my IDE and uploaded the JSON key file from earlier, renaming it 'creds.json'. This was then added to the gitignore file so that the credentials are not sent to GitHub.
+10. The service account details from the creds.json file, listed as 'client_email' were added to the Google Sheet as a user to enable the app to read and write data from and to it. 
+11. On Heroku, in the settings, a config var named 'CREDS' was created and the contents of the creds.json file were added to the value field, to enable Heroku to access the app. 
+12. I added another config var called 'PORT' set to '8000' here too. 
+13. Further dependencies required outside of those in the requirements.txt file found in my repository, were added via buildpacks on Heroku, again found in the settings. Firstly, 'python' and then 'nodejs' in that order.
+14. Next I clicked on the 'Deploy' tab and connected my github repository code to the Heroku app. I clicked 'Enable Automatic Deploys' and Heroku deployed the app for me. Once this was done, the link to the app appeared and could be clicked to go to the deployed app.
 
 ## Credits
 
 ### APIs and Third Party Libraries
-1. Google Sheets API: 'gspread' - This was installed to provide access to the associated spreadsheet which will hold all the data for Cashflow Companion. https://docs.gspread.org/en/v6.0.0/
-2. String Module: 'string' - https://docs.python.org/3/library/string.html This was installed to assist me with letter input validation and selection of menu options and therefore data retrieval. 
-3. Date/Time Module: 'datetime' - https://docs.python.org/3/library/datetime.html This was installed to provide dates to work with for report A. This report figures out whether you are under or over budget based on the percentage through the month it is and the percentage through your budget you are.
+1. [Google Sheets API: 'gspread'](https://docs.gspread.org/en/v6.0.0/) - This was installed to provide access to the associated spreadsheet which will hold all the data for Cashflow Companion.
+2. [String Module: 'string'](https://docs.python.org/3/library/string.html) - This was installed to assist me with letter input validation and selection of menu options and therefore data retrieval. 
+3. [Date/Time Module: 'datetime'](https://docs.python.org/3/library/datetime.html) - This was installed to provide dates to work with for report A. This report figures out whether you are under or over budget based on the percentage through the month it is and the percentage through your budget you are.
 
 ### Sources of Learning
 I referred back to the Love Sandwiches Walkthrough Project set up videos to remind me how to set up the APIs, credentials and files before starting coding.
 
-To build my flowchart using Mermaid in my readme: https://mermaid.js.org/syntax/flowchart.html
-I learnt how to increment letters here: https://www.geeksforgeeks.org/ways-increment-character-python/
-Although not in my final code, I learnt how to check if the user's input is alphanumeric here: https://www.w3schools.com/python/ref_string_isalnum.asp
-Although not in my final code, I learnt how to check if the user's input is numeric here: https://www.w3schools.com/python/ref_string_isnumeric.asp#:~:text=The%20isnumeric()%20method%20returns,considered%20to%20be%20numeric%20values.
-I learnt how to get the trailing zero on my expense and budget amounts here: https://stackoverflow.com/questions/455612/limiting-floats-to-two-decimal-points and here: https://www.w3schools.com/python/python_string_formatting.asp
-I learnt about using dates in Python here: https://www.w3schools.com/python/python_datetime.asp
-I learnt how to format strings, especially adding two decimal places, here: https://www.w3schools.com/python/python_string_formatting.asp
-How to split one line of code across multiple for line length PEP8 purposes: https://www.geeksforgeeks.org/python-multi-line-statements/
+- I built my flowcharts using [Mermaid](https://mermaid.js.org/syntax/flowchart.html) in my readme.
+- I learnt how to increment letters on [Geeks for Geeks](https://www.geeksforgeeks.org/ways-increment-character-python/) 
+- I learnt how to check if the user's input is alphanumeric on [W3 Schools](https://www.w3schools.com/python/ref_string_isalnum.asp). This was used in early versions.
+- I learnt how to check if the user's input is numeric on [W3 Schools](https://www.w3schools.com/python/ref_string_isnumeric.asp#:~:text=The%20isnumeric()%20method%20returns,considered%20to%20be%20numeric%20values). This was used in earlier versions
+- I learnt how to get the trailing zero on my expense and budget amounts on [Stack Overflow](https://stackoverflow.com/questions/455612/limiting-floats-to-two-decimal-points) and [W3 Schools](https://www.w3schools.com/python/python_string_formatting.asp)
+- I learnt about using dates in Python on [W3 Schools](https://www.w3schools.com/python/python_datetime.asp).
+- I learnt how to split one line of code across multiple for line length PEP8 purposes on [Geeks for Geeks](https://www.geeksforgeeks.org/python-multi-line-statements/).
 
 
 ### General Credit
-As ever, I want to thank the open source community for the great resources that teach me so much and also remind me of what I learnt in my Code Institute lessons, especially 
+As ever, I want to thank the open source community for the great resources that teach me so much and also remind me of what I learnt in my Code Institute lessons. 
 
-I believe I have specifically credited where I used specific items in the previous section but this is a general credit to the reference resources I looked through to remind me how things worked as I went along. 
+I believe I have specifically credited where I used specific items in the previous section but this is a general credit to the reference resources I looked through to teach me new elements as well as reminding me how things I'd already come across worked as I went along. 
 
 Every effort has been made to credit everything used, but if I find anything else specific later on that needs crediting, that I missed, I will be sure to add it. 
 
@@ -548,25 +594,3 @@ I learnt a lot during this project and this can be seen over the course of the i
 1. Refactoring to reduce API calls: I had gotten into a situation where I was making so many API calls to retrieve information cell by cell, that I was frequently triggering 429 quota exceeded errors from the Google Sheet API. I had to reduce this to make my app more usable and drastically reduce the possibility of 429 errors. To do this, I switched to bulk data retrieval that was stored in a variable, then I was able to take the parts out of it that were relevant to the task at hand. One example of where I did this was in the welcome messaging - I was getting the budget name, the running total for that budget and the amount budgeted individually for each budget. With five budgets to display the information for that turned out to be 15 calls. The result of my refactoring in this way was that I reduced the calls for that section from 15 to 1.
 
 2. Refactoring to reduce repetition: I was repeating the same actions when doing things like accessing data, validating budget choices, getting budgets and their details, and printing expenses. These could be found in various functions, written out in full inside each one. I refactored to strip this repetition and created central functions that could be called to perform the desired actions, then return the required information. 
-
--------------------------------------------------------------------------
-
-
-## Reminders
-
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
-
-## Creating the Heroku app
-
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
-
-1. `heroku/python`
-2. `heroku/nodejs`
-
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
-
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
-
-Connect your GitHub repository and deploy as normal. 

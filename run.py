@@ -142,14 +142,15 @@ def select_budget(type):
 
     if type == "delete":
         print(f"\nAre you sure you want to delete your "
-        f"'{budget_name}' budget?")
+              f"'{budget_name}' budget?")
     elif type == "update":
         print(f"\nWe're updating the '{budget_name}' budget.")
-    else: 
+    else:
         print(f"\nBudget: {budget_name}\nTotal Spent: "
               f"£{running_total}\nAmount Budgeted: £{amount_budgeted}")
 
     return worksheet, budget_name, running_total, amount_budgeted
+
 
 def get_budget_details(worksheet):
     """ Retrieves budget details from the given worksheet. """
@@ -334,11 +335,11 @@ def create_new_budget():
         except ValueError:
             print("\nOnly numbers are accepted - this is not a number.")
             continue
-        
+
         # Calls API function to add new budget to spreadsheet
         budget_amount = format(float(budget_amount), ".2f")
         access_data("new_worksheet", budget_name, budget_amount)
-       
+
         # Notifies the user of successful budget creation and allocation
         print(f"\nSuccessfully added your new '{budget_name}' budget and "
               f"allocated £{budget_amount}.")
@@ -354,7 +355,8 @@ def edit_budget():
     """
     print("\nWhich budget would you like to update?")
     # Calls budget selection function to get the budget selection and info
-    worksheet, budget_name, running_total, amount_budgeted = select_budget("update")
+    worksheet, budget_name, running_total,\
+        amount_budgeted = select_budget("update")
 
     # Asks the user which aspect they want to change
     print("\nWould you like to change the name or the amount?")
@@ -383,7 +385,7 @@ def edit_budget():
             new_name_attempt = access_data("update_name", worksheet, new_name)
             # Notifies the user that their change has been successful
             print(f"\nChanging the name of your '{budget_name}' budget "
-                    f"to '{new_name}'...")
+                  f"to '{new_name}'...")
             access_data("cell_update", worksheet, 1, 1, new_name)
             print("\nSuccessfully changed.\n\nReturning home...\n")
             main()
@@ -428,7 +430,8 @@ def delete_budget():
 
     # Calls budget selection function to get the budget selection and info
     print("\nOK, which budget would you like to delete?")
-    worksheet, budget_name, running_total, amount_budgeted = select_budget("delete")
+    worksheet, budget_name, running_total, \
+        amount_budgeted = select_budget("delete")
     confirm_choice = input("Type 'Y' for yes or 'N' for no and "
                            "hit enter:\n")
     while confirm_choice.upper() not in ("Y", "N"):
@@ -456,13 +459,14 @@ def expense_menu_budget_choice(show_budgets):
     """ Enables the user to choose a budget for expense-related actions.
     Displays information about the selected budget and provides recent expenses
     """
-    if show_budgets: 
+    if show_budgets:
         get_budgets("all", 0)
 
     # Calls budget selection function to get the budget selection and info
     print("\nOK, in which budget would you like to add, edit "
           "or delete an expense?")
-    worksheet, budget_name, running_total, amount_budgeted = select_budget("expense_menu")     
+    worksheet, budget_name, running_total, \
+        amount_budgeted = select_budget("expense_menu")
 
     # Retrieves recent expenses for the selected budget and prints them, if any
     print("\nRecent expenses:")
@@ -687,7 +691,7 @@ def delete_expense(budget_name, worksheet):
                                    "and hit enter:\n")
             continue
         row_index = int(select_expense) + 3
-        if row_index > len(number_rows) or row_index <4:
+        if row_index > len(number_rows) or row_index < 4:
             print("\nThis is not an available option. Please check again.")
             select_expense = input("Please type the relevant number "
                                    "and hit enter:\n")
@@ -711,7 +715,7 @@ def delete_expense(budget_name, worksheet):
         deleted_expense_amount = access_data("get_rows", worksheet,
                                              row_index)[1]
         running_total -= float(deleted_expense_amount)
-        # Call API function to delete expense then update running total 
+        # Call API function to delete expense then update running total
         access_data("delete_expense", worksheet, row_index)
         access_data("cell_update", worksheet, 2, 2, running_total)
         print(f"\nThis expense has been deleted.\n")
@@ -847,7 +851,8 @@ def every_expense_report():
     """
     print("\nFrom which budget would you like to see all of the expenses?")
     # Calls budget selection function to get the budget selection and info
-    worksheet, budget_name, running_total, amount_budgeted = select_budget("expense_report")
+    worksheet, budget_name, running_total, \
+        amount_budgeted = select_budget("expense_report")
 
     # Retrieves and prints all expenses from the relevant budget worksheet.
     expenses = print_expenses(0, worksheet)
