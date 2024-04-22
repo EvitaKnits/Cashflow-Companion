@@ -558,6 +558,8 @@ def new_expense(budget_name, worksheet):
                 print("\nNegative values are not accepted.")
                 print("Please enter a positive number.")
                 cost = input("Please type the amount and hit enter:\n")
+                if cost.lower() == 'home':
+                    main()
                 continue
         except Exception:
             print("\nOnly numbers are accepted - this is not a number.")
